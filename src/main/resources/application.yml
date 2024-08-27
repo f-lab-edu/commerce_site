@@ -4,6 +4,9 @@ spring:
     instance-id: 0
   jpa:
     hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+        implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
       ddl-auto: none
     open-in-view: false
 server:
