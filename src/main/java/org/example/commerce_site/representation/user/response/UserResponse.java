@@ -1,4 +1,4 @@
-package org.example.commerce_site.representation.request;
+package org.example.commerce_site.representation.user.response;
 
 import lombok.Builder;
 import lombok.Getter;

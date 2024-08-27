@@ -8,7 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import org.example.commerce_site.attribute.UserStatus;
+import org.example.commerce_site.attribute.PartnerStatus;
 import org.example.commerce_site.common.domain.BaseTimeEntity;
 
 @Entity
@@ -16,11 +16,12 @@ import org.example.commerce_site.common.domain.BaseTimeEntity;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "users")
-public class User extends BaseTimeEntity {
+@Table(name = "partners")
+public class Partner extends BaseTimeEntity {
     private String name;
-    private String email;
+    private String businessNumber;
     private String password;
+    private String email;
     @Enumerated(EnumType.STRING)
-    private UserStatus status;
+    private PartnerStatus status;
 }

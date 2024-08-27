@@ -1,11 +1,11 @@
-package org.example.commerce_site.representation.request;
+package org.example.commerce_site.representation.partner.request;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.ToString;
-import org.example.commerce_site.application.user.dto.UserRequestDTO;
+import org.example.commerce_site.application.partner.dto.PartnerRequestDTO;
 
-public class UserRequest {
+public class PartnerRequest {
     @Getter
     @ToString
     public static class Create {
@@ -20,12 +20,16 @@ public class UserRequest {
         //TODO 패스워드 형식 체크 (8자리 이상 20자리 이하 영문 + 숫자)
         private String password;
 
-        public static UserRequestDTO.Create toDTO(UserRequest.Create request) {
-            return UserRequestDTO.Create.builder()
+        @NotBlank
+        private String businessNumber;
+
+        public static PartnerRequestDTO.Create toDTO(PartnerRequest.Create request) {
+            return PartnerRequestDTO.Create.builder()
                     .name(request.getName())
                     .email(request.getEmail())
                     //TODO PWD 암호화
                     .password(request.getPassword())
+                    .businessNumber(request.getBusinessNumber())
                     .build();
         }
     }

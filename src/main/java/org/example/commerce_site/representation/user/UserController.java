@@ -1,12 +1,11 @@
-package org.example.commerce_site.representation;
+package org.example.commerce_site.representation.user;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.commerce_site.application.user.UserFacade;
-import org.example.commerce_site.application.user.dto.UserResponseDTO;
-import org.example.commerce_site.representation.request.UserRequest;
-import org.example.commerce_site.representation.request.UserResponse;
+import org.example.commerce_site.representation.user.request.UserRequest;
+import org.example.commerce_site.representation.user.response.UserResponse;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +20,6 @@ public class UserController {
 
     @PostMapping()
     public UserResponse.Create createUser(@Valid @RequestBody UserRequest.Create request) {
-        UserResponseDTO.Create result = userFacade.create(UserRequest.Create.toDTO(request));
-        return UserResponse.Create.of(result);
+        return UserResponse.Create.of(userFacade.create(UserRequest.Create.toDTO(request)));
     }
 }

@@ -9,6 +9,8 @@ spring:
         implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
       ddl-auto: none
     open-in-view: false
+  jackson:
+    property-naming-strategy: SNAKE_CASE
 server:
   port: 8080
   forward-headers-strategy: framework
