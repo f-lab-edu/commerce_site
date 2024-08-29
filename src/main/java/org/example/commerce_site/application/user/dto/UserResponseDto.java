@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.ToString;
 import org.example.commerce_site.domain.User;
 
-public class UserResponseDTO {
+public class UserResponseDto {
     @Builder
     @Getter
     @ToString
@@ -13,7 +13,7 @@ public class UserResponseDTO {
         private String name;
         private String email;
 
-        public static UserResponseDTO.Create of(User user) {
+        public static UserResponseDto.Create of(User user) {
             return Create.builder()
                     .name(user.getName())
                     .email(user.getEmail())

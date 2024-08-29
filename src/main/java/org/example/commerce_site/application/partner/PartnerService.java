@@ -2,8 +2,8 @@ package org.example.commerce_site.application.partner;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.commerce_site.application.partner.dto.PartnerRequestDTO;
-import org.example.commerce_site.application.partner.dto.PartnerResponseDTO;
+import org.example.commerce_site.application.partner.dto.PartnerRequestDto;
+import org.example.commerce_site.application.partner.dto.PartnerResponseDto;
 import org.example.commerce_site.infrastructure.PartnerRepository;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 public class PartnerService {
     private final PartnerRepository partnerRepository;
 
-    public PartnerResponseDTO.Create create(PartnerRequestDTO.Create dto) {
-        return PartnerResponseDTO.Create.of(partnerRepository.save(PartnerRequestDTO.Create.toEntity(dto)));
+    public PartnerResponseDto.Create create(PartnerRequestDto.Create dto) {
+        return PartnerResponseDto.Create.of(partnerRepository.save(PartnerRequestDto.Create.toEntity(dto)));
     }
 }

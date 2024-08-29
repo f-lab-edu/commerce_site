@@ -3,7 +3,7 @@ package org.example.commerce_site.representation.partner.response;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
-import org.example.commerce_site.application.partner.dto.PartnerResponseDTO;
+import org.example.commerce_site.application.partner.dto.PartnerResponseDto;
 
 public class PartnerResponse {
 
@@ -15,7 +15,7 @@ public class PartnerResponse {
         private String email;
         private String businessNumber;
 
-        public static PartnerResponse.Create of(PartnerResponseDTO.Create dto) {
+        public static PartnerResponse.Create of(PartnerResponseDto.Create dto) {
             return PartnerResponse.Create.builder()
                     .name(dto.getName())
                     .email(dto.getEmail())

@@ -6,7 +6,7 @@ import lombok.ToString;
 import org.example.commerce_site.attribute.PartnerStatus;
 import org.example.commerce_site.domain.Partner;
 
-public class PartnerRequestDTO {
+public class PartnerRequestDto {
     @Getter
     @Builder
     @ToString
@@ -16,7 +16,7 @@ public class PartnerRequestDTO {
         private String password;
         private String businessNumber;
 
-        public static Partner toEntity(PartnerRequestDTO.Create dto) {
+        public static Partner toEntity(PartnerRequestDto.Create dto) {
             return Partner.builder()
                     .name(dto.getName())
                     .email(dto.getEmail())

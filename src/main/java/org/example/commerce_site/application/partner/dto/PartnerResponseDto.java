@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.ToString;
 import org.example.commerce_site.domain.Partner;
 
-public class PartnerResponseDTO {
+public class PartnerResponseDto {
     @Builder
     @Getter
     @ToString
@@ -14,7 +14,7 @@ public class PartnerResponseDTO {
         private String email;
         private String businessNumber;
 
-        public static PartnerResponseDTO.Create of(Partner partner) {
+        public static PartnerResponseDto.Create of(Partner partner) {
             return Create.builder()
                     .name(partner.getName())
                     .email(partner.getEmail())

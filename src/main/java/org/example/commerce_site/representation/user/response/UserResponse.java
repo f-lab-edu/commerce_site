@@ -3,7 +3,7 @@ package org.example.commerce_site.representation.user.response;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
-import org.example.commerce_site.application.user.dto.UserResponseDTO;
+import org.example.commerce_site.application.user.dto.UserResponseDto;
 
 public class UserResponse {
 
@@ -14,7 +14,7 @@ public class UserResponse {
         private String name;
         private String email;
 
-        public static UserResponse.Create of(UserResponseDTO.Create dto) {
+        public static UserResponse.Create of(UserResponseDto.Create dto) {
             return UserResponse.Create.builder()
                     .name(dto.getName())
                     .email(dto.getEmail())

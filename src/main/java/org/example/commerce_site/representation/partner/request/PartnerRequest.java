@@ -3,7 +3,7 @@ package org.example.commerce_site.representation.partner.request;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.ToString;
-import org.example.commerce_site.application.partner.dto.PartnerRequestDTO;
+import org.example.commerce_site.application.partner.dto.PartnerRequestDto;
 
 public class PartnerRequest {
     @Getter
@@ -23,8 +23,8 @@ public class PartnerRequest {
         @NotBlank
         private String businessNumber;
 
-        public static PartnerRequestDTO.Create toDTO(PartnerRequest.Create request) {
-            return PartnerRequestDTO.Create.builder()
+        public static PartnerRequestDto.Create toDTO(PartnerRequest.Create request) {
+            return PartnerRequestDto.Create.builder()
                     .name(request.getName())
                     .email(request.getEmail())
                     //TODO PWD 암호화

@@ -6,7 +6,7 @@ import lombok.ToString;
 import org.example.commerce_site.attribute.UserStatus;
 import org.example.commerce_site.domain.User;
 
-public class UserRequestDTO {
+public class UserRequestDto {
     @Getter
     @Builder
     @ToString
@@ -15,7 +15,7 @@ public class UserRequestDTO {
         private String email;
         private String password;
 
-        public static User toEntity(UserRequestDTO.Create dto) {
+        public static User toEntity(UserRequestDto.Create dto) {
             return User.builder()
                     .name(dto.getName())
                     .email(dto.getEmail())
