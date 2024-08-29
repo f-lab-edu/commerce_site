@@ -14,6 +14,7 @@ public class PartnerService {
     private final PartnerRepository partnerRepository;
 
     public PartnerResponseDto.Create create(PartnerRequestDto.Create dto) {
+        // TODO : email 중복 체크
         return PartnerResponseDto.Create.of(partnerRepository.save(PartnerRequestDto.Create.toEntity(dto)));
     }
 }

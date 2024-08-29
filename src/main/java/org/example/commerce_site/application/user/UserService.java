@@ -14,6 +14,7 @@ public class UserService {
     private final UserRepository userRepository;
 
     public UserResponseDto.Create create(UserRequestDto.Create dto) {
+        // TODO : email 중복 체크
         return UserResponseDto.Create.of(userRepository.save(UserRequestDto.Create.toEntity(dto)));
     }
 }
