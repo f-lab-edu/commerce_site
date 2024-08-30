@@ -11,7 +11,6 @@ import org.hibernate.type.SqlTypes;
 
 @Entity
 @Getter
-@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "products")

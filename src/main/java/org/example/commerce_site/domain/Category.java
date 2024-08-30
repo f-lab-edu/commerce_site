@@ -10,7 +10,6 @@ import org.example.commerce_site.common.domain.BaseTimeEntity;
 
 @Entity
 @Getter
-@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "categories")
