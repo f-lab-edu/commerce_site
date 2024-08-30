@@ -1,8 +1,5 @@
 package org.example.commerce_site.representation.partner;
 
-import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.example.commerce_site.application.partner.PartnerService;
 import org.example.commerce_site.common.response.CommonResponse;
 import org.example.commerce_site.representation.partner.request.PartnerRequest;
@@ -12,15 +9,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/partner")
 public class PartnerController {
-    private final PartnerService partnerService;
+	private final PartnerService partnerService;
 
-    @PostMapping()
-    public CommonResponse.CommonData<PartnerResponse.Create> createPartner(@Valid @RequestBody PartnerRequest.Create request) {
-        return CommonResponse.success(PartnerResponse.Create.of(partnerService.create(PartnerRequest.Create.toDTO(request))));
-    }
+	@PostMapping()
+	public CommonResponse.CommonData<PartnerResponse.Create> createPartner(
+		@Valid @RequestBody PartnerRequest.Create request) {
+		return CommonResponse.success(
+			PartnerResponse.Create.of(partnerService.create(PartnerRequest.Create.toDTO(request))));
+	}
 }

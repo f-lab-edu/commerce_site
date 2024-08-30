@@ -1,14 +1,18 @@
 package org.example.commerce_site.domain;
 
-import jakarta.persistence.*;
+import org.example.commerce_site.common.domain.BaseTimeEntity;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
-import org.example.commerce_site.common.domain.BaseTimeEntity;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
 
 @Entity
 @Getter
@@ -17,21 +21,21 @@ import org.hibernate.type.SqlTypes;
 @AllArgsConstructor
 @Table(name = "products")
 public class Product extends BaseTimeEntity {
-    private Long partnerId;
+	private Long partnerId;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
+	@ManyToOne
+	@JoinColumn(name = "category_id")
+	private Category category;
 
-    private String name;
+	private String name;
 
-    @JdbcTypeCode(SqlTypes.JSON)
-    @Column(columnDefinition = "json")
-    private String description;
+	@JdbcTypeCode(SqlTypes.JSON)
+	@Column(columnDefinition = "json")
+	private String description;
 
-    private Long price;
+	private Long price;
 
-    private Long stockQuantity;
+	private Long stockQuantity;
 
-    private Boolean isEnable;
+	private Boolean isEnable;
 }
