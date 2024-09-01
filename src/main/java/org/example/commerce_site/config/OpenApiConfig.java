@@ -62,5 +62,4 @@ public class OpenApiConfig {
 		String[] paths = {"/address/**"};
 		return GroupedOpenApi.builder().group("ADDRESS API").pathsToMatch(paths).build();
 	}
-
 }
