@@ -1,7 +1,7 @@
 package org.example.commerce_site.representation.user;
 
 import org.example.commerce_site.application.user.UserService;
-import org.example.commerce_site.common.response.CommonResponse;
+import org.example.commerce_site.common.response.ApiSuccessResponse;
 import org.example.commerce_site.representation.user.request.UserRequest;
 import org.example.commerce_site.representation.user.response.UserResponse;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,7 +21,7 @@ public class UserController {
 	private final UserService userService;
 
 	@PostMapping()
-	public CommonResponse.CommonData<UserResponse.Create> createUser(@Valid @RequestBody UserRequest.Create request) {
-		return CommonResponse.success(UserResponse.Create.of(userService.create(UserRequest.Create.toDTO(request))));
+	public ApiSuccessResponse<UserResponse.Create> createUser(@Valid @RequestBody UserRequest.Create request) {
+		return ApiSuccessResponse.success(UserResponse.Create.of(userService.create(UserRequest.Create.toDTO(request))));
 	}
 }
