@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @EnableJpaAuditing
 @SpringBootApplication(exclude = SecurityAutoConfiguration.class)
 public class CommerceSiteApplication {
-    public static void main(String[] args) {
-        SpringApplication.run(CommerceSiteApplication.class, args);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(CommerceSiteApplication.class, args);
+	}
 }
