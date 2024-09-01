@@ -6,6 +6,7 @@ import org.example.commerce_site.domain.User;
 import org.example.commerce_site.infrastructure.AddressRepository;
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 public class AddressService {
 	private final AddressRepository addressRepository;
 
+	@Transactional
 	public Address createAddress(AddressRequestDto.Create dto, User user) {
 		if (dto.getIsPrimary()) {
 			addressRepository.findByUserIdAndIsPrimaryTrue(user).ifPresent(address -> {
