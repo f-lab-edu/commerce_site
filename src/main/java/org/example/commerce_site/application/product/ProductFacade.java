@@ -27,7 +27,6 @@ public class ProductFacade {
 		return ProductResponseDto.Create.of(productService.create(dto, category));
 	}
 
-	@Transactional
 	public void updateProduct(Long productId, ProductRequestDto.Put dto) {
 		// id가 존재하는 상품인지 확인
 		Product product = productService.getProduct(productId);
@@ -46,7 +45,6 @@ public class ProductFacade {
 		productService.update(product, dto, category);
 	}
 
-	@Transactional
 	public void deleteProduct(Long productId) {
 		productService.delete(productService.getProduct(productId));
 	}

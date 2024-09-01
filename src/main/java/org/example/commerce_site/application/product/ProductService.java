@@ -8,6 +8,7 @@ import org.example.commerce_site.domain.Product;
 import org.example.commerce_site.infrastructure.ProductRepository;
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ProductService {
 	private final ProductRepository productRepository;
 
+	@Transactional
 	public Product create(ProductRequestDto.Create productRequest, Category category) {
 		return productRepository.save(ProductRequestDto.Create.toEntity(productRequest, category));
 	}
@@ -27,11 +29,13 @@ public class ProductService {
 		);
 	}
 
+	@Transactional
 	public Product update(Product product, ProductRequestDto.Put dto, Category category) {
 		product.update(dto, category);
 		return productRepository.save(product);
 	}
 
+	@Transactional
 	public void delete(Product product) {
 		productRepository.delete(product);
 	}
