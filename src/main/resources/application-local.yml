@@ -9,3 +9,11 @@ spring:
     properties:
       hibernate:
         format_sql: true
+springdoc:
+  server-url: http://localhost:8080
+  swagger-ui:
+    operations-sorter: local
+    tags-sorter: local
+    path: /api-docs
+    disable-swagger-default-url: true
+    use-root-path: true
