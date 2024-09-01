@@ -30,13 +30,13 @@ public class ProductController {
 	}
 
 	@PatchMapping("/{product_id}")
-	public ApiSuccessResponse<ProductResponse.Update> updateProduct(
+	public ApiSuccessResponse updateProduct(
 		@PathVariable(name = "product_id") Long productId,
 		@Valid @RequestBody ProductRequest.Update request) {
 		//TODO Partner 회원 외에는 접근할 수 없는 API 임
 		//TODO 파트너 자신이 등록한 상품만 수정 가능해야 함
-		return ApiSuccessResponse.success(
-			ProductResponse.Update.of(productFacade.updateProduct(productId, ProductRequest.Update.toDTO(request))));
+		productFacade.updateProduct(productId, ProductRequest.Update.toDTO(request));
+		return ApiSuccessResponse.success();
 	}
 
 	@DeleteMapping("/{product_id}")

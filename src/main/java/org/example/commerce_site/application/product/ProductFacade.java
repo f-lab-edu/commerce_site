@@ -11,6 +11,7 @@ import org.example.commerce_site.domain.Category;
 import org.example.commerce_site.domain.Product;
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,7 +27,8 @@ public class ProductFacade {
 		return ProductResponseDto.Create.of(productService.create(dto, category));
 	}
 
-	public ProductResponseDto.Update updateProduct(Long productId, ProductRequestDto.Put dto) {
+	@Transactional
+	public void updateProduct(Long productId, ProductRequestDto.Put dto) {
 		// id가 존재하는 상품인지 확인
 		Product product = productService.getProduct(productId);
 
@@ -41,9 +43,10 @@ public class ProductFacade {
 			category = categoryService.getCategoryById(dto.getCategoryId());
 		}
 
-		return ProductResponseDto.Update.of(productService.update(product, dto, category));
+		productService.update(product, dto, category);
 	}
 
+	@Transactional
 	public void deleteProduct(Long productId) {
 		productService.delete(productService.getProduct(productId));
 	}
