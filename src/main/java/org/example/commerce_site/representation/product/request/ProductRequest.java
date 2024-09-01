@@ -13,23 +13,17 @@ public class ProductRequest {
 	public static class Create {
 		@NotNull
 		private Long partnerId;
-
 		@NotNull
 		private Long categoryId;
-
 		@NotBlank
 		private String name;
-
 		private String description;
-
 		@NotNull
 		private Long price;
-
 		@NotNull
 		private Long stockQuantity;
 
 		public static ProductRequestDto.Create toDTO(ProductRequest.Create request) {
-
 			return ProductRequestDto.Create.builder()
 				.partnerId(request.getPartnerId())
 				.categoryId(request.getCategoryId())
@@ -47,17 +41,11 @@ public class ProductRequest {
 		@NotNull
 		//TODO : 추후 access token 에서 파싱하도록 수정
 		private Long partnerId;
-
 		private Long categoryId;
-
 		private String name;
-
 		private String description;
-
 		private Long price;
-
 		private Long stockQuantity;
-
 		private Boolean isEnable;
 
 		public static ProductRequestDto.Put toDTO(Update request) {

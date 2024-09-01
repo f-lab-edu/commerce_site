@@ -35,31 +35,4 @@ public class ProductResponse {
 				.build();
 		}
 	}
-
-	@Getter
-	@Builder
-	@ToString
-	public static class Update {
-		private Long id;
-		private Long categoryId;
-		private String name;
-		private String description;
-		private Long price;
-		private Long stockQuantity;
-		private Boolean isEnable;
-		private LocalDateTime updatedAt;
-
-		public static Update of(ProductResponseDto.Update dto) {
-			return Update.builder()
-				.id(dto.getId())
-				.categoryId(dto.getCategoryId())
-				.name(dto.getName())
-				.description(dto.getDescription())
-				.price(dto.getPrice())
-				.stockQuantity(dto.getStockQuantity())
-				.isEnable(dto.getIsEnable())
-				.updatedAt(dto.getUpdatedAt())
-				.build();
-		}
-	}
 }
