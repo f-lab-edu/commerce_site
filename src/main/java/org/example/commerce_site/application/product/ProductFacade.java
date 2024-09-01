@@ -43,4 +43,8 @@ public class ProductFacade {
 
 		return ProductResponseDto.Update.of(productService.update(product, dto, category));
 	}
+
+	public void deleteProduct(Long productId) {
+		productService.delete(productService.getProduct(productId));
+	}
 }

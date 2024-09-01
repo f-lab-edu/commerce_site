@@ -31,4 +31,8 @@ public class ProductService {
 		product.update(dto, category);
 		return productRepository.save(product);
 	}
+
+	public void delete(Product product) {
+		productRepository.delete(product);
+	}
 }

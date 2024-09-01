@@ -3,6 +3,8 @@ package org.example.commerce_site.domain;
 import org.example.commerce_site.application.product.dto.ProductRequestDto;
 import org.example.commerce_site.common.domain.BaseTimeEntity;
 import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.type.SqlTypes;
 
 import jakarta.persistence.Column;
@@ -20,6 +22,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@SQLDelete(sql = "UPDATE products SET is_deleted = TRUE WHERE id = ?")
+@SQLRestriction("is_deleted IS FALSE")
 @Table(name = "products")
 public class Product extends BaseTimeEntity {
 	private Long partnerId;
