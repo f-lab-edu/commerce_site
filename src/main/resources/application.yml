@@ -14,3 +14,9 @@ spring:
 server:
   port: 8080
   forward-headers-strategy: framework
+springdoc:
+  version: v1.0.0
+  api-docs:
+    path: /api-docs/json
+  default-produces-media-type: application/json;charset=UTF-8
+  default-consumes-media-type: application/json;charset=UTF-8
