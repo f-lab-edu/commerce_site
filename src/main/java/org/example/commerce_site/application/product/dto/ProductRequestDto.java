@@ -31,4 +31,17 @@ public class ProductRequestDto {
 				.build();
 		}
 	}
+
+	@Getter
+	@Builder
+	@ToString
+	public static class Put {
+		private Long partnerId;
+		private Long categoryId;
+		private String name;
+		private String description;
+		private Long price;
+		private Long stockQuantity;
+		private Boolean isEnable;
+	}
 }

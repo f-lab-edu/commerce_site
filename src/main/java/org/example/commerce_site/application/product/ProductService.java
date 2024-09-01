@@ -1,6 +1,8 @@
 package org.example.commerce_site.application.product;
 
 import org.example.commerce_site.application.product.dto.ProductRequestDto;
+import org.example.commerce_site.common.exception.CustomException;
+import org.example.commerce_site.common.exception.ErrorCode;
 import org.example.commerce_site.domain.Category;
 import org.example.commerce_site.domain.Product;
 import org.example.commerce_site.infrastructure.ProductRepository;
@@ -17,5 +19,16 @@ public class ProductService {
 
 	public Product create(ProductRequestDto.Create productRequest, Category category) {
 		return productRepository.save(ProductRequestDto.Create.toEntity(productRequest, category));
+	}
+
+	public Product getProduct(Long productId) {
+		return productRepository.findById(productId).orElseThrow(
+			() -> new CustomException(ErrorCode.PRODUCT_NOT_FOUND)
+		);
+	}
+
+	public Product update(Product product, ProductRequestDto.Put dto, Category category) {
+		product.update(dto, category);
+		return productRepository.save(product);
 	}
 }

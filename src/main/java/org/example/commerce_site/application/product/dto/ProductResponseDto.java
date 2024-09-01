@@ -35,4 +35,31 @@ public class ProductResponseDto {
 				.build();
 		}
 	}
+
+	@Builder
+	@Getter
+	@ToString
+	public static class Update {
+		private Long id;
+		private Long categoryId;
+		private String name;
+		private String description;
+		private Long price;
+		private Long stockQuantity;
+		private Boolean isEnable;
+		private LocalDateTime updatedAt;
+
+		public static Update of(Product product) {
+			return Update.builder()
+				.id(product.getId())
+				.categoryId(product.getCategory().getId())
+				.name(product.getName())
+				.description(product.getDescription())
+				.price(product.getPrice())
+				.stockQuantity(product.getStockQuantity())
+				.isEnable(product.getIsEnable())
+				.updatedAt(product.getUpdatedAt())
+				.build();
+		}
+	}
 }

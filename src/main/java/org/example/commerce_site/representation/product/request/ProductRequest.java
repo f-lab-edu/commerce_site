@@ -40,4 +40,36 @@ public class ProductRequest {
 				.build();
 		}
 	}
+
+	@Getter
+	@ToString
+	public static class Update {
+		@NotNull
+		//TODO : 추후 access token 에서 파싱하도록 수정
+		private Long partnerId;
+
+		private Long categoryId;
+
+		private String name;
+
+		private String description;
+
+		private Long price;
+
+		private Long stockQuantity;
+
+		private Boolean isEnable;
+
+		public static ProductRequestDto.Put toDTO(Update request) {
+			return ProductRequestDto.Put.builder()
+				.partnerId(request.getPartnerId())
+				.categoryId(request.getCategoryId())
+				.name(request.getName())
+				.description(request.getDescription())
+				.price(request.getPrice())
+				.stockQuantity(request.getStockQuantity())
+				.isEnable(request.getIsEnable())
+				.build();
+		}
+	}
 }

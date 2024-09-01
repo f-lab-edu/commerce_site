@@ -1,5 +1,6 @@
 package org.example.commerce_site.domain;
 
+import org.example.commerce_site.application.product.dto.ProductRequestDto;
 import org.example.commerce_site.common.domain.BaseTimeEntity;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
@@ -38,4 +39,13 @@ public class Product extends BaseTimeEntity {
 	private Long stockQuantity;
 
 	private Boolean isEnable;
+
+	public void update(ProductRequestDto.Put dto, Category category) {
+		this.name = dto.getName() != null ? dto.getName() : this.name;
+		this.description = dto.getDescription() != null ? dto.getDescription() : this.description;
+		this.price = dto.getPrice() != null ? dto.getPrice() : this.price;
+		this.stockQuantity = dto.getStockQuantity() != null ? dto.getStockQuantity() : this.stockQuantity;
+		this.isEnable = dto.getIsEnable() != null ? dto.getIsEnable() : this.isEnable;
+		this.category = category != null ? category : this.category;
+	}
 }
