@@ -29,3 +29,4 @@ springdoc:
     path: /api-docs/json
   default-produces-media-type: application/json;charset=UTF-8
   default-consumes-media-type: application/json;charset=UTF-8
+  server-url: http://localhost:8080
