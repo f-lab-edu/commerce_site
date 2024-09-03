@@ -2,6 +2,7 @@ package org.example.commerce_site.application.product.dto;
 
 import java.time.LocalDateTime;
 
+import org.example.commerce_site.domain.Partner;
 import org.example.commerce_site.domain.Product;
 
 import lombok.Builder;
@@ -12,21 +13,25 @@ public class ProductResponseDto {
 	@Builder
 	@Getter
 	@ToString
-	public static class Create {
+	public static class Get {
 		private Long id;
 		private Long partnerId;
+		private String partnerName;
 		private Long categoryId;
+		private String categoryName;
 		private String name;
 		private String description;
 		private Long price;
 		private Long stockQuantity;
 		private LocalDateTime createdAt;
 
-		public static ProductResponseDto.Create of(Product product) {
-			return Create.builder()
+		public static Get of(Product product, Partner partner) {
+			return Get.builder()
 				.id(product.getId())
 				.partnerId(product.getPartnerId())
+				.partnerName(partner.getName())
 				.categoryId(product.getCategory().getId())
+				.categoryName(product.getCategory().getName())
 				.name(product.getName())
 				.description(product.getDescription())
 				.price(product.getPrice())

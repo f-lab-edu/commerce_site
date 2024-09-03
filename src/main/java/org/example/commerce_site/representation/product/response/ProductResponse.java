@@ -12,7 +12,7 @@ public class ProductResponse {
 	@Getter
 	@Builder
 	@ToString
-	public static class Create {
+	public static class Get {
 		private Long id;
 		private Long partnerId;
 		private Long categoryId;
@@ -22,8 +22,8 @@ public class ProductResponse {
 		private Long stockQuantity;
 		private LocalDateTime createdAt;
 
-		public static ProductResponse.Create of(ProductResponseDto.Create dto) {
-			return ProductResponse.Create.builder()
+		public static Get of(ProductResponseDto.Get dto) {
+			return ProductResponse.Get.builder()
 				.id(dto.getId())
 				.partnerId(dto.getPartnerId())
 				.categoryId(dto.getCategoryId())

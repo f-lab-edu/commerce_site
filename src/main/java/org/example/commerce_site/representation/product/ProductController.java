@@ -5,6 +5,7 @@ import org.example.commerce_site.common.response.ApiSuccessResponse;
 import org.example.commerce_site.representation.product.request.ProductRequest;
 import org.example.commerce_site.representation.product.response.ProductResponse;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,11 +23,11 @@ public class ProductController {
 	private final ProductFacade productFacade;
 
 	@PostMapping()
-	public ApiSuccessResponse<ProductResponse.Create> createProduct(
+	public ApiSuccessResponse createProduct(
 		@Valid @RequestBody ProductRequest.Create request) {
 		//TODO Partner 회원 외에는 접근할 수 없는 API 임
-		return ApiSuccessResponse.success(
-			ProductResponse.Create.of(productFacade.createProduct(ProductRequest.Create.toDTO(request))));
+		productFacade.createProduct(ProductRequest.Create.toDTO(request));
+		return ApiSuccessResponse.success();
 	}
 
 	@PatchMapping("/{product_id}")
@@ -46,5 +47,11 @@ public class ProductController {
 		//TODO 파트너 자신이 등록한 상품만 수정 가능해야 함
 		productFacade.deleteProduct(productId);
 		return ApiSuccessResponse.success();
+	}
+
+	@GetMapping("/{product_id}")
+	public ApiSuccessResponse<ProductResponse.Get> getProduct(
+		@PathVariable(name = "product_id") Long productId) {
+		return ApiSuccessResponse.success(ProductResponse.Get.of(productFacade.getProduct(productId)));
 	}
 }
