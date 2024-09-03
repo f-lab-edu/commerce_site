@@ -1,6 +1,7 @@
 package org.example.commerce_site.application.address.dto;
 
 import org.example.commerce_site.domain.Address;
+import org.springframework.data.domain.Page;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -10,7 +11,7 @@ public class AddressResponseDto {
 	@Getter
 	@Builder
 	@ToString
-	public static class Create {
+	public static class Get {
 		private String phoneNumber;
 		private String addressType;
 		private String postalCode;
@@ -19,8 +20,8 @@ public class AddressResponseDto {
 		private String buildingName;
 		private String addressDetail;
 
-		public static AddressResponseDto.Create of(Address address) {
-			return AddressResponseDto.Create.builder()
+		public static Get of(Address address) {
+			return Get.builder()
 				.phoneNumber(address.getPhoneNumber())
 				.addressType(address.getAddressType())
 				.postalCode(address.getPostalCode())
@@ -29,6 +30,10 @@ public class AddressResponseDto {
 				.buildingName(address.getBuildingName())
 				.addressDetail(address.getAddressDetail())
 				.build();
+		}
+
+		public static Page<AddressResponseDto.Get> of(Page<Address> addresses) {
+			return addresses.map(AddressResponseDto.Get::of);
 		}
 	}
 }
