@@ -2,7 +2,16 @@ spring:
   application:
     name: commerce_site
     instance-id: 0
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/ecommerce_site
+    username: root
+    password: 8cfv67b67af12zxc
   jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
     hibernate:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
@@ -14,3 +23,10 @@ spring:
 server:
   port: 8080
   forward-headers-strategy: framework
+springdoc:
+  version: v1.0.0
+  api-docs:
+    path: /api-docs/json
+  default-produces-media-type: application/json;charset=UTF-8
+  default-consumes-media-type: application/json;charset=UTF-8
+  server-url: http://localhost:8080
