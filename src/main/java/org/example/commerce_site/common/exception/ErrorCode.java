@@ -16,6 +16,8 @@ public enum ErrorCode {
 	INVALID_PARAM(HttpStatus.BAD_REQUEST, 400, "잘못된 parameter 입니다."),
 	ACCESS_DENIED(HttpStatus.FORBIDDEN, 403, "권한이 부족합니다."),
 	METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, 405, "허용되지 않은 메소드 입니다."),
+	//address
+	ADDRESS_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "배송지 정보를 찾을 수 없습니다."),
 
 	//user
 	USER_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "회원 정보를 찾을 수 없습니다."),
