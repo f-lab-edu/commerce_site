@@ -20,13 +20,11 @@ public class ApiSuccessResponse<T> {
 			.build();
 	}
 
-	//for void api
 	public static ApiSuccessResponse success() {
 		return ApiSuccessResponse.builder()
 			.build();
 	}
 
-	//for list api
 	public static <T> ApiSuccessResponse.PageList<T> success(Page<T> list) {
 		return new PageList<>(list);
 	}
@@ -46,7 +44,7 @@ public class ApiSuccessResponse<T> {
 			if (!list.getContent().isEmpty()){
 				this.list = (T)list.getContent();
 			}
-			this.pageNumber = list.getNumber();
+			this.pageNumber = list.getNumber() + 1;
 			this.pageSize = list.getSize();
 			this.totalCount = list.getTotalElements();
 			this.totalPage = list.getTotalPages();
