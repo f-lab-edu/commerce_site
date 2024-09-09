@@ -7,8 +7,8 @@ import org.example.commerce_site.domain.Category;
 import org.example.commerce_site.domain.Product;
 import org.example.commerce_site.infrastructure.ProductRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,6 +23,7 @@ public class ProductService {
 		return productRepository.save(ProductRequestDto.Create.toEntity(productRequest, category));
 	}
 
+	@Transactional(readOnly = true)
 	public Product getProduct(Long productId) {
 		return productRepository.findById(productId).orElseThrow(
 			() -> new CustomException(ErrorCode.PRODUCT_NOT_FOUND)
