@@ -34,7 +34,7 @@ public class ProductFacade {
 		Product product = productService.getProduct(productId);
 
 		// 파트너 본인이 올린 상품인지 확인
-		if (!Objects.equals(product.getPartnerId(), dto.getPartnerId())) {
+		if (!product.getPartnerId().equals(dto.getPartnerId())) {
 			throw new CustomException(ErrorCode.PRODUCT_ACCESS_DENIED);
 		}
 

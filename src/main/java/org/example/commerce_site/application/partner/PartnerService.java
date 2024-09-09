@@ -8,6 +8,7 @@ import org.example.commerce_site.domain.Partner;
 import org.example.commerce_site.infrastructure.PartnerRepository;
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 public class PartnerService {
 	private final PartnerRepository partnerRepository;
 
+	@Transactional
 	public PartnerResponseDto.Create create(PartnerRequestDto.Create dto) {
 		// TODO : email 중복 체크
 		return PartnerResponseDto.Create.of(partnerRepository.save(PartnerRequestDto.Create.toEntity(dto)));
