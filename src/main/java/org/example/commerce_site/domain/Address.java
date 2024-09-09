@@ -35,7 +35,7 @@ public class Address extends BaseTimeEntity {
 	private String buildingName;
 	private String addressDetail;
 
-	public void updatePrimary() {
-		this.isPrimary = Boolean.FALSE;
+	public void updatePrimary(Boolean isPrimary) {
+		this.isPrimary = isPrimary;
 	}
 }
