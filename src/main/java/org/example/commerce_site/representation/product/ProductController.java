@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
@@ -53,5 +54,17 @@ public class ProductController {
 	public ApiSuccessResponse<ProductResponse.Get> getProduct(
 		@PathVariable(name = "product_id") Long productId) {
 		return ApiSuccessResponse.success(ProductResponse.Get.of(productFacade.getProduct(productId)));
+	}
+
+	@GetMapping("/list")
+	public ApiSuccessResponse.PageList<ProductResponse.Get> getProductList(
+		@RequestParam(value = "page", defaultValue = "1") int page,
+		@RequestParam(value = "size", defaultValue = "10") int size,
+		@RequestParam(value = "keyword", required = false) String keyword,
+		@RequestParam(value = "category_id", required = false) Long categoryId,
+		@RequestParam(value = "partner_id", required = false) Long partnerId
+	) {
+		return ApiSuccessResponse.success(
+			ProductResponse.Get.of(productFacade.getProductList(page - 1, size, keyword, categoryId, partnerId)));
 	}
 }

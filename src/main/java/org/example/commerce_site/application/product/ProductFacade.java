@@ -1,7 +1,5 @@
 package org.example.commerce_site.application.product;
 
-import java.util.Objects;
-
 import org.example.commerce_site.application.category.CategoryService;
 import org.example.commerce_site.application.partner.PartnerService;
 import org.example.commerce_site.application.product.dto.ProductRequestDto;
@@ -11,6 +9,9 @@ import org.example.commerce_site.common.exception.ErrorCode;
 import org.example.commerce_site.domain.Category;
 import org.example.commerce_site.domain.Partner;
 import org.example.commerce_site.domain.Product;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -55,5 +56,10 @@ public class ProductFacade {
 		Product product = productService.getProduct(productId);
 		Partner partner = partnerService.getPartner(product.getPartnerId());
 		return ProductResponseDto.Get.of(product, partner);
+	}
+
+	public Page<ProductResponseDto.Get> getProductList(
+		int page, int size, String keyword, Long categoryId, Long partnerId) {
+		return productService.getProductList(PageRequest.of(page, size), keyword, categoryId, partnerId);
 	}
 }

@@ -44,6 +44,8 @@ public class Product extends BaseTimeEntity {
 
 	private Boolean isEnable;
 
+	private Boolean isDeleted;
+
 	public void update(ProductRequestDto.Put dto, Category category) {
 		this.name = dto.getName() != null ? dto.getName() : this.name;
 		this.description = dto.getDescription() != null ? dto.getDescription() : this.description;

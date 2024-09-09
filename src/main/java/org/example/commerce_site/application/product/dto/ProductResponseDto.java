@@ -5,14 +5,18 @@ import java.time.LocalDateTime;
 import org.example.commerce_site.domain.Partner;
 import org.example.commerce_site.domain.Product;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 public class ProductResponseDto {
 	@Builder
 	@Getter
 	@ToString
+	@AllArgsConstructor
 	public static class Get {
 		private Long id;
 		private Long partnerId;
