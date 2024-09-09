@@ -18,7 +18,7 @@ public class AddressService {
 	public Address createAddress(AddressRequestDto.Create dto, User user) {
 		if (dto.getIsPrimary()) {
 			addressRepository.findByUserIdAndIsPrimaryTrue(user).ifPresent(address -> {
-				address.updatePrimary();
+				address.updatePrimary(Boolean.FALSE);
 				addressRepository.save(address);
 			});
 		}
