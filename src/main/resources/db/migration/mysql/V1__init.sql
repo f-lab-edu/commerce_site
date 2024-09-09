@@ -1,15 +1,15 @@
-DROP TABLE IF EXISTS `shipments`;
-DROP TABLE IF EXISTS `order_details`;
-DROP TABLE IF EXISTS `reviews`;
-DROP TABLE IF EXISTS `payments`;
-DROP TABLE IF EXISTS `carts`;
-DROP TABLE IF EXISTS `products`;
-DROP TABLE IF EXISTS `orders`;
-DROP TABLE IF EXISTS `addresses`;
-
-DROP TABLE IF EXISTS `categories`;
-DROP TABLE IF EXISTS `partners`;
-DROP TABLE IF EXISTS `users`;
+-- DROP TABLE IF EXISTS `shipments`;
+-- DROP TABLE IF EXISTS `order_details`;
+-- DROP TABLE IF EXISTS `reviews`;
+-- DROP TABLE IF EXISTS `payments`;
+-- DROP TABLE IF EXISTS `carts`;
+-- DROP TABLE IF EXISTS `products`;
+-- DROP TABLE IF EXISTS `orders`;
+-- DROP TABLE IF EXISTS `addresses`;
+--
+-- DROP TABLE IF EXISTS `categories`;
+-- DROP TABLE IF EXISTS `partners`;
+-- DROP TABLE IF EXISTS `users`;
 
 
 -- ecommerce_site.users definition
