@@ -37,8 +37,19 @@ public class Address extends BaseTimeEntity {
 	private String buildingName;
 	private String addressDetail;
 
-	public void updatePrimary() {
-		this.isPrimary = Boolean.FALSE;
+	public void updatePrimary(Boolean isPrimary) {
+		this.isPrimary = isPrimary;
+	}
+
+	public void update(AddressRequestDto.Update dto) {
+		this.phoneNumber = dto.getPhoneNumber() != null ? dto.getPhoneNumber() : this.phoneNumber;
+		this.addressType = dto.getAddressType() != null ? dto.getAddressType() : this.addressType;
+		this.isPrimary = dto.getIsPrimary() != null ? dto.getIsPrimary() : this.isPrimary;
+		this.postalCode = dto.getPostalCode() != null ? dto.getPostalCode() : this.postalCode;
+		this.roadAddress = dto.getRoadAddress() != null ? dto.getRoadAddress() : this.roadAddress;
+		this.jibunAddress = dto.getJibunAddress() != null ? dto.getJibunAddress() : this.jibunAddress;
+		this.buildingName = dto.getBuildingName() != null ? dto.getBuildingName() : this.buildingName;
+		this.addressDetail = dto.getAddressDetail() != null ? dto.getAddressDetail() : this.addressDetail;
 	}
 
 	public void update(AddressRequestDto.Update dto) {
