@@ -1,8 +1,11 @@
 package org.example.commerce_site.application.cart;
 
 import org.example.commerce_site.application.cart.dto.CartRequestDto;
+import org.example.commerce_site.application.cart.dto.CartResponseDto;
 import org.example.commerce_site.application.product.ProductService;
 import org.example.commerce_site.application.user.UserService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -28,5 +31,10 @@ public class CartFacade {
 	public void update(CartRequestDto.Update dto) {
 		userService.getUser(dto.getUserId());
 		cartService.update(dto);
+	}
+
+	public Page<CartResponseDto.Get> getList(Long userId, int page, int size) {
+		userService.getUser(userId);
+		return cartService.getList(userId, PageRequest.of(page, size));
 	}
 }

@@ -3,9 +3,13 @@ package org.example.commerce_site.application.cart;
 import java.util.HashMap;
 
 import org.example.commerce_site.application.cart.dto.CartRequestDto;
+import org.example.commerce_site.application.cart.dto.CartResponseDto;
 import org.example.commerce_site.common.exception.CustomException;
 import org.example.commerce_site.common.exception.ErrorCode;
 import org.example.commerce_site.infrastructure.cart.CartRepository;
+import org.example.commerce_site.infrastructure.cart.CustomCartRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CartService {
 	private final CartRepository cartRepository;
+	private final CustomCartRepository customCartRepository;
 
 	@Transactional
 	public void create(CartRequestDto.Create dto) {
@@ -47,5 +52,9 @@ public class CartService {
 					cartRepository.save(cart);
 				}
 			));
+	}
+
+	public Page<CartResponseDto.Get> getList(Long userId, PageRequest of) {
+		return customCartRepository.getCartListByUserId(userId, of);
 	}
 }
