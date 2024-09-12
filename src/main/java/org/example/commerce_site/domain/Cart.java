@@ -23,6 +23,7 @@ public class Cart extends BaseTimeEntity {
 	public void addQuantity(Long quantity) {
 		this.quantity += quantity;
 	}
+
 	public void updateQuantity(Long quantity) {
 		this.quantity = quantity;
 	}

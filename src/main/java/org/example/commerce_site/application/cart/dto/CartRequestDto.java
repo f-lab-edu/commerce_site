@@ -1,7 +1,6 @@
 package org.example.commerce_site.application.cart.dto;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import org.example.commerce_site.domain.Cart;
 

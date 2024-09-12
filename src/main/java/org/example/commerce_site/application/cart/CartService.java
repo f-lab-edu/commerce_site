@@ -38,7 +38,7 @@ public class CartService {
 		productIdAndQuantity.forEach(
 			(key, value) -> cartRepository.findByUserIdAndProductId(dto.getUserId(), key).ifPresent(
 				cart -> {
-					if (value==0) {
+					if (value == 0) {
 						throw new CustomException(ErrorCode.QUANTITY_IS_ZERO);
 					}
 					cart.updateQuantity(value);
