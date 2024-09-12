@@ -42,11 +42,12 @@ public class ProductService {
 	}
 
 	@Transactional
-	public void 	delete(Product product) {
+	public void delete(Product product) {
 		productRepository.delete(product);
 	}
 
-	public Page<ProductResponseDto.Get> getProductList(PageRequest of, String keyword, Long categoryId, Long partnerId) {
+	public Page<ProductResponseDto.Get> getProductList(PageRequest of, String keyword, Long categoryId,
+		Long partnerId) {
 		return customProductRepository.getProducts(of, keyword, categoryId, partnerId);
 	}
 }

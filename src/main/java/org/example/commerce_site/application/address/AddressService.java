@@ -42,11 +42,4 @@ public class AddressService {
 	public void deleteAddress(Long addressId, User user) {
 		addressRepository.deleteByIdAndUserId(addressId, user);
 	}
-
-	@Transactional
-	public void updateAddress(Address address, AddressRequestDto.Update dto) {
-		address.update(dto);
-		addressRepository.save(address);
-	}
-
 }

@@ -41,7 +41,7 @@ public class ApiSuccessResponse<T> {
 		private int totalPage;
 
 		PageList(Page<T> list) {
-			if (!list.getContent().isEmpty()){
+			if (!list.getContent().isEmpty()) {
 				this.list = (T)list.getContent();
 			}
 			this.pageNumber = list.getNumber() + 1;

@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class QueryDslConfig {
 	private final EntityManager entityManager;
+
 	@Bean
 	public JPAQueryFactory jpaQueryFactory() {
 		return new JPAQueryFactory(JPQLTemplates.DEFAULT, entityManager);

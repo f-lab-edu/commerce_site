@@ -37,19 +37,4 @@ public class AddressRequestDto {
 				.build();
 		}
 	}
-
-	@Getter
-	@Builder
-	@ToString
-	public static class Update {
-		private String phoneNumber;
-		private String addressType;
-		private String postalCode;
-		private String roadAddress;
-		private String jibunAddress;
-		private String roadNameCode;
-		private String buildingName;
-		private String addressDetail;
-		private Boolean isPrimary;
-	}
 }

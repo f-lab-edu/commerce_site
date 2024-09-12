@@ -17,12 +17,15 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;
+
 @Repository
 @RequiredArgsConstructor
 public class CustomProductRepositoryImpl implements CustomProductRepository {
 	private final JPAQueryFactory queryFactory;
+
 	@Override
-	public Page<ProductResponseDto.Get> getProducts(Pageable pageable, String keyword, Long categoryId, Long PartnerId) {
+	public Page<ProductResponseDto.Get> getProducts(Pageable pageable, String keyword, Long categoryId,
+		Long PartnerId) {
 
 		BooleanBuilder builder = new BooleanBuilder();
 		builder.and(QProduct.product.isEnable.eq(true));
@@ -38,18 +41,19 @@ public class CustomProductRepositoryImpl implements CustomProductRepository {
 			builder.and(QProduct.product.partnerId.eq(PartnerId));
 		}
 
-		List<ProductResponseDto.Get> products = queryFactory.select(Projections.constructor(ProductResponseDto.Get.class,
-				QProduct.product.id,
-				QProduct.product.partnerId,
-				QPartner.partner.name,
-				QCategory.category.id,
-				QCategory.category.name,
-				QProduct.product.name,
-				QProduct.product.description,
-				QProduct.product.price,
-				QProduct.product.stockQuantity,
-				QProduct.product.createdAt
-			))
+		List<ProductResponseDto.Get> products = queryFactory.select(
+				Projections.constructor(ProductResponseDto.Get.class,
+					QProduct.product.id,
+					QProduct.product.partnerId,
+					QPartner.partner.name,
+					QCategory.category.id,
+					QCategory.category.name,
+					QProduct.product.name,
+					QProduct.product.description,
+					QProduct.product.price,
+					QProduct.product.stockQuantity,
+					QProduct.product.createdAt
+				))
 			.from(QProduct.product)
 			.leftJoin(QCategory.category)
 			.on(QProduct.product.category.id.eq(QCategory.category.id))

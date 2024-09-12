@@ -11,7 +11,6 @@ import org.example.commerce_site.domain.Partner;
 import org.example.commerce_site.domain.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
