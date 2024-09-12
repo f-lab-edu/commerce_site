@@ -1,4 +1,4 @@
-package org.example.commerce_site.infrastructure;
+package org.example.commerce_site.infrastructure.product;
 
 import org.example.commerce_site.domain.Product;
 import org.springframework.data.jpa.repository.JpaRepository;

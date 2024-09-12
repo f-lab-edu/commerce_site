@@ -1,4 +1,4 @@
-package org.example.commerce_site.infrastructure;
+package org.example.commerce_site.infrastructure.product;
 
 import org.example.commerce_site.application.product.dto.ProductResponseDto;
 import org.springframework.data.domain.Page;

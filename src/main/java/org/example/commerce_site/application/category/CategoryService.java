@@ -3,7 +3,7 @@ package org.example.commerce_site.application.category;
 import org.example.commerce_site.common.exception.CustomException;
 import org.example.commerce_site.common.exception.ErrorCode;
 import org.example.commerce_site.domain.Category;
-import org.example.commerce_site.infrastructure.CategoryRepository;
+import org.example.commerce_site.infrastructure.category.CategoryRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -5,7 +5,7 @@ import org.example.commerce_site.common.exception.CustomException;
 import org.example.commerce_site.common.exception.ErrorCode;
 import org.example.commerce_site.domain.Address;
 import org.example.commerce_site.domain.User;
-import org.example.commerce_site.infrastructure.AddressRepository;
+import org.example.commerce_site.infrastructure.address.AddressRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;

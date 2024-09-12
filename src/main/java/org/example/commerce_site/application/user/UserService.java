@@ -5,7 +5,7 @@ import org.example.commerce_site.application.user.dto.UserResponseDto;
 import org.example.commerce_site.common.exception.CustomException;
 import org.example.commerce_site.common.exception.ErrorCode;
 import org.example.commerce_site.domain.User;
-import org.example.commerce_site.infrastructure.UserRepository;
+import org.example.commerce_site.infrastructure.user.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
