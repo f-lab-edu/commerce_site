@@ -19,4 +19,9 @@ public class CartFacade {
 		productService.getProduct(dto.getProductId());
 		cartService.create(dto);
 	}
+
+	public void delete(Long userId, Long productId) {
+		userService.getUser(userId);
+		cartService.delete(userId, productId);
+	}
 }
