@@ -28,8 +28,10 @@ public class CartService {
 	}
 
 	@Transactional
-	public void delete(Long userId, Long productId) {
-		cartRepository.deleteByUserIdAndProductId(userId, productId);
+	public void delete(CartRequestDto.Delete dto) {
+		dto.getProductIds().forEach(productId -> {
+			cartRepository.deleteByUserIdAndProductId(dto.getUserId(), productId);
+		});
 	}
 
 	@Transactional

@@ -1,6 +1,7 @@
 package org.example.commerce_site.application.cart.dto;
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.example.commerce_site.domain.Cart;
 
@@ -32,5 +33,13 @@ public class CartRequestDto {
 	public static class Update {
 		private Long userId;
 		private HashMap<Long, Long> productsMap;
+	}
+
+	@Getter
+	@Builder
+	@ToString
+	public static class Delete {
+		private Long userId;
+		private List<Long> productIds;
 	}
 }

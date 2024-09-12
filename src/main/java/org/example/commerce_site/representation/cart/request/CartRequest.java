@@ -1,6 +1,7 @@
 package org.example.commerce_site.representation.cart.request;
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.example.commerce_site.application.cart.dto.CartRequestDto;
 
@@ -37,6 +38,20 @@ public class CartRequest {
 			return CartRequestDto.Update.builder()
 				.userId(userId)
 				.productsMap(request.getProductsMap())
+				.build();
+		}
+	}
+
+	@Getter
+	@ToString
+	public static class Delete {
+		@NotNull
+		private List<Long> productIds;
+
+		public static CartRequestDto.Delete toDto(CartRequest.Delete request, Long userId) {
+			return CartRequestDto.Delete.builder()
+				.userId(userId)
+				.productIds(request.getProductIds())
 				.build();
 		}
 	}

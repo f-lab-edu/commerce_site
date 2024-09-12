@@ -20,9 +20,9 @@ public class CartFacade {
 		cartService.create(dto);
 	}
 
-	public void delete(Long userId, Long productId) {
-		userService.getUser(userId);
-		cartService.delete(userId, productId);
+	public void delete(CartRequestDto.Delete dto) {
+		userService.getUser(dto.getUserId());
+		cartService.delete(dto);
 	}
 
 	public void update(CartRequestDto.Update dto) {

@@ -28,11 +28,11 @@ public class CartController {
 		return ApiSuccessResponse.success();
 	}
 
-	@DeleteMapping("/{user_id}/{product_id}")
-	public ApiSuccessResponse createCart(
+	@DeleteMapping("/{user_id}")
+	public ApiSuccessResponse deleteCart(
 		@RequestParam(name = "user_id") Long userId,
-		@RequestParam(name = "product_id") Long productId) {
-		cartFacade.delete(userId, productId);
+		@RequestBody @Valid CartRequest.Delete request) {
+		cartFacade.delete(CartRequest.Delete.toDto(request, userId));
 		return ApiSuccessResponse.success();
 	}
 
