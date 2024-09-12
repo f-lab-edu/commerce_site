@@ -1,5 +1,7 @@
 package org.example.commerce_site.application.cart;
 
+import java.util.HashMap;
+
 import org.example.commerce_site.application.cart.dto.CartRequestDto;
 import org.example.commerce_site.common.exception.CustomException;
 import org.example.commerce_site.common.exception.ErrorCode;
@@ -20,7 +22,7 @@ public class CartService {
 			throw new CustomException(ErrorCode.QUANTITY_IS_ZERO);
 		}
 		cartRepository.findByUserIdAndProductId(dto.getUserId(), dto.getProductId()).ifPresentOrElse(
-			cart -> cart.updateQuantity(dto.getQuantity()),
+			cart -> cart.addQuantity(dto.getQuantity()),
 			() -> cartRepository.save(CartRequestDto.Create.toEntity(dto))
 		);
 	}
@@ -28,5 +30,20 @@ public class CartService {
 	@Transactional
 	public void delete(Long userId, Long productId) {
 		cartRepository.deleteByUserIdAndProductId(userId, productId);
+	}
+
+	@Transactional
+	public void update(CartRequestDto.Update dto) {
+		HashMap<Long, Long> productIdAndQuantity = dto.getProductsMap();
+		productIdAndQuantity.forEach(
+			(key, value) -> cartRepository.findByUserIdAndProductId(dto.getUserId(), key).ifPresent(
+				cart -> {
+					if (value==0) {
+						throw new CustomException(ErrorCode.QUANTITY_IS_ZERO);
+					}
+					cart.updateQuantity(value);
+					cartRepository.save(cart);
+				}
+			));
 	}
 }

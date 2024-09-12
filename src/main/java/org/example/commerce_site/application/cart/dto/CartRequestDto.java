@@ -1,5 +1,8 @@
 package org.example.commerce_site.application.cart.dto;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.example.commerce_site.domain.Cart;
 
 import lombok.Builder;
@@ -22,5 +25,13 @@ public class CartRequestDto {
 				.quantity(dto.getQuantity())
 				.build();
 		}
+	}
+
+	@Getter
+	@Builder
+	@ToString
+	public static class Update {
+		private Long userId;
+		private HashMap<Long, Long> productsMap;
 	}
 }

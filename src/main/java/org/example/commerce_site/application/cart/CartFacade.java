@@ -24,4 +24,9 @@ public class CartFacade {
 		userService.getUser(userId);
 		cartService.delete(userId, productId);
 	}
+
+	public void update(CartRequestDto.Update dto) {
+		userService.getUser(dto.getUserId());
+		cartService.update(dto);
+	}
 }
