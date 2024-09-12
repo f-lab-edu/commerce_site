@@ -68,4 +68,10 @@ public class OpenApiConfig {
 		String[] paths = {"/cart/**"};
 		return GroupedOpenApi.builder().group("CART API").pathsToMatch(paths).build();
 	}
+
+	@Bean
+	public GroupedOpenApi orderOpenApi() {
+		String[] paths = {"/order/**"};
+		return GroupedOpenApi.builder().group("ORDER API").pathsToMatch(paths).build();
+	}
 }
