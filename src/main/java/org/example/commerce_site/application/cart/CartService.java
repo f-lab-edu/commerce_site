@@ -44,6 +44,11 @@ public class CartService {
 	@Transactional
 	public void update(CartRequestDto.Update dto) {
 		HashMap<Long, Long> productIdAndQuantity = dto.getProductsMap();
+
+		if (productIdAndQuantity.values().stream().anyMatch(quantity -> quantity == 0)) {
+			throw new CustomException(ErrorCode.QUANTITY_IS_ZERO);
+		}
+
 		productIdAndQuantity.forEach(
 			(key, value) -> {
 				Optional<Cart> optionalCart = cartRepository.findByUserIdAndProductId(dto.getUserId(), key);
