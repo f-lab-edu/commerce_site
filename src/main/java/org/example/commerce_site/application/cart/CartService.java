@@ -54,7 +54,7 @@ public class CartService {
 			Long newQuantity = productIdAndQuantity.get(cart.getProductId());
 			cart.updateQuantity(newQuantity);
 		});
-		
+
 		cartRepository.saveAll(cartList);
 	}
 
