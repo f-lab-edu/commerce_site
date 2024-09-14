@@ -1,11 +1,13 @@
 package org.example.commerce_site.application.cart;
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.example.commerce_site.application.cart.dto.CartRequestDto;
 import org.example.commerce_site.application.cart.dto.CartResponseDto;
 import org.example.commerce_site.common.exception.CustomException;
 import org.example.commerce_site.common.exception.ErrorCode;
+import org.example.commerce_site.domain.Cart;
 import org.example.commerce_site.infrastructure.cart.CartRepository;
 import org.example.commerce_site.infrastructure.cart.CustomCartRepository;
 import org.springframework.data.domain.Page;
@@ -47,13 +49,13 @@ public class CartService {
 			throw new CustomException(ErrorCode.QUANTITY_IS_ZERO);
 		}
 
-		productIdAndQuantity.forEach(
-			(key, value) -> cartRepository.findByUserIdAndProductId(dto.getUserId(), key).ifPresent(
-				cart -> {
-					cart.updateQuantity(value);
-					cartRepository.save(cart);
-				}
-			));
+		List<Cart> cartList = cartRepository.findByUserIdAndProductIdIn(dto.getUserId(), productIdAndQuantity.keySet());
+		cartList.forEach(cart -> {
+			Long newQuantity = productIdAndQuantity.get(cart.getProductId());
+			cart.updateQuantity(newQuantity);
+		});
+		
+		cartRepository.saveAll(cartList);
 	}
 
 	public Page<CartResponseDto.Get> getList(Long userId, PageRequest of) {
