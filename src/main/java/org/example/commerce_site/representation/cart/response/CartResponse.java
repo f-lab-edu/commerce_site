@@ -18,7 +18,6 @@ public class CartResponse {
 		private Long categoryId;
 		private String categoryName;
 		private Long price;
-		private Long amountPrice;
 		private Long quantity;
 		private Long partnerId;
 
@@ -30,7 +29,6 @@ public class CartResponse {
 				.categoryId(dto.getCategoryId())
 				.categoryName(dto.getCategoryName())
 				.price(dto.getPrice())
-				.amountPrice(dto.getPrice() * dto.getQuantity())
 				.quantity(dto.getQuantity())
 				.partnerId(dto.getPartnerId())
 				.build();
