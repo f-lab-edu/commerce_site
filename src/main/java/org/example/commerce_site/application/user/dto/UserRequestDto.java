@@ -16,11 +16,11 @@ public class UserRequestDto {
 		private String email;
 		private String password;
 
-		public static User toEntity(UserRequestDto.Create dto) {
+		public static User toEntity(UserRequestDto.Create dto, String authId) {
 			return User.builder()
+				.authId(authId)
 				.name(dto.getName())
 				.email(dto.getEmail())
-				.password(dto.getPassword())
 				.status(UserStatus.ACTIVE)
 				.build();
 		}

@@ -1,6 +1,5 @@
 package org.example.commerce_site.config;
 
-import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -10,8 +9,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.core.session.SessionRegistryImpl;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
-import org.springframework.security.oauth2.jwt.JwtDecoders;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy;
@@ -20,6 +17,9 @@ import org.springframework.security.web.authentication.session.SessionAuthentica
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+	private static final String[] AUTH_EXCLUDE_POST_API_LIST = {"/user"};
+	private static final String[] AUTH_EXCLUDE_WEB_LIST = {"/swagger-ui/**", "/api-docs/**"};
+
 	@Bean
 	protected SessionAuthenticationStrategy sessionAuthenticationStrategy() {
 		return new RegisterSessionAuthenticationStrategy(new SessionRegistryImpl());
@@ -33,8 +33,8 @@ public class SecurityConfig {
 			.csrf(AbstractHttpConfigurer::disable)
 			.cors(Customizer.withDefaults())
 			.authorizeHttpRequests(requests -> requests
-				.requestMatchers(HttpMethod.POST,"/user/**").permitAll()
-				.requestMatchers("/swagger-ui/**", "/api-docs/**").permitAll()
+				.requestMatchers(HttpMethod.POST, AUTH_EXCLUDE_POST_API_LIST).permitAll()
+				.requestMatchers(AUTH_EXCLUDE_WEB_LIST).permitAll()
 				.anyRequest().authenticated());
 
 		http.oauth2ResourceServer(

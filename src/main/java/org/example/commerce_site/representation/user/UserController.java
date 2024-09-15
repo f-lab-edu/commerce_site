@@ -1,5 +1,6 @@
 package org.example.commerce_site.representation.user;
 
+import org.example.commerce_site.application.user.UserFacade;
 import org.example.commerce_site.application.user.UserService;
 import org.example.commerce_site.common.response.ApiSuccessResponse;
 import org.example.commerce_site.representation.user.request.UserRequest;
@@ -18,11 +19,10 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @RequestMapping("/user")
 public class UserController {
-	private final UserService userService;
-
+	private final UserFacade userFacade;
 	@PostMapping()
 	public ApiSuccessResponse<UserResponse.Create> createUser(@Valid @RequestBody UserRequest.Create request) {
 		return ApiSuccessResponse.success(
-			UserResponse.Create.of(userService.create(UserRequest.Create.toDTO(request))));
+			UserResponse.Create.of(userFacade.createUser(UserRequest.Create.toDTO(request))));
 	}
 }

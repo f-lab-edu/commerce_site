@@ -7,7 +7,6 @@ import org.example.commerce_site.common.exception.ErrorCode;
 import org.example.commerce_site.domain.User;
 import org.example.commerce_site.infrastructure.user.UserRepository;
 import org.keycloak.admin.client.CreatedResponseUtil;
-import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.RealmResource;
 import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.admin.client.resource.UsersResource;
@@ -25,40 +24,20 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class UserService {
 	private final UserRepository userRepository;
-	private final Keycloak keycloak;
+
+	@Transactional(readOnly = true)
+	public void checkEmailDuplicated(String email) {
+		// 1. email 중복체크
+		userRepository.findByEmail(email).ifPresent(
+			user -> {
+				throw new CustomException(ErrorCode.EMAIL_ALREADY_EXISTED);
+			}
+		);
+	}
 
 	@Transactional
-	public UserResponseDto.Create create(UserRequestDto.Create dto) {
-		// 1. email 중복체크를 한다.
-		// 2. 키클락 서버에 가입 요청을 보낸다.
-		// 3. 가입 성공하면 비밀번호 재설정과 롤 부여
-		// 4. User DB 에는 이메일과 키클락 서버에 저장된 userID 만 저장한다.
-
-		UserRepresentation user = new UserRepresentation();
-		user.setEmail(dto.getEmail());
-		user.setUsername(dto.getName());
-
-		RealmResource realmResource = keycloak.realm("oauth2");
-		UsersResource usersResource = realmResource.users();
-
-		Response response = usersResource.create(user);
-		if(response.getStatus() == 201) {
-			String userId = CreatedResponseUtil.getCreatedId(response);
-
-			// create password credential
-			CredentialRepresentation passwordCred = new CredentialRepresentation();
-			passwordCred.setTemporary(false);
-			passwordCred.setType(CredentialRepresentation.PASSWORD);
-			passwordCred.setValue(dto.getPassword());
-			log.info("Created userId {}", userId);
-			UserResource userResource = usersResource.get(userId);
-
-			// Set password credential
-			userResource.resetPassword(passwordCred);
-		}
-
-		// TODO : email 중복 체크
-		return UserResponseDto.Create.of(userRepository.save(UserRequestDto.Create.toEntity(dto)));
+	public UserResponseDto.Create create(UserRequestDto.Create dto, String userId) {
+		return UserResponseDto.Create.of(userRepository.save(UserRequestDto.Create.toEntity(dto, userId)));
 	}
 
 	@Transactional(readOnly = true)
