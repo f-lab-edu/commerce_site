@@ -29,6 +29,12 @@ spring:
     locations: classpath:db/migration/mysql
   jackson:
     property-naming-strategy: SNAKE_CASE
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:9090/realms/oauth2/protocol/openid-connect/certs
+          issuer-uri: http://localhost:9090/realms/oauth2
 server:
   port: 8080
   forward-headers-strategy: framework
