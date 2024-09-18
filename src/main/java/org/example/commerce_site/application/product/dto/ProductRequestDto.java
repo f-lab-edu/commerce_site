@@ -28,6 +28,7 @@ public class ProductRequestDto {
 				.price(dto.getPrice())
 				.stockQuantity(dto.getStockQuantity())
 				.isEnable(Boolean.TRUE)
+				.isDeleted(Boolean.FALSE)
 				.build();
 		}
 	}

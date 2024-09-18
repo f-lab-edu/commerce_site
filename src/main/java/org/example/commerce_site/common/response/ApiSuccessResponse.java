@@ -1,5 +1,7 @@
 package org.example.commerce_site.common.response;
 
+import org.springframework.data.domain.Page;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,9 +20,34 @@ public class ApiSuccessResponse<T> {
 			.build();
 	}
 
-	//for void api
 	public static ApiSuccessResponse success() {
 		return ApiSuccessResponse.builder()
 			.build();
+	}
+
+	public static <T> ApiSuccessResponse.PageList<T> success(Page<T> list) {
+		return new PageList<>(list);
+	}
+
+	@Getter
+	@Builder
+	@NoArgsConstructor
+	@AllArgsConstructor
+	public static class PageList<T> {
+		private T list;
+		private int pageNumber;
+		private int pageSize;
+		private Long totalCount;
+		private int totalPage;
+
+		PageList(Page<T> list) {
+			if (!list.getContent().isEmpty()) {
+				this.list = (T)list.getContent();
+			}
+			this.pageNumber = list.getNumber() + 1;
+			this.pageSize = list.getSize();
+			this.totalCount = list.getTotalElements();
+			this.totalPage = list.getTotalPages();
+		}
 	}
 }
