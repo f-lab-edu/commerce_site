@@ -22,6 +22,7 @@ public class UserController {
 
 	@PostMapping()
 	public ApiSuccessResponse<UserResponse.Create> createUser(@Valid @RequestBody UserRequest.Create request) {
-		return ApiSuccessResponse.success(UserResponse.Create.of(userService.create(UserRequest.Create.toDTO(request))));
+		return ApiSuccessResponse.success(
+			UserResponse.Create.of(userService.create(UserRequest.Create.toDTO(request))));
 	}
 }

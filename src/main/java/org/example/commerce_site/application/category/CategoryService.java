@@ -5,6 +5,7 @@ import org.example.commerce_site.common.exception.ErrorCode;
 import org.example.commerce_site.domain.Category;
 import org.example.commerce_site.infrastructure.CategoryRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 public class CategoryService {
 	private final CategoryRepository categoryRepository;
 
+	@Transactional(readOnly = true)
 	public Category getCategoryById(Long id) {
 		return categoryRepository.findById(id).orElseThrow(
 			() -> new CustomException(ErrorCode.CATEGORY_NOT_FOUND)

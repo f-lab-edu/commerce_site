@@ -1,8 +1,5 @@
 package org.example.commerce_site.common.response;
 
-import org.example.commerce_site.common.exception.ErrorCode;
-import org.springframework.http.ResponseEntity;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

@@ -12,11 +12,9 @@ public class UserRequest {
 	public static class Create {
 		@NotBlank
 		private String name;
-
 		@NotBlank
 		//TODO email 형식 체크
 		private String email;
-
 		@NotBlank
 		//TODO 패스워드 형식 체크 (8자리 이상 20자리 이하 영문 + 숫자)
 		private String password;

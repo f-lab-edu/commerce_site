@@ -1,3 +1,17 @@
+-- DROP TABLE IF EXISTS `shipments`;
+-- DROP TABLE IF EXISTS `order_details`;
+-- DROP TABLE IF EXISTS `reviews`;
+-- DROP TABLE IF EXISTS `payments`;
+-- DROP TABLE IF EXISTS `carts`;
+-- DROP TABLE IF EXISTS `products`;
+-- DROP TABLE IF EXISTS `orders`;
+-- DROP TABLE IF EXISTS `addresses`;
+--
+-- DROP TABLE IF EXISTS `categories`;
+-- DROP TABLE IF EXISTS `partners`;
+-- DROP TABLE IF EXISTS `users`;
+
+
 -- ecommerce_site.users definition
 CREATE TABLE `users` (
                          `id` bigint NOT NULL AUTO_INCREMENT,
@@ -39,10 +53,16 @@ CREATE TABLE `categories` (
 CREATE TABLE `addresses` (
                              `id` bigint NOT NULL AUTO_INCREMENT,
                              `user_id` bigint NOT NULL,
-                             `phone_number` varchar(11) NOT NULL,
-                             `zip_code` varchar(5) NOT NULL,
-                             `address` varchar(50) NOT NULL,
-                             `address_detail` varchar(50) DEFAULT NULL,
+                             `phone_number` varchar(20) NOT NULL,
+                             `address_type` varchar(30) DEFAULT NULL,
+                             `is_primary` tinyint(1) NOT NULL,
+                             `postal_code` varchar(10) NOT NULL,
+                             `road_address` varchar(255) NOT NULL,
+                             `jibun_address` varchar(255) DEFAULT NULL,
+                             `road_name_code` varchar(13) DEFAULT NULL,
+                             `building_name` varchar(255) DEFAULT NULL,
+                             `address_detail` varchar(255) DEFAULT NULL,
+                             `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
                              `created_at` datetime NOT NULL,
                              `updated_at` datetime DEFAULT NULL,
                              PRIMARY KEY (`id`),
@@ -61,6 +81,7 @@ CREATE TABLE `products` (
                             `price` bigint NOT NULL,
                             `stock_quantity` bigint NOT NULL DEFAULT '1',
                             `is_enable` tinyint(1) NOT NULL DEFAULT '1',
+                            `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
                             `created_at` datetime DEFAULT NULL,
                             `updated_at` datetime DEFAULT NULL,
                             PRIMARY KEY (`id`),

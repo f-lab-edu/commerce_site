@@ -48,6 +48,10 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     // Project Common Dependency End ----------------------------------------
 
+    // fly away
+    implementation 'org.flywaydb:flyway-mysql'
+    implementation 'org.flywaydb:flyway-core'
+
     // test dependency
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'

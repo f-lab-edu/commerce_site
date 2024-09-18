@@ -25,6 +25,7 @@ public enum ErrorCode {
 
 	//product
 	PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "상품 정보를 찾을 수 없습니다."),
+	PRODUCT_ACCESS_DENIED(HttpStatus.FORBIDDEN, 403, "상품 정보 수정에 대한 권한이 없습니다."),
 
 	//category
 	CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "카테고리 정보를 찾을 수 없습니다.");
