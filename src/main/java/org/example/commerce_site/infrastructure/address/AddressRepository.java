@@ -1,4 +1,4 @@
-package org.example.commerce_site.infrastructure;
+package org.example.commerce_site.infrastructure.address;
 
 import java.util.Optional;
 

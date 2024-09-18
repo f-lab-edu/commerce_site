@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/partner")
+@RequestMapping("/partners")
 public class PartnerController {
 	private final PartnerService partnerService;
 

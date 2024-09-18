@@ -5,7 +5,7 @@ import org.example.commerce_site.application.partner.dto.PartnerResponseDto;
 import org.example.commerce_site.common.exception.CustomException;
 import org.example.commerce_site.common.exception.ErrorCode;
 import org.example.commerce_site.domain.Partner;
-import org.example.commerce_site.infrastructure.PartnerRepository;
+import org.example.commerce_site.infrastructure.partner.PartnerRepository;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;

@@ -19,6 +19,9 @@ public enum ErrorCode {
 	//address
 	ADDRESS_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "배송지 정보를 찾을 수 없습니다."),
 
+	//cart
+	QUANTITY_IS_ZERO(HttpStatus.BAD_REQUEST, 400, "장바구니에 담는 수량은 0이 될 수 없습니다."),
+
 	//user
 	USER_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "회원 정보를 찾을 수 없습니다."),
 
