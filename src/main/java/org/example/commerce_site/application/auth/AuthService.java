@@ -1,5 +1,6 @@
 package org.example.commerce_site.application.auth;
 
+import org.example.commerce_site.application.user.UserService;
 import org.example.commerce_site.application.user.dto.UserRequestDto;
 import org.example.commerce_site.common.exception.CustomException;
 import org.example.commerce_site.common.exception.ErrorCode;
@@ -21,8 +22,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthService {
 	private final Keycloak keycloak;
+	private final UserService userService;
 	@Value("${keycloak.realm}")
 	private String REALM_NAME;
+	private final RealmResource realmResource = keycloak.realm(REALM_NAME);
+	private final UsersResource usersResource = realmResource.users();
 
 	@Transactional
 	public String createUser(UserRequestDto.Create dto) {
@@ -30,8 +34,6 @@ public class AuthService {
 		user.setUsername(dto.getEmail());
 		user.setEnabled(true);
 
-		RealmResource realmResource = keycloak.realm(REALM_NAME);
-		UsersResource usersResource = realmResource.users();
 		Response response = usersResource.create(user);
 
 		if (response.getStatus() == 201) {
@@ -48,5 +50,9 @@ public class AuthService {
 		} else {
 			throw new CustomException(ErrorCode.ADD_USER_ERROR);
 		}
+	}
+
+	public void deleteUser(String keyCloakId) {
+		usersResource.get(keyCloakId).remove();
 	}
 }

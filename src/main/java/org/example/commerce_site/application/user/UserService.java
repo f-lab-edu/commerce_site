@@ -36,7 +36,7 @@ public class UserService {
 	}
 
 	@Transactional
-	public UserResponseDto.Create create(UserRequestDto.Create dto, String userId) {
+	public UserResponseDto.Create create(UserRequestDto.Create dto, String userId) throws Exception {
 		return UserResponseDto.Create.of(userRepository.save(UserRequestDto.Create.toEntity(dto, userId)));
 	}
 
