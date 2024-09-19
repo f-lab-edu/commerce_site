@@ -16,7 +16,11 @@ public enum OrderStatus {
 		this.phase = phase;
 	}
 
-	public boolean isPhaseAtLeast(int value) {
-		return this.phase >= value;
+	public boolean isPhaseCanCancelOrder(OrderStatus orderStatus) {
+		if (orderStatus == PENDING || orderStatus == CONFIRMED) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }

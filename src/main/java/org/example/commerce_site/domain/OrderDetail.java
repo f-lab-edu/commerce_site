@@ -27,7 +27,7 @@ import lombok.NoArgsConstructor;
 public class OrderDetail {
 	@CreatedDate
 	@Column(name = "created_at")
-	protected LocalDateTime createdAt;
+	private LocalDateTime createdAt;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;

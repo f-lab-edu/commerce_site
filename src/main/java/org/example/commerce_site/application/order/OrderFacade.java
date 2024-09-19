@@ -28,7 +28,8 @@ public class OrderFacade {
 	public void create(OrderRequestDto.Create dto) {
 		User user = userService.getUser(dto.getUserId());
 		Order order = orderService.createOrder(dto);
-		List<OrderDetailResponseDto.Get> orderDetails = orderDetailService.createOrderDetails(dto.getDetails(), order);
+		orderDetailService.createOrderDetails(dto.getDetails(), order);
+		List<OrderDetailResponseDto.Get> orderDetails = orderDetailService.getOrderDetails(order.getId());
 		Address address = addressService.getAddress(dto.getAddressId(), user);
 		shipmentService.createShipment(order, orderDetails, address);
 	}
