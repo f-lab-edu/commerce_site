@@ -17,7 +17,8 @@ import org.springframework.security.web.authentication.session.SessionAuthentica
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-	private static final String[] AUTH_EXCLUDE_POST_API_LIST = {"/user"};
+	private static final String[] AUTH_EXCLUDE_POST_API_LIST = {"/user/keycloak/webhook"};
+	private static final String[] AUTH_EXCLUDE_GET_API_LIST = {"/auth/**"};
 	private static final String[] AUTH_EXCLUDE_WEB_LIST = {"/swagger-ui/**", "/api-docs/**"};
 
 	@Bean
@@ -34,15 +35,13 @@ public class SecurityConfig {
 			.cors(Customizer.withDefaults())
 			.authorizeHttpRequests(requests -> requests
 				.requestMatchers(HttpMethod.POST, AUTH_EXCLUDE_POST_API_LIST).permitAll()
+				.requestMatchers(HttpMethod.GET, AUTH_EXCLUDE_GET_API_LIST).permitAll()
 				.requestMatchers(AUTH_EXCLUDE_WEB_LIST).permitAll()
-				.anyRequest().authenticated());
-
-		http.oauth2ResourceServer(
-			oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter)));
-
-		http.headers(headers -> headers.frameOptions(
-			HeadersConfigurer.FrameOptionsConfig::sameOrigin
-		));
+				.anyRequest().authenticated()
+			)
+			.oauth2ResourceServer(
+				oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter)))
+			.headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
 
 		return http.build();
 	}

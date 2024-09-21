@@ -61,8 +61,8 @@ dependencies {
     // oauth 2.0
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
 
-    // keyclock
-    implementation 'org.keycloak:keycloak-admin-client:25.0.0'
+    // keycloak
+    implementation 'org.keycloak:keycloak-admin-client:25.0.5'
 
     // test dependency
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

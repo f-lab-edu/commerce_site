@@ -45,9 +45,14 @@ springdoc:
   default-produces-media-type: application/json;charset=UTF-8
   default-consumes-media-type: application/json;charset=UTF-8
   server-url: http://localhost:8080
-keycloak:
-  realm: oauth2
-  auth-server-url: http://localhost:9090
-  credentials:
-    client: oauth2-client-app
-    secret: 6buMCUOwLIjBhRE6oJ7TNklkIhPqyCl5
+oauth:
+  keycloak:
+    realm: oauth2
+    auth-server-url: http://localhost:9090
+    credentials:
+      client: oauth2-client-app
+      secret: 6buMCUOwLIjBhRE6oJ7TNklkIhPqyCl5
+    grant-type: authorization_code
+    uri:
+      redirect: http://localhost:8080/auth/callback
+      token: http://localhost:9090/realms/oauth2/protocol/openid-connect/token

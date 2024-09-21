@@ -12,9 +12,9 @@ public class UserRequestDto {
 	@Builder
 	@ToString
 	public static class Create {
+		private String id;
 		private String name;
 		private String email;
-		private String password;
 
 		public static User toEntity(UserRequestDto.Create dto, String authId) {
 			return User.builder()
