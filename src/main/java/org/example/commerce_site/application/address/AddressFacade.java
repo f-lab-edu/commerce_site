@@ -19,6 +19,9 @@ public class AddressFacade {
 
 	public void create(AddressRequestDto.Create dto) {
 		User user = userService.getUser(dto.getUserId());
+		if (dto.getIsPrimary()) {
+			addressService.updatePrimary(user);
+		}
 		AddressResponseDto.Get.of(addressService.createAddress(dto, user));
 	}
 
