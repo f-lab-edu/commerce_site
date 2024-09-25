@@ -30,22 +30,5 @@ public class OrderDetailBulkRepository {
 				ps.setBigDecimal(4, orderDetail.getUnitPrice());
 				ps.setTimestamp(5, Timestamp.valueOf(orderDetail.getCreatedAt()));
 			});
-
-		// String selectSql = "SELECT id, product_id, quantity, unit_price, created_at FROM order_details WHERE order_id = ?";
-		//
-		// List<OrderDetailResponseDto.Get> updatedOrderDetails = jdbcTemplate.query(
-		// 	selectSql,
-		// 	new Object[] {orderId},
-		// 	(rs, rowNum) ->
-		// 		OrderDetailResponseDto.Get.builder()
-		// 			.id(rs.getLong("id"))
-		// 			.productId(rs.getLong("product_id"))
-		// 			.quantity(rs.getLong("quantity"))
-		// 			.unitPrice(rs.getBigDecimal("unit_price"))
-		// 			.orderId(orderId)
-		// 			.createdAt(rs.getTimestamp("created_at").toLocalDateTime())
-		// 			.build()
-		// );
-		// return updatedOrderDetails;
 	}
 }
