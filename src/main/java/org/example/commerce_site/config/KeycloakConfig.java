@@ -4,31 +4,24 @@ import org.keycloak.OAuth2Constants;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.KeycloakBuilder;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import lombok.RequiredArgsConstructor;
+
 @Configuration
+@RequiredArgsConstructor
 public class KeycloakConfig {
-	@Value("${oauth.keycloak.realm}")
-	private String REALM;
-
-	@Value("${oauth.keycloak.auth-server-url}")
-	private String AUTH_SERVER_URL;
-
-	@Value("${oauth.keycloak.credentials.client}")
-	private String CLIENT;
-
-	@Value("${oauth.keycloak.credentials.secret}")
-	private String CLIENT_SECRET;
-
+	private final KeycloakProperties keycloakProperties;
 	@Bean
 	public Keycloak keycloak() {
 		return KeycloakBuilder.builder()
-			.serverUrl(AUTH_SERVER_URL)
-			.realm(REALM)
+			.serverUrl(keycloakProperties.getAuthServerUrl())
+			.realm(keycloakProperties.getRealm())
 			.grantType(OAuth2Constants.CLIENT_CREDENTIALS)
-			.clientId(CLIENT)
-			.clientSecret(CLIENT_SECRET)
+			.clientId(keycloakProperties.getCredentials().getClient())
+			.clientSecret(keycloakProperties.getCredentials().getSecret())
 			.build();
 	}
 }

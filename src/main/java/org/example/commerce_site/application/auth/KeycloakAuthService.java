@@ -1,7 +1,7 @@
 package org.example.commerce_site.application.auth;
 
 import org.example.commerce_site.application.auth.dto.OAuthAccessTokenResponse;
-import org.springframework.beans.factory.annotation.Value;
+import org.example.commerce_site.config.KeycloakProperties;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -16,23 +16,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class KeycloakAuthService {
 	private final RestTemplate restTemplate = new RestTemplate();
-	@Value("${oauth.keycloak.grant-type}")
-	private String GRANT_TYPE;
-	@Value("${oauth.keycloak.credentials.client}")
-	private String CLIENT_ID;
-	@Value("${oauth.keycloak.credentials.secret}")
-	private String CLIENT_SECRET;
-	@Value("${oauth.keycloak.uri.redirect}")
-	private String REDIRECT_URI;
-	@Value("${oauth.keycloak.uri.token}")
-	private String TOKEN_URI;
+	private final KeycloakProperties keycloakProperties;
 
 	public OAuthAccessTokenResponse.Keycloak getAccessToken(String code) {
 		MultiValueMap<String, String> info = new LinkedMultiValueMap<>();
-		info.add("grant_type", GRANT_TYPE);
-		info.add("client_id", CLIENT_ID);
-		info.add("client_secret", CLIENT_SECRET);
-		info.add("redirect_uri", REDIRECT_URI);
+		info.add("grant_type", keycloakProperties.getGrantType());
+		info.add("client_id", keycloakProperties.getCredentials().getClient());
+		info.add("client_secret", keycloakProperties.getCredentials().getSecret());
+		info.add("redirect_uri", keycloakProperties.getUri().getRedirect());
 		info.add("code", code);
 
 		final HttpHeaders headers = new HttpHeaders();
@@ -40,6 +31,7 @@ public class KeycloakAuthService {
 
 		final HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(info, headers);
 
-		return restTemplate.postForEntity(TOKEN_URI, httpEntity, OAuthAccessTokenResponse.Keycloak.class).getBody();
+		return restTemplate.postForEntity(keycloakProperties.getUri().getToken(), httpEntity,
+			OAuthAccessTokenResponse.Keycloak.class).getBody();
 	}
 }
