@@ -9,8 +9,8 @@ import org.example.commerce_site.infrastructure.address.AddressRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -29,11 +29,13 @@ public class AddressService {
 		return addressRepository.save(AddressRequestDto.Create.toEntity(dto, user));
 	}
 
+	@Transactional(readOnly = true)
 	public Address getAddress(Long addressId, User user) {
 		return addressRepository.findByIdAndUserId(addressId, user)
 			.orElseThrow(() -> new CustomException(ErrorCode.ADDRESS_NOT_FOUND));
 	}
 
+	@Transactional(readOnly = true)
 	public Page<Address> getAddressesByUser(User user, PageRequest pageRequest) {
 		return addressRepository.findAllByUserId(user, pageRequest);
 	}

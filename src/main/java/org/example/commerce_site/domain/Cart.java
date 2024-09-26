@@ -3,6 +3,7 @@ package org.example.commerce_site.domain;
 import org.example.commerce_site.common.domain.BaseTimeEntity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Index;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,7 +15,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "carts")
+@Table(name = "carts",
+	indexes = @Index(name = "carts_user_id_IDX", columnList = "user_id, product_id"))
 public class Cart extends BaseTimeEntity {
 	private Long userId;
 	private Long productId;
