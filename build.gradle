@@ -58,6 +58,12 @@ dependencies {
     implementation 'org.flywaydb:flyway-mysql'
     implementation 'org.flywaydb:flyway-core'
 
+    // oauth 2.0
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+
+    // keycloak
+    implementation 'org.keycloak:keycloak-admin-client:25.0.5'
+
     // test dependency
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'

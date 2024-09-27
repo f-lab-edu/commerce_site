@@ -19,9 +19,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Table(name = "users")
 public class User extends BaseTimeEntity {
+	private String authId;
 	private String name;
 	private String email;
-	private String password;
 	@Enumerated(EnumType.STRING)
 	private UserStatus status;
 }

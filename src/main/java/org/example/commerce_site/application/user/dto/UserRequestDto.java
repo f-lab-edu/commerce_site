@@ -12,15 +12,15 @@ public class UserRequestDto {
 	@Builder
 	@ToString
 	public static class Create {
+		private String id;
 		private String name;
 		private String email;
-		private String password;
 
 		public static User toEntity(UserRequestDto.Create dto) {
 			return User.builder()
+				.authId(dto.getId())
 				.name(dto.getName())
 				.email(dto.getEmail())
-				.password(dto.getPassword())
 				.status(UserStatus.ACTIVE)
 				.build();
 		}
