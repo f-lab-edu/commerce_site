@@ -49,7 +49,7 @@ class ProductFacadeTest {
 	}
 
 	@Test
-	void testCreateProduct() {
+	void create_ShouldCreateProduct() {
 		ProductRequestDto.Create dto = ProductRequestDto.Create.builder().categoryId(1L).build();
 
 		Category category = new Category();
@@ -61,7 +61,7 @@ class ProductFacadeTest {
 	}
 
 	@Test
-	void testUpdateProduct() {
+	void update_ShouldCreateProduct() {
 		ProductRequestDto.Put dto = ProductRequestDto.Put.builder().categoryId(1L).partnerId(1L).build();
 
 		when(productService.getProduct(productId)).thenReturn(product);
@@ -73,7 +73,7 @@ class ProductFacadeTest {
 	}
 
 	@Test
-	void testUpdateProductAccessDenied() {
+	void update_ShouldNotUpdate_AccessDenied() {
 		ProductRequestDto.Put dto = ProductRequestDto.Put.builder().categoryId(1L).partnerId(2L).build();
 
 		when(productService.getProduct(productId)).thenReturn(product);
@@ -86,7 +86,7 @@ class ProductFacadeTest {
 	}
 
 	@Test
-	void testDeleteProduct() {
+	void delete_ShouldDeleteProduct() {
 		when(productService.getProduct(productId)).thenReturn(product);
 
 		productFacade.deleteProduct(productId);
@@ -95,7 +95,7 @@ class ProductFacadeTest {
 	}
 
 	@Test
-	void testGetProduct() {
+	void get_ShouldReturnProduct() {
 		Partner partner = new Partner();
 
 		when(productService.getProduct(productId)).thenReturn(product);
@@ -108,7 +108,7 @@ class ProductFacadeTest {
 	}
 
 	@Test
-	void testGetProductList() {
+	void getList_ShouldReturnProducts() {
 		int page = 0;
 		int size = 10;
 		String keyword = "test";

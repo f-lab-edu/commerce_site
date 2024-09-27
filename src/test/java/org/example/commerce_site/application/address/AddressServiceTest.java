@@ -37,7 +37,7 @@ class AddressServiceTest {
 	}
 
 	@Test
-	void createAddress_ShouldCreateAddress() {
+	void create_ShouldCreateAddress() {
 		AddressRequestDto.Create dto = AddressRequestDto.Create.builder()
 			.isPrimary(false)
 			.userId(user.getId())
@@ -75,7 +75,7 @@ class AddressServiceTest {
 	}
 
 	@Test
-	void getAddress_ShouldReturnAddress() {
+	void get_ShouldReturnAddress() {
 		Long addressId = 1L;
 		Address address = Address.builder().userId(user).build();
 		when(addressRepository.findByIdAndUserId(addressId, user)).thenReturn(Optional.of(address));
@@ -85,7 +85,7 @@ class AddressServiceTest {
 	}
 
 	@Test
-	void getAddress_ShouldThrowException_WhenAddressNotFound() {
+	void get_ShouldThrowException_WhenAddressNotFound() {
 		Long addressId = 1L;
 
 		when(addressRepository.findByIdAndUserId(addressId, user)).thenReturn(Optional.empty());
@@ -100,7 +100,7 @@ class AddressServiceTest {
 	}
 
 	@Test
-	void getAddressesByUser_ShouldReturnAddressPage() {
+	void get_ShouldReturnAddressPage() {
 		PageRequest pageRequest = PageRequest.of(0, 10);
 		Address address = new Address();
 		Page<Address> addressPage = new PageImpl<>(Collections.singletonList(address));
@@ -113,7 +113,7 @@ class AddressServiceTest {
 	}
 
 	@Test
-	void deleteAddress_ShouldDeleteAddress() {
+	void delete_ShouldDeleteAddress() {
 		Long addressId = 1L;
 
 		addressService.deleteAddress(addressId, user);

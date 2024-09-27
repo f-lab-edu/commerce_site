@@ -27,7 +27,7 @@ class OrderDetailServiceTest {
 	private OrderDetailBulkRepository orderDetailBulkRepository;
 
 	@Test
-	void testCreateOrderDetails() {
+	void create_ShouldCreateOrderDetails() {
 		OrderRequestDto.CreateDetail detailDto1 = OrderRequestDto.CreateDetail.builder()
 			.productId(1L).quantity(2L).unitPrice(BigDecimal.TEN).build();
 		OrderRequestDto.CreateDetail detailDto2 = OrderRequestDto.CreateDetail.builder()

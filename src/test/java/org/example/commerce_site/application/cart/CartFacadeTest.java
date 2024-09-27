@@ -33,7 +33,7 @@ class CartFacadeTest {
 	private CartFacade cartFacade;
 
 	@Test
-	void createCartTest() {
+	void create_ShouldCreateCart() {
 		CartRequestDto.Create createDto = CartRequestDto.Create.builder()
 			.userId(1L)
 			.productId(1L)
@@ -47,7 +47,7 @@ class CartFacadeTest {
 	}
 
 	@Test
-	void deleteCartTest() {
+	void delete_ShouldDeleteCart() {
 		CartRequestDto.Delete deleteDto = CartRequestDto.Delete.builder()
 			.userId(1L)
 			.build();
@@ -59,7 +59,7 @@ class CartFacadeTest {
 	}
 
 	@Test
-	void updateCartTest() {
+	void update_ShouldUpdateCart() {
 		CartRequestDto.Update updateDto = CartRequestDto.Update.builder()
 			.userId(1L)
 			.build();
@@ -71,7 +71,7 @@ class CartFacadeTest {
 	}
 
 	@Test
-	void getCartListTest() {
+	void get_ShouldReturnAddressList() {
 		// given
 		Long userId = 1L;
 		int page = 0;

@@ -40,7 +40,7 @@ class OrderFacadeTest {
 	private AddressService addressService;
 
 	@Test
-	public void testCreate_OrderSuccessfullyCreated() {
+	public void create_ShouldCreateOrder() {
 		Long userId = 1L;
 		Long addressId = 1L;
 		OrderRequestDto.Create dto = OrderRequestDto.Create.builder()

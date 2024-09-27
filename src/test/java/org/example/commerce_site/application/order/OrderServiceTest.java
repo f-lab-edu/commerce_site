@@ -25,7 +25,7 @@ class OrderServiceTest {
 	private OrderRepository orderRepository;
 
 	@Test
-	void createOrder() {
+	void create_ShouldCreateOrder() {
 		List<OrderRequestDto.CreateDetail> details = new ArrayList<>();
 		OrderRequestDto.CreateDetail detailDto1 = OrderRequestDto.CreateDetail.builder()
 			.productId(1L).quantity(1L).unitPrice(BigDecimal.TEN).build();

@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.example.commerce_site.domain.Order;
 import org.example.commerce_site.domain.OrderDetail;
 
 import lombok.Builder;

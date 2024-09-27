@@ -48,7 +48,7 @@ class ProductServiceTest {
 	}
 
 	@Test
-	void testCreate() {
+	void create_ShouldCreateProduct() {
 		ProductRequestDto.Create dto = ProductRequestDto.Create.builder()
 			.name("Test Product")
 			.categoryId(1L)
@@ -67,7 +67,7 @@ class ProductServiceTest {
 	}
 
 	@Test
-	void testGetProduct() {
+	void get_ShouldReturnProduct() {
 		when(productRepository.findById(productId)).thenReturn(Optional.of(product));
 
 		Product retrievedProduct = productService.getProduct(productId);
@@ -78,7 +78,7 @@ class ProductServiceTest {
 	}
 
 	@Test
-	void testGetProductNotFound() {
+	void get_ShouldNotReturnProduct() {
 		when(productRepository.findById(productId)).thenReturn(Optional.empty());
 
 		CustomException exception = assertThrows(CustomException.class, () -> {
@@ -89,7 +89,7 @@ class ProductServiceTest {
 	}
 
 	@Test
-	void testUpdate() {
+	void update_ShouldUpdateProduct() {
 		ProductRequestDto.Put dto = ProductRequestDto.Put.builder()
 			.categoryId(1L)
 			.partnerId(partnerId)
@@ -108,7 +108,7 @@ class ProductServiceTest {
 	}
 
 	@Test
-	void testDelete() {
+	void delete_ShouldDeleteProduct() {
 		Product product = Product.builder().id(productId).partnerId(partnerId).build();
 		lenient().when(productRepository.findById(productId)).thenReturn(Optional.of(product));
 
@@ -118,7 +118,7 @@ class ProductServiceTest {
 	}
 
 	@Test
-	void testGetProductList() {
+	void getList_ShouldReturnProducts() {
 		String keyword = "test";
 		Long categoryId = 1L;
 

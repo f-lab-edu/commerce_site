@@ -28,7 +28,7 @@ class CartServiceTest {
 	private CartRepository cartRepository;
 
 	@Test
-	public void testCreate_whenQuantityIsZero_throwsException() {
+	public void create_whenQuantityIsZero_throwsException() {
 		CartRequestDto.Create createDto = CartRequestDto.Create.builder()
 			.userId(1L).productId(2L).quantity(0L).build();
 
@@ -37,7 +37,7 @@ class CartServiceTest {
 	}
 
 	@Test
-	public void testCreate_whenCartExists_updatesQuantity() {
+	public void create_whenCartExists_updatesQuantity() {
 		CartRequestDto.Create createDto = CartRequestDto.Create.builder()
 			.userId(1L).productId(2L).quantity(1L).build();
 
@@ -57,7 +57,7 @@ class CartServiceTest {
 	}
 
 	@Test
-	public void testCreate_whenCartDoesNotExist_savesNewCart() {
+	public void create_whenCartDoesNotExist_savesNewCart() {
 		CartRequestDto.Create createDto = CartRequestDto.Create.builder()
 			.userId(1L).productId(2L).quantity(1L).build();
 
@@ -71,7 +71,7 @@ class CartServiceTest {
 	}
 
 	@Test
-	public void testDelete() {
+	public void delete_ShouldDeleteCart() {
 		List<Long> productIds = Arrays.asList(1L, 2L, 3L);
 		CartRequestDto.Delete deleteDto = CartRequestDto.Delete.builder()
 			.userId(1L)
@@ -86,57 +86,40 @@ class CartServiceTest {
 	}
 
 	@Test
-	public void testUpdate_ExistingCart_Success() {
-		HashMap<Long, Long> productMap = new HashMap<>();
-		productMap.put(1L, 5L);
-		Cart existingCart = Cart.builder().userId(1L).productId(1L).quantity(3L).build();
+	void update_ShouldUpdateQuantity() {
+		Cart cart = Cart.builder().userId(1L).productId(1L).quantity(1L).build();
+		HashMap<Long, Long> productIdAndQuantity = new HashMap<>();
+		productIdAndQuantity.put(cart.getProductId(), 3L); // Update quantity to 3
 
-		CartRequestDto.Update updateDto = CartRequestDto.Update.builder()
+		CartRequestDto.Update dto = CartRequestDto.Update.builder()
 			.userId(1L)
-			.productsMap(productMap)
+			.productsMap(productIdAndQuantity)
 			.build();
 
-		when(cartRepository.findByUserIdAndProductId(updateDto.getUserId(), 1L)).thenReturn(Optional.of(existingCart));
+		when(cartRepository.findByUserIdAndProductIdIn(1L, productIdAndQuantity.keySet()))
+			.thenReturn(List.of(cart));
 
-		cartService.update(updateDto);
+		cartService.update(dto);
 
-		verify(cartRepository).findByUserIdAndProductId(updateDto.getUserId(), 1L);
-		verify(cartRepository).save(existingCart);
-		assertEquals(5L, existingCart.getQuantity());
+		assertEquals(3L, cart.getQuantity());
+		verify(cartRepository).saveAll(anyList());
 	}
 
 	@Test
-	public void testUpdate_QuantityIsZero_ThrowCustomException() {
-		HashMap<Long, Long> productMap = new HashMap<>();
-		productMap.put(1L, 0L);
-		CartRequestDto.Update updateDto = CartRequestDto.Update.builder()
+	public void update_QuantityIsZero_ThrowCustomException() {
+		Cart cart = Cart.builder().userId(1L).productId(1L).quantity(1L).build();
+		HashMap<Long, Long> productIdAndQuantity = new HashMap<>();
+		productIdAndQuantity.put(cart.getProductId(), 0L); // Quantity set to 0
+
+		CartRequestDto.Update dto = CartRequestDto.Update.builder()
 			.userId(1L)
-			.productsMap(productMap)
+			.productsMap(productIdAndQuantity)
 			.build();
 
-		Cart existingCart = Cart.builder().userId(1L).productId(1L).quantity(3L).build();
+		CustomException exception = assertThrows(CustomException.class, () -> {
+			cartService.update(dto);
+		});
 
-		when(cartRepository.findByUserIdAndProductId(updateDto.getUserId(), 1L)).thenReturn(Optional.of(existingCart));
-
-		CustomException thrown = assertThrows(CustomException.class, () -> cartService.update(updateDto));
-		assertEquals(ErrorCode.QUANTITY_IS_ZERO, thrown.getErrorCode());
-		verify(cartRepository, never()).save(any());
-	}
-
-	@Test
-	public void testUpdate_NonExistingCart_DoNothing() {
-		HashMap<Long, Long> productMap = new HashMap<>();
-		productMap.put(1L, 5L);
-		CartRequestDto.Update updateDto = CartRequestDto.Update.builder()
-			.userId(1L)
-			.productsMap(productMap)
-			.build();
-
-		when(cartRepository.findByUserIdAndProductId(updateDto.getUserId(), 1L)).thenReturn(Optional.empty());
-
-		cartService.update(updateDto);
-
-		verify(cartRepository).findByUserIdAndProductId(updateDto.getUserId(), 1L);
-		verify(cartRepository, never()).save(any());
+		assertEquals(ErrorCode.QUANTITY_IS_ZERO, exception.getErrorCode());
 	}
 }
