@@ -14,11 +14,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+
 @ExtendWith(MockitoExtension.class)
 class AddressFacadeTest {
 	@InjectMocks
@@ -68,7 +68,6 @@ class AddressFacadeTest {
 		verify(userService).getUser(user.getId());
 		verify(addressService).getAddress(addressId, user);
 	}
-
 
 	@Test
 	void getList_ShouldReturnAddressList() {

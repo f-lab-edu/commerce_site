@@ -18,6 +18,17 @@ public class OrderDetailResponseDto {
 		private Long quantity;
 		private BigDecimal unitPrice;
 
+		public static Get toDto(OrderDetail orderDetail) {
+			return Get.builder()
+				.createdAt(orderDetail.getCreatedAt())
+				.id(orderDetail.getId())
+				.orderId(orderDetail.getOrder().getId())
+				.productId(orderDetail.getProductId())
+				.quantity(orderDetail.getQuantity())
+				.unitPrice(orderDetail.getUnitPrice())
+				.build();
+		}
+
 		public static OrderDetail toEntity(Get orderDetailItem, Order order) {
 			return OrderDetail.builder()
 				.id(orderDetailItem.id)

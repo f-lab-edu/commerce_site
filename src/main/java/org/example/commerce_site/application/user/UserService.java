@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class UserService {
 	private final UserRepository userRepository;
-	
+
 	@Transactional(readOnly = true)
 	public User getUser(Long userId) {
 		return userRepository.findById(userId).orElseThrow(

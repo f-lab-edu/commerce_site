@@ -27,6 +27,7 @@ public class OrderFacade {
 	@Transactional
 	public void create(OrderRequestDto.Create dto) {
 		User user = userService.getUser(dto.getUserId());
+		//TODO 상품의 수량이 없어서 또는 상태 변경으로 구매하지 못할 경우에 대한 검증이 필요함
 		Order order = orderService.createOrder(dto);
 		List<OrderDetailResponseDto.Get> orderDetails = orderDetailService.createOrderDetails(dto.getDetails(), order);
 		Address address = addressService.getAddress(dto.getAddressId(), user);

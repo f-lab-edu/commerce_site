@@ -8,16 +8,15 @@ import org.example.commerce_site.application.cart.dto.CartRequestDto;
 import org.example.commerce_site.application.cart.dto.CartResponseDto;
 import org.example.commerce_site.application.product.ProductService;
 import org.example.commerce_site.application.user.UserService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+
 @ExtendWith(MockitoExtension.class)
 class CartFacadeTest {
 

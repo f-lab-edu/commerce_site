@@ -13,12 +13,10 @@ import org.example.commerce_site.application.user.UserService;
 import org.example.commerce_site.domain.Address;
 import org.example.commerce_site.domain.Order;
 import org.example.commerce_site.domain.User;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)

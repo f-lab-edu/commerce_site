@@ -57,7 +57,7 @@ class OrderDetailServiceTest {
 							od.getUnitPrice() != null)),
 			eq(order.getId())
 		);
-		
+
 		assertEquals(detailDtos.size(), result.size());
 	}
 }
