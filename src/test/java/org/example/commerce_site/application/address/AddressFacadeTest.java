@@ -11,13 +11,15 @@ import org.example.commerce_site.domain.Address;
 import org.example.commerce_site.domain.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-
+@ExtendWith(MockitoExtension.class)
 class AddressFacadeTest {
 	@InjectMocks
 	private AddressFacade addressFacade;
@@ -32,7 +34,6 @@ class AddressFacadeTest {
 
 	@BeforeEach
 	void setUp() {
-		MockitoAnnotations.openMocks(this);
 		user = User.builder().id(1L).email("test@test.com").build();
 	}
 
@@ -40,6 +41,7 @@ class AddressFacadeTest {
 	void create_ShouldCreateAddress() {
 		AddressRequestDto.Create dto = AddressRequestDto.Create.builder()
 			.userId(user.getId())
+			.isPrimary(true)
 			.build();
 
 		Address address = new Address();
