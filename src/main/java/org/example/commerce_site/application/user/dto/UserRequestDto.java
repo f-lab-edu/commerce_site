@@ -16,9 +16,9 @@ public class UserRequestDto {
 		private String name;
 		private String email;
 
-		public static User toEntity(UserRequestDto.Create dto, String authId) {
+		public static User toEntity(UserRequestDto.Create dto) {
 			return User.builder()
-				.authId(authId)
+				.authId(dto.getId())
 				.name(dto.getName())
 				.email(dto.getEmail())
 				.status(UserStatus.ACTIVE)
