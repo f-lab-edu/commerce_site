@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import org.example.commerce_site.domain.Order;
 import org.example.commerce_site.domain.OrderDetail;
 
 import lombok.Builder;
@@ -20,7 +19,6 @@ public class OrderDetailResponseDto {
 		private Long quantity;
 		private Long orderId;
 		private BigDecimal unitPrice;
-
 
 		public static Get toDto(OrderDetail orderDetail) {
 			return Get.builder()
