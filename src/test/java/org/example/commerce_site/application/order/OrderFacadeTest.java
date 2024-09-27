@@ -56,14 +56,15 @@ class OrderFacadeTest {
 
 		when(userService.getUser(userId)).thenReturn(user);
 		when(orderService.createOrder(dto)).thenReturn(order);
-		when(orderDetailService.createOrderDetails(dto.getDetails(), order)).thenReturn(orderDetails);
 		when(addressService.getAddress(addressId, user)).thenReturn(address);
+		when(orderDetailService.getOrderDetails(order.getId())).thenReturn(orderDetails);
 
 		orderFacade.create(dto);
 
 		verify(userService).getUser(userId);
 		verify(orderService).createOrder(dto);
 		verify(orderDetailService).createOrderDetails(dto.getDetails(), order);
+		verify(orderDetailService).getOrderDetails(order.getId());
 		verify(addressService).getAddress(addressId, user);
 		verify(shipmentService).createShipment(order, orderDetails, address);
 	}

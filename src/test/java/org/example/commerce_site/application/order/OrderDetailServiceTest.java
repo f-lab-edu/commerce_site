@@ -43,11 +43,7 @@ class OrderDetailServiceTest {
 			.map(OrderDetailResponseDto.Get::toDto)
 			.toList();
 
-		when(orderDetailBulkRepository.saveAll(anyList(), eq(order.getId()))).thenReturn(
-			orderDetailDtoList
-		);
-
-		List<OrderDetailResponseDto.Get> result = orderDetailService.createOrderDetails(detailDtos, order);
+		orderDetailService.createOrderDetails(detailDtos, order);
 
 		verify(orderDetailBulkRepository).saveAll(argThat(argument ->
 				argument.size() == orderDetails.size() &&
@@ -57,7 +53,5 @@ class OrderDetailServiceTest {
 							od.getUnitPrice() != null)),
 			eq(order.getId())
 		);
-
-		assertEquals(detailDtos.size(), result.size());
 	}
 }
