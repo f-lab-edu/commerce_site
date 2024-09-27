@@ -17,6 +17,7 @@ public class KeycloakProperties {
 	private Credentials credentials;
 	private String grantType;
 	private Uri uri;
+	private String apiKey;
 
 	@Getter
 	@Setter
