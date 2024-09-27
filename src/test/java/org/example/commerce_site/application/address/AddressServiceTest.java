@@ -46,7 +46,6 @@ class AddressServiceTest {
 		Address result = addressService.createAddress(dto, user);
 
 		verify(addressRepository).save(any(Address.class));
-		// 결과 검증 추가
 	}
 
 	@Test
