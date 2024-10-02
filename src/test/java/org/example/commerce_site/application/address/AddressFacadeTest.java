@@ -32,12 +32,7 @@ class AddressFacadeTest {
 	@Mock
 	private UserService userService;
 
-	private User user;
-
-	@BeforeEach
-	void setUp() {
-		user = User.builder().id(1L).email("test@test.com").build();
-	}
+	private User user = User.builder().id(1L).email("test@test.com").build();
 
 	@Test
 	void create_ShouldCreateAddress() {
