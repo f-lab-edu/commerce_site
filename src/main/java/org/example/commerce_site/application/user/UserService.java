@@ -24,6 +24,13 @@ public class UserService {
 		);
 	}
 
+	@Transactional(readOnly = true)
+	public User getUser(String userAuthId) {
+		return userRepository.findByAuthId(userAuthId).orElseThrow(
+			() -> new CustomException(ErrorCode.USER_NOT_FOUND)
+		);
+	}
+
 	@Transactional
 	public void create(UserRequestDto.Create dto) {
 		userRepository.save(UserRequestDto.Create.toEntity(dto));
