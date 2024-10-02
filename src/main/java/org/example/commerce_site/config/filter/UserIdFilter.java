@@ -19,7 +19,10 @@ public class UserIdFilter extends OncePerRequestFilter {
 		throws ServletException, IOException {
 
 		if (request.getRequestURI().equals("/auth/callback")
-			|| request.getRequestURI().equals("/users/keycloak/webhook")) {
+			|| request.getRequestURI().equals("/users/keycloak/webhook")
+			|| request.getRequestURI().contains("/swagger-ui")
+			|| request.getRequestURI().contains("/api-docs")
+		) {
 			filterChain.doFilter(request, response);
 			return;
 		}

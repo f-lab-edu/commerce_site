@@ -8,8 +8,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
 
 @Configuration
@@ -28,7 +31,16 @@ public class OpenApiConfig {
 			.version("1.0")
 			.description("Commerce Site API Documentation");
 
+		Components components = new Components();
+		components.addSecuritySchemes("bearerAuth", new SecurityScheme()
+			.type(SecurityScheme.Type.HTTP)
+			.scheme("bearer")
+			.bearerFormat("JWT")
+			.description("Enter your Bearer token in the format: **Bearer &lt;token&gt;**"));
+
 		return new OpenAPI()
+			.components(components)
+			.addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
 			.info(info)
 			.servers(serverList);
 	}
@@ -73,5 +85,11 @@ public class OpenApiConfig {
 	public GroupedOpenApi orderOpenApi() {
 		String[] paths = {"/orders/**"};
 		return GroupedOpenApi.builder().group("ORDER API").pathsToMatch(paths).build();
+	}
+
+	@Bean
+	public GroupedOpenApi paymentsOpenApi() {
+		String[] paths = {"/payments/**"};
+		return GroupedOpenApi.builder().group("PAYMENT API").pathsToMatch(paths).build();
 	}
 }
