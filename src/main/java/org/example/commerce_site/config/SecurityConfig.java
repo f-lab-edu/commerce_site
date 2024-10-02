@@ -17,7 +17,7 @@ import org.springframework.security.web.authentication.session.SessionAuthentica
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-	private static final String[] AUTH_EXCLUDE_POST_API_LIST = {"/user/keycloak/webhook"};
+	private static final String[] AUTH_EXCLUDE_POST_API_LIST = {"/users/keycloak/webhook"};
 	private static final String[] AUTH_EXCLUDE_GET_API_LIST = {"/auth/**"};
 	private static final String[] AUTH_EXCLUDE_WEB_LIST = {"/swagger-ui/**", "/api-docs/**"};
 
