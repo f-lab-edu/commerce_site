@@ -40,9 +40,9 @@ public class AddressService {
 	}
 
 	@Transactional
-	public void updatePrimary(User user) {
+	public void updatePrimary(User user, Boolean isPrimary) {
 		addressRepository.findByUserIdAndIsPrimaryTrue(user).ifPresent(address -> {
-			address.updatePrimary(Boolean.FALSE);
+			address.updatePrimary(isPrimary);
 			addressRepository.save(address);
 		});
 	}

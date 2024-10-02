@@ -58,7 +58,7 @@ class AddressServiceTest {
 
 		when(addressRepository.findByUserIdAndIsPrimaryTrue(user)).thenReturn(Optional.of(existingAddress));
 
-		addressService.updatePrimary(user);
+		addressService.updatePrimary(user, false);
 
 		verify(addressRepository).save(existingAddress);
 	}
@@ -69,7 +69,7 @@ class AddressServiceTest {
 
 		when(addressRepository.findByUserIdAndIsPrimaryTrue(user)).thenReturn(Optional.empty());
 
-		addressService.updatePrimary(user);
+		addressService.updatePrimary(user, true);
 
 		verify(addressRepository, never()).save(any(Address.class)); // 기본 주소가 없을 때는 save가 호출되지 않음
 	}
