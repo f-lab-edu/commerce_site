@@ -1,5 +1,7 @@
 package org.example.commerce_site.application.address;
 
+import static org.hamcrest.MatcherAssert.*;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.*;
 
 import java.util.Collections;
@@ -58,13 +60,19 @@ class AddressFacadeTest {
 	@Test
 	void get_ShouldReturnAddress() {
 		Long addressId = 1L;
-		Address address = new Address();
+		Address address = Address.builder()
+			.id(addressId)
+			.jibunAddress("jibun address")
+			.phoneNumber("01012341234")
+			.build();
 
 		when(userService.getUser(anyLong())).thenReturn(user);
 		when(addressService.getAddress(anyLong(), any())).thenReturn(address);
 
 		AddressResponseDto.Get result = addressFacade.get(addressId, user.getId());
 
+		assertThat(result.getJibunAddress(), equalTo("jibun address"));
+		assertThat(result.getPhoneNumber(), equalTo("01012341234"));
 		verify(userService).getUser(user.getId());
 		verify(addressService).getAddress(addressId, user);
 	}
