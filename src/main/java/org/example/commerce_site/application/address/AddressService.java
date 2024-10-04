@@ -20,12 +20,6 @@ public class AddressService {
 
 	@Transactional
 	public Address createAddress(AddressRequestDto.Create dto, User user) {
-		if (dto.getIsPrimary()) {
-			addressRepository.findByUserIdAndIsPrimaryTrue(user).ifPresent(address -> {
-				address.updatePrimary(Boolean.FALSE);
-				addressRepository.save(address);
-			});
-		}
 		return addressRepository.save(AddressRequestDto.Create.toEntity(dto, user));
 	}
 
@@ -43,5 +37,13 @@ public class AddressService {
 	@Transactional
 	public void deleteAddress(Long addressId, User user) {
 		addressRepository.deleteByIdAndUserId(addressId, user);
+	}
+
+	@Transactional
+	public void updatePrimary(User user, Boolean isPrimary) {
+		addressRepository.findByUserIdAndIsPrimaryTrue(user).ifPresent(address -> {
+			address.updatePrimary(isPrimary);
+			addressRepository.save(address);
+		});
 	}
 }

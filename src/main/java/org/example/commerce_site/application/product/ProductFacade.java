@@ -30,15 +30,12 @@ public class ProductFacade {
 	}
 
 	public void updateProduct(Long productId, ProductRequestDto.Put dto) {
-		// id가 존재하는 상품인지 확인
 		Product product = productService.getProduct(productId);
 
-		// 파트너 본인이 올린 상품인지 확인
 		if (!product.getPartnerId().equals(dto.getPartnerId())) {
 			throw new CustomException(ErrorCode.PRODUCT_ACCESS_DENIED);
 		}
 
-		//카테고리 변경시 카테고리 아이디 존재 확인
 		Category category = null;
 		if (dto.getCategoryId() != null) {
 			category = categoryService.getCategoryById(dto.getCategoryId());
