@@ -19,9 +19,15 @@ import org.springframework.security.web.authentication.session.SessionAuthentica
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-	private static final String[] AUTH_EXCLUDE_POST_API_LIST = {"/users/keycloak/webhook"};
-	private static final String[] AUTH_EXCLUDE_GET_API_LIST = {"/auth/**"};
-	private static final String[] AUTH_EXCLUDE_WEB_LIST = {"/swagger-ui/**", "/api-docs/**"};
+	// private static final String[] AUTH_EXCLUDE_POST_API_LIST = {"/users/keycloak/webhook"};
+	// private static final String[] AUTH_EXCLUDE_GET_API_LIST = {"/auth/**"};
+	// private static final String[] AUTH_EXCLUDE_WEB_LIST = {"/swagger-ui/**", "/api-docs/**"};
+
+	private final AuthExcludeProperties authExcludeProperties;
+
+	public SecurityConfig(AuthExcludeProperties authExcludeProperties) {
+		this.authExcludeProperties = authExcludeProperties;
+	}
 
 	@Bean
 	protected SessionAuthenticationStrategy sessionAuthenticationStrategy() {
@@ -36,16 +42,16 @@ public class SecurityConfig {
 			.csrf(AbstractHttpConfigurer::disable)
 			.cors(Customizer.withDefaults())
 			.authorizeHttpRequests(requests -> requests
-				.requestMatchers(HttpMethod.POST, AUTH_EXCLUDE_POST_API_LIST).permitAll()
-				.requestMatchers(HttpMethod.GET, AUTH_EXCLUDE_GET_API_LIST).permitAll()
-				.requestMatchers(AUTH_EXCLUDE_WEB_LIST).permitAll()
+				.requestMatchers(HttpMethod.POST, authExcludeProperties.getPost()).permitAll()
+				.requestMatchers(HttpMethod.GET, authExcludeProperties.getGet()).permitAll()
+				.requestMatchers(authExcludeProperties.getWeb()).permitAll()
 				.anyRequest().authenticated()
 			)
+			.addFilterAfter(new UserIdFilter(authExcludeProperties), UsernamePasswordAuthenticationFilter.class)
 			.oauth2ResourceServer(
 				oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter)))
 			.headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
-
-		http.addFilterAfter(new UserIdFilter(), UsernamePasswordAuthenticationFilter.class);
+		
 		return http.build();
 	}
 }

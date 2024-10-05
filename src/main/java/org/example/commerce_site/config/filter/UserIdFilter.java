@@ -1,7 +1,10 @@
 package org.example.commerce_site.config.filter;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.stream.Stream;
 
+import org.example.commerce_site.config.AuthExcludeProperties;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Component;
@@ -11,18 +14,28 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Component
 public class UserIdFilter extends OncePerRequestFilter {
+	private final AuthExcludeProperties excludeProperties;
+
+	public UserIdFilter(AuthExcludeProperties excludeProperties) {
+		this.excludeProperties = excludeProperties;
+	}
+
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 		throws ServletException, IOException {
 
-		if (request.getRequestURI().equals("/auth/callback")
-			|| request.getRequestURI().equals("/users/keycloak/webhook")
-			|| request.getRequestURI().contains("/swagger-ui")
-			|| request.getRequestURI().contains("/api-docs")
-		) {
+		String requestURI = request.getRequestURI();
+		boolean isExcluded = Stream.of(excludeProperties.getPost(), excludeProperties.getGet(),
+				excludeProperties.getWeb())
+			.flatMap(Arrays::stream)
+			.anyMatch(path -> requestURI.equals(path) || requestURI.startsWith(path.replace("**", "")));
+
+		if (isExcluded) {
 			filterChain.doFilter(request, response);
 			return;
 		}
@@ -36,4 +49,5 @@ public class UserIdFilter extends OncePerRequestFilter {
 
 		filterChain.doFilter(request, response);
 	}
+
 }
