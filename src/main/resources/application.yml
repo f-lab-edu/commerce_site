@@ -57,3 +57,12 @@ oauth:
       redirect: http://localhost:8080/auth/callback
       token: http://localhost:9090/realms/oauth2/protocol/openid-connect/token
     api-key: klzx98c7vadq34tkdjfhgq3#@$adfg!dfax-n-4c
+auth:
+  exclude:
+    post:
+      - /users/keycloak/webhook
+    get:
+      - /auth/**
+    web:
+      - /swagger-ui/**
+      - /api-docs/**

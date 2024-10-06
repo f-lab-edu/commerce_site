@@ -28,6 +28,9 @@ public enum ErrorCode {
 	CREATE_KEYCLOAK_USER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, 500, "인가 서버 유저 등록에 실패했습니다."),
 	ADD_USER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, 500, "API 서버 유저 등록에 실패했습니다."),
 
+	//order
+	ORDER_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "주문 정보를 찾을 수 없습니다."),
+
 	//partner
 	PARTNER_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "파트너 회원 정보를 찾을 수 없습니다."),
 
