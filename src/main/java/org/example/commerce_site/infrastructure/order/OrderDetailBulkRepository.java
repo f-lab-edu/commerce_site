@@ -4,7 +4,6 @@ import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 import java.util.List;
 
-import org.example.commerce_site.application.order.dto.OrderDetailResponseDto;
 import org.example.commerce_site.domain.OrderDetail;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;

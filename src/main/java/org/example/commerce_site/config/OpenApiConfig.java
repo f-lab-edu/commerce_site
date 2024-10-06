@@ -8,8 +8,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
 
 @Configuration
@@ -28,14 +31,23 @@ public class OpenApiConfig {
 			.version("1.0")
 			.description("Commerce Site API Documentation");
 
+		Components components = new Components();
+		components.addSecuritySchemes("bearerAuth", new SecurityScheme()
+			.type(SecurityScheme.Type.HTTP)
+			.scheme("bearer")
+			.bearerFormat("JWT")
+			.description("Enter your Bearer token in the format: **Bearer &lt;token&gt;**"));
+
 		return new OpenAPI()
+			.components(components)
+			.addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
 			.info(info)
 			.servers(serverList);
 	}
 
 	@Bean
 	public GroupedOpenApi userOpenApi() {
-		String[] paths = {"/user/**"};
+		String[] paths = {"/users/**"};
 		return GroupedOpenApi.builder().group("USER API").pathsToMatch(paths).build();
 	}
 
@@ -47,7 +59,7 @@ public class OpenApiConfig {
 
 	@Bean
 	public GroupedOpenApi productOpenApi() {
-		String[] paths = {"/product/**"};
+		String[] paths = {"/products/**"};
 		return GroupedOpenApi.builder().group("PRODUCT API").pathsToMatch(paths).build();
 	}
 
@@ -65,13 +77,19 @@ public class OpenApiConfig {
 
 	@Bean
 	public GroupedOpenApi cartOpenApi() {
-		String[] paths = {"/cart/**"};
+		String[] paths = {"/carts/**"};
 		return GroupedOpenApi.builder().group("CART API").pathsToMatch(paths).build();
 	}
 
 	@Bean
 	public GroupedOpenApi orderOpenApi() {
-		String[] paths = {"/order/**"};
+		String[] paths = {"/orders/**"};
 		return GroupedOpenApi.builder().group("ORDER API").pathsToMatch(paths).build();
+	}
+
+	@Bean
+	public GroupedOpenApi paymentsOpenApi() {
+		String[] paths = {"/payments/**"};
+		return GroupedOpenApi.builder().group("PAYMENT API").pathsToMatch(paths).build();
 	}
 }
