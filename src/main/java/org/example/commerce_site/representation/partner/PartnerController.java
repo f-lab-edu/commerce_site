@@ -34,7 +34,7 @@ public class PartnerController {
 	}
 
 	@PostMapping("/keycloak/webhook")
-	public void createPartner(
+	public void createPartnerWebhook(
 		@RequestHeader("X-API-KEY") String apiKey,
 		@RequestBody PartnerRequest.CreateWebHook request) {
 		if (!keycloakProperties.getApiKey().equals(apiKey)) {
