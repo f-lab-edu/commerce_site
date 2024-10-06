@@ -13,13 +13,11 @@ public class PartnerResponseDto {
 	public static class Create {
 		private String name;
 		private String email;
-		private String businessNumber;
 
 		public static PartnerResponseDto.Create of(Partner partner) {
 			return Create.builder()
 				.name(partner.getName())
 				.email(partner.getEmail())
-				.businessNumber(partner.getBusinessNumber())
 				.build();
 		}
 	}
