@@ -61,6 +61,8 @@ auth:
   exclude:
     post:
       - /users/keycloak/webhook
+      - /partners/keycloak/webhook
+      - /partners
     get:
       - /auth/**
     web:
