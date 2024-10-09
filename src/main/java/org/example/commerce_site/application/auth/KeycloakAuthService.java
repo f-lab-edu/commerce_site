@@ -37,6 +37,7 @@ import lombok.extern.slf4j.Slf4j;
 public class KeycloakAuthService {
 	private final Keycloak keycloak;
 	private final KeycloakProperties keycloakProperties;
+	private final RestTemplate restTemplate;
 
 	public OAuthAccessTokenResponse.Keycloak getAccessToken(String code) {
 		MultiValueMap<String, String> info = new LinkedMultiValueMap<>();
@@ -51,7 +52,6 @@ public class KeycloakAuthService {
 
 		final HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(info, headers);
 
-		RestTemplate restTemplate = new RestTemplate();
 		return restTemplate.postForEntity(keycloakProperties.getUri().getToken(), httpEntity,
 			OAuthAccessTokenResponse.Keycloak.class).getBody();
 	}
