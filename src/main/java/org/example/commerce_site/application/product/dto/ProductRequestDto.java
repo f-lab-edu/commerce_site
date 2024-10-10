@@ -12,7 +12,7 @@ public class ProductRequestDto {
 	@Builder
 	@ToString
 	public static class Create {
-		private String partnerId;
+		private String partnerAuthId;
 		private Long categoryId;
 		private String name;
 		private String description;

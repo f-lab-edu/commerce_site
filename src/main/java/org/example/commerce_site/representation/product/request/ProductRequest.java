@@ -23,7 +23,7 @@ public class ProductRequest {
 
 		public static ProductRequestDto.Create toDTO(ProductRequest.Create request, String partnerAuthId) {
 			return ProductRequestDto.Create.builder()
-				.partnerId(partnerAuthId)
+				.partnerAuthId(partnerAuthId)
 				.categoryId(request.getCategoryId())
 				.name(request.getName())
 				.description(request.getDescription())
@@ -45,7 +45,7 @@ public class ProductRequest {
 
 		public static ProductRequestDto.Put toDTO(Update request, String partnerAuthId) {
 			return ProductRequestDto.Put.builder()
-				.partnerId(partnerAuthId)
+				.partnerAuthId(partnerAuthId)
 				.categoryId(request.getCategoryId())
 				.name(request.getName())
 				.description(request.getDescription())

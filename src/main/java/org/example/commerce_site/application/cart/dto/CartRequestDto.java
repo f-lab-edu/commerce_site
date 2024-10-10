@@ -14,14 +14,13 @@ public class CartRequestDto {
 	@Builder
 	@ToString
 	public static class Create {
-		private Long userAuthId;
+		private String userAuthId;
 		private Long productId;
 		private Long quantity;
 
 		public static Cart toEntity(Create dto, Long userId) {
 			return Cart.builder()
 				.userId(userId)
-				.userId(dto.getUserAuthId())
 				.productId(dto.getProductId())
 				.quantity(dto.getQuantity())
 				.build();

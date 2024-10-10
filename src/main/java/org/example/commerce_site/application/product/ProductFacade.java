@@ -25,7 +25,7 @@ public class ProductFacade {
 	private final PartnerService partnerService;
 
 	public void createProduct(ProductRequestDto.Create dto) {
-		Partner partner = partnerService.getPartner(dto.getPartnerId());
+		Partner partner = partnerService.getPartner(dto.getPartnerAuthId());
 		Category category = categoryService.getCategoryById(dto.getCategoryId());
 		productService.create(dto, category, partner.getId());
 	}
