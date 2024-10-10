@@ -33,14 +33,14 @@ class AddressServiceTest {
 
 	@BeforeEach
 	void setUp() {
-		user = User.builder().id(1L).email("test@test.com").build();
+		user = User.builder().id(1L).authId("testAuth").email("test@test.com").build();
 	}
 
 	@Test
 	void create_ShouldCreateAddress() {
 		AddressRequestDto.Create dto = AddressRequestDto.Create.builder()
 			.isPrimary(false)
-			.userAuthId(user.getId())
+			.userAuthId(user.getAuthId())
 			.build();
 
 		when(addressRepository.save(any(Address.class))).thenAnswer(invocation -> invocation.getArgument(0));
