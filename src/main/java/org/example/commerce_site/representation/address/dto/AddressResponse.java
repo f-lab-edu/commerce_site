@@ -12,6 +12,7 @@ public class AddressResponse {
 	@Builder
 	@ToString
 	public static class Get {
+		private Long id;
 		private String phoneNumber;
 		private String addressType;
 		private String postalCode;
@@ -21,7 +22,8 @@ public class AddressResponse {
 		private String addressDetail;
 
 		public static Get of(AddressResponseDto.Get dto) {
-			return AddressResponse.Get.builder()
+			return Get.builder()
+				.id(dto.getId())
 				.phoneNumber(dto.getPhoneNumber())
 				.addressType(dto.getAddressType())
 				.postalCode(dto.getPostalCode())
