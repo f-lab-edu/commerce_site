@@ -66,13 +66,13 @@ public class SecurityConfig {
 	}
 
 	private Collection<GrantedAuthority> extractAuthorities(Jwt jwt) {
-		var resourceAccess = (Map<String, Object>) jwt.getClaim("resource_access");
-		var roles = (Map<String, Object>) resourceAccess.get("oauth2-client-app");
+		var resourceAccess = (Map<String, Object>)jwt.getClaim("resource_access");
+		var roles = (Map<String, Object>)resourceAccess.get("oauth2-client-app");
 
 		if (roles != null) {
 			log.info(roles.toString());
 
-			var roleList = (List<String>) roles.get("roles");
+			var roleList = (List<String>)roles.get("roles");
 			return roleList.stream()
 				.map(role -> new SimpleGrantedAuthority(role))
 				.collect(Collectors.toList());
