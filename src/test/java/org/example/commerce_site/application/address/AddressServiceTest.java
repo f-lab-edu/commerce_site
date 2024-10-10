@@ -30,7 +30,7 @@ class AddressServiceTest {
 	private AddressRepository addressRepository;
 
 	private User user = User.builder().id(1L).authId("testAuth").email("test@test.com").build();
-	
+
 	@Test
 	void create_ShouldCreateAddress() {
 		AddressRequestDto.Create dto = AddressRequestDto.Create.builder()
