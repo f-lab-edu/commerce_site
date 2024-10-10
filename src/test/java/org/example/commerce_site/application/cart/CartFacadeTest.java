@@ -35,13 +35,13 @@ class CartFacadeTest {
 	@Test
 	void create_ShouldCreateCart() {
 		CartRequestDto.Create createDto = CartRequestDto.Create.builder()
-			.userId(1L)
+			.userAuthId(1L)
 			.productId(1L)
 			.build();
 
 		cartFacade.create(createDto);
 
-		verify(userService).getUser(createDto.getUserId());
+		verify(userService).getUser(createDto.getUserAuthId());
 		verify(productService).getProduct(createDto.getProductId());
 		verify(cartService).create(createDto);
 	}
@@ -49,24 +49,24 @@ class CartFacadeTest {
 	@Test
 	void delete_ShouldDeleteCart() {
 		CartRequestDto.Delete deleteDto = CartRequestDto.Delete.builder()
-			.userId(1L)
+			.userAuthId(1L)
 			.build();
 
 		cartFacade.delete(deleteDto);
 
-		verify(userService).getUser(deleteDto.getUserId());
+		verify(userService).getUser(deleteDto.getUserAuthId());
 		verify(cartService).delete(deleteDto);
 	}
 
 	@Test
 	void update_ShouldUpdateCart() {
 		CartRequestDto.Update updateDto = CartRequestDto.Update.builder()
-			.userId(1L)
+			.userAuthId(1L)
 			.build();
 
 		cartFacade.update(updateDto);
 
-		verify(userService).getUser(updateDto.getUserId());
+		verify(userService).getUser(updateDto.getUserAuthId());
 		verify(cartService).update(updateDto);
 	}
 

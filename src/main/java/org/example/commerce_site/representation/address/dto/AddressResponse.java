@@ -1,4 +1,4 @@
-package org.example.commerce_site.representation.address.response;
+package org.example.commerce_site.representation.address.dto;
 
 import org.example.commerce_site.application.address.dto.AddressResponseDto;
 import org.springframework.data.domain.Page;

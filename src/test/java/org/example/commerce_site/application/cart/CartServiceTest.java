@@ -30,7 +30,7 @@ class CartServiceTest {
 	@Test
 	public void create_whenQuantityIsZero_throwsException() {
 		CartRequestDto.Create createDto = CartRequestDto.Create.builder()
-			.userId(1L).productId(2L).quantity(0L).build();
+			.userAuthId(1L).productId(2L).quantity(0L).build();
 
 		assertThrows(CustomException.class, () -> cartService.create(createDto),
 			"Expected to throw CustomException when quantity is zero.");
@@ -39,34 +39,34 @@ class CartServiceTest {
 	@Test
 	public void create_whenCartExists_updatesQuantity() {
 		CartRequestDto.Create createDto = CartRequestDto.Create.builder()
-			.userId(1L).productId(2L).quantity(1L).build();
+			.userAuthId(1L).productId(2L).quantity(1L).build();
 
 		Cart existingCart = Cart.builder()
-			.userId(createDto.getUserId())
+			.userId(createDto.getUserAuthId())
 			.productId(createDto.getProductId())
 			.quantity(3L)
 			.build();
 
-		when(cartRepository.findByUserIdAndProductId(createDto.getUserId(), createDto.getProductId()))
+		when(cartRepository.findByUserIdAndProductId(createDto.getUserAuthId(), createDto.getProductId()))
 			.thenReturn(Optional.of(existingCart));
 
 		cartService.create(createDto);
 
-		verify(cartRepository, times(1)).findByUserIdAndProductId(createDto.getUserId(), createDto.getProductId());
+		verify(cartRepository, times(1)).findByUserIdAndProductId(createDto.getUserAuthId(), createDto.getProductId());
 		assertEquals(4L, existingCart.getQuantity());
 	}
 
 	@Test
 	public void create_whenCartDoesNotExist_savesNewCart() {
 		CartRequestDto.Create createDto = CartRequestDto.Create.builder()
-			.userId(1L).productId(2L).quantity(1L).build();
+			.userAuthId(1L).productId(2L).quantity(1L).build();
 
-		when(cartRepository.findByUserIdAndProductId(createDto.getUserId(), createDto.getProductId()))
+		when(cartRepository.findByUserIdAndProductId(createDto.getUserAuthId(), createDto.getProductId()))
 			.thenReturn(Optional.empty());
 
 		cartService.create(createDto);
 
-		verify(cartRepository, times(1)).findByUserIdAndProductId(createDto.getUserId(), createDto.getProductId());
+		verify(cartRepository, times(1)).findByUserIdAndProductId(createDto.getUserAuthId(), createDto.getProductId());
 		verify(cartRepository, times(1)).save(any(Cart.class));
 	}
 
@@ -74,15 +74,15 @@ class CartServiceTest {
 	public void delete_ShouldDeleteCart() {
 		List<Long> productIds = Arrays.asList(1L, 2L, 3L);
 		CartRequestDto.Delete deleteDto = CartRequestDto.Delete.builder()
-			.userId(1L)
+			.userAuthId(1L)
 			.productIds(productIds)
 			.build();
 
 		cartService.delete(deleteDto);
 
-		verify(cartRepository, times(1)).deleteByUserIdAndProductId(deleteDto.getUserId(), 1L);
-		verify(cartRepository, times(1)).deleteByUserIdAndProductId(deleteDto.getUserId(), 2L);
-		verify(cartRepository, times(1)).deleteByUserIdAndProductId(deleteDto.getUserId(), 3L);
+		verify(cartRepository, times(1)).deleteByUserIdAndProductId(deleteDto.getUserAuthId(), 1L);
+		verify(cartRepository, times(1)).deleteByUserIdAndProductId(deleteDto.getUserAuthId(), 2L);
+		verify(cartRepository, times(1)).deleteByUserIdAndProductId(deleteDto.getUserAuthId(), 3L);
 	}
 
 	@Test
@@ -92,7 +92,7 @@ class CartServiceTest {
 		productIdAndQuantity.put(cart.getProductId(), 3L); // Update quantity to 3
 
 		CartRequestDto.Update dto = CartRequestDto.Update.builder()
-			.userId(1L)
+			.userAuthId(1L)
 			.productsMap(productIdAndQuantity)
 			.build();
 
@@ -112,7 +112,7 @@ class CartServiceTest {
 		productIdAndQuantity.put(cart.getProductId(), 0L); // Quantity set to 0
 
 		CartRequestDto.Update dto = CartRequestDto.Update.builder()
-			.userId(1L)
+			.userAuthId(1L)
 			.productsMap(productIdAndQuantity)
 			.build();
 

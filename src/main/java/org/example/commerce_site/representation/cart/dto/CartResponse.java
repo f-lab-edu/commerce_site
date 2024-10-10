@@ -1,4 +1,4 @@
-package org.example.commerce_site.representation.cart.response;
+package org.example.commerce_site.representation.cart.dto;
 
 import org.example.commerce_site.application.cart.dto.CartResponseDto;
 import org.springframework.data.domain.Page;

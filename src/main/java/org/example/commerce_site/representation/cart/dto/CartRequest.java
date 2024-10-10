@@ -1,4 +1,4 @@
-package org.example.commerce_site.representation.cart.request;
+package org.example.commerce_site.representation.cart.dto;
 
 import java.util.HashMap;
 import java.util.List;
@@ -19,9 +19,9 @@ public class CartRequest {
 		@NotNull(message = "Quantity cannot be null")
 		private Long quantity;
 
-		public static CartRequestDto.Create toDto(CartRequest.Create request, Long userId) {
+		public static CartRequestDto.Create toDto(CartRequest.Create request, String userAuthId) {
 			return CartRequestDto.Create.builder()
-				.userId(userId)
+				.userAuthId(userAuthId)
 				.productId(request.getProductId())
 				.quantity(request.getQuantity())
 				.build();
@@ -34,9 +34,9 @@ public class CartRequest {
 		@NotNull
 		private HashMap<Long, Long> productsMap;
 
-		public static CartRequestDto.Update toDto(CartRequest.Update request, Long userId) {
+		public static CartRequestDto.Update toDto(CartRequest.Update request, String userAuthId) {
 			return CartRequestDto.Update.builder()
-				.userId(userId)
+				.userAuthId(userAuthId)
 				.productsMap(request.getProductsMap())
 				.build();
 		}
@@ -48,9 +48,9 @@ public class CartRequest {
 		@NotNull
 		private List<Long> productIds;
 
-		public static CartRequestDto.Delete toDto(CartRequest.Delete request, Long userId) {
+		public static CartRequestDto.Delete toDto(CartRequest.Delete request, String userAuthId) {
 			return CartRequestDto.Delete.builder()
-				.userId(userId)
+				.userAuthId(userAuthId)
 				.productIds(request.getProductIds())
 				.build();
 		}

@@ -40,7 +40,7 @@ class AddressServiceTest {
 	void create_ShouldCreateAddress() {
 		AddressRequestDto.Create dto = AddressRequestDto.Create.builder()
 			.isPrimary(false)
-			.userId(user.getId())
+			.userAuthId(user.getId())
 			.build();
 
 		when(addressRepository.save(any(Address.class))).thenAnswer(invocation -> invocation.getArgument(0));

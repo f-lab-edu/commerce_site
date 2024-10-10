@@ -11,7 +11,6 @@ import org.example.commerce_site.application.address.dto.AddressResponseDto;
 import org.example.commerce_site.application.user.UserService;
 import org.example.commerce_site.domain.Address;
 import org.example.commerce_site.domain.User;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -37,7 +36,7 @@ class AddressFacadeTest {
 	@Test
 	void create_ShouldCreateAddress() {
 		AddressRequestDto.Create dto = AddressRequestDto.Create.builder()
-			.userId(user.getId())
+			.userAuthId(user.getId())
 			.isPrimary(true)
 			.build();
 
