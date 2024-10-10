@@ -53,7 +53,7 @@ public class OpenApiConfig {
 
 	@Bean
 	public GroupedOpenApi partnerOpenApi() {
-		String[] paths = {"/partner/**"};
+		String[] paths = {"/partners/**"};
 		return GroupedOpenApi.builder().group("PARTNER API").pathsToMatch(paths).build();
 	}
 
@@ -65,13 +65,13 @@ public class OpenApiConfig {
 
 	@Bean
 	public GroupedOpenApi categoryOpenApi() {
-		String[] paths = {"/category/**"};
+		String[] paths = {"/categories/**"};
 		return GroupedOpenApi.builder().group("CATEGORY API").pathsToMatch(paths).build();
 	}
 
 	@Bean
 	public GroupedOpenApi addressOpenApi() {
-		String[] paths = {"/address/**"};
+		String[] paths = {"/addresses/**"};
 		return GroupedOpenApi.builder().group("ADDRESS API").pathsToMatch(paths).build();
 	}
 

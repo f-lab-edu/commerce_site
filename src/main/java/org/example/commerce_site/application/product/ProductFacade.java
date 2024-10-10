@@ -25,14 +25,16 @@ public class ProductFacade {
 	private final PartnerService partnerService;
 
 	public void createProduct(ProductRequestDto.Create dto) {
+		Partner partner = partnerService.getPartner(dto.getPartnerAuthId());
 		Category category = categoryService.getCategoryById(dto.getCategoryId());
-		productService.create(dto, category);
+		productService.create(dto, category, partner.getId());
 	}
 
 	public void updateProduct(Long productId, ProductRequestDto.Put dto) {
+		Partner partner = partnerService.getPartner(dto.getPartnerAuthId());
 		Product product = productService.getProduct(productId);
 
-		if (!product.getPartnerId().equals(dto.getPartnerId())) {
+		if (!product.getPartnerId().equals(partner.getId())) {
 			throw new CustomException(ErrorCode.PRODUCT_ACCESS_DENIED);
 		}
 
@@ -44,8 +46,15 @@ public class ProductFacade {
 		productService.update(product, dto, category);
 	}
 
-	public void deleteProduct(Long productId) {
-		productService.delete(productService.getProduct(productId));
+	public void deleteProduct(Long productId, String partnerAuthId) {
+		Partner partner = partnerService.getPartner(partnerAuthId);
+		Product product = productService.getProduct(productId);
+
+		if (!product.getPartnerId().equals(partner.getId())) {
+			throw new CustomException(ErrorCode.PRODUCT_ACCESS_DENIED);
+		}
+
+		productService.delete(product);
 	}
 
 	public ProductResponseDto.Get getProduct(Long productId) {

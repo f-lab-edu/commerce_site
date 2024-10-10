@@ -24,8 +24,8 @@ public class ProductService {
 	private final CustomProductRepository customProductRepository;
 
 	@Transactional
-	public Product create(ProductRequestDto.Create productRequest, Category category) {
-		return productRepository.save(ProductRequestDto.Create.toEntity(productRequest, category));
+	public Product create(ProductRequestDto.Create productRequest, Category category, Long partnerId) {
+		return productRepository.save(ProductRequestDto.Create.toEntity(productRequest, category, partnerId));
 	}
 
 	@Transactional(readOnly = true)

@@ -61,8 +61,15 @@ auth:
   exclude:
     post:
       - /users/keycloak/webhook
+      - /partners/keycloak/webhook
+      - /partners
     get:
       - /auth/**
     web:
       - /swagger-ui/**
       - /api-docs/**
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG

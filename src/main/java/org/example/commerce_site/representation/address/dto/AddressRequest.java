@@ -1,9 +1,8 @@
-package org.example.commerce_site.representation.address.request;
+package org.example.commerce_site.representation.address.dto;
 
 import org.example.commerce_site.application.address.dto.AddressRequestDto;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -13,10 +12,6 @@ public class AddressRequest {
 	@Getter
 	@ToString
 	public static class Create {
-		@NotNull(message = "User ID cannot be null")
-		//TODO 토큰에서 가져오는 것으로 수정
-		private Long userId;
-
 		@NotBlank(message = "Phone number cannot be blank")
 		@Pattern(regexp = "^01[0-9]-\\d{4}-\\d{4}$", message = "Phone number must be 10-11 digits")
 		private String phoneNumber;
@@ -46,9 +41,9 @@ public class AddressRequest {
 
 		private Boolean isPrimary;
 
-		public static AddressRequestDto.Create toDto(AddressRequest.Create request) {
+		public static AddressRequestDto.Create toDto(AddressRequest.Create request, String userAuthId) {
 			return AddressRequestDto.Create.builder()
-				.userId(request.getUserId())
+				.userAuthId(userAuthId)
 				.phoneNumber(request.getPhoneNumber())
 				.addressType(request.getAddressType())
 				.postalCode(request.getPostalCode())
