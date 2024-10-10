@@ -12,8 +12,6 @@ public class ProductRequest {
 	@ToString
 	public static class Create {
 		@NotNull
-		private Long partnerId;
-		@NotNull
 		private Long categoryId;
 		@NotBlank
 		private String name;
@@ -23,9 +21,9 @@ public class ProductRequest {
 		@NotNull
 		private Long stockQuantity;
 
-		public static ProductRequestDto.Create toDTO(ProductRequest.Create request) {
+		public static ProductRequestDto.Create toDTO(ProductRequest.Create request, String partnerAuthId) {
 			return ProductRequestDto.Create.builder()
-				.partnerId(request.getPartnerId())
+				.partnerId(partnerAuthId)
 				.categoryId(request.getCategoryId())
 				.name(request.getName())
 				.description(request.getDescription())
@@ -38,9 +36,6 @@ public class ProductRequest {
 	@Getter
 	@ToString
 	public static class Update {
-		@NotNull
-		//TODO : 추후 access token 에서 파싱하도록 수정
-		private Long partnerId;
 		private Long categoryId;
 		private String name;
 		private String description;
@@ -48,9 +43,9 @@ public class ProductRequest {
 		private Long stockQuantity;
 		private Boolean isEnable;
 
-		public static ProductRequestDto.Put toDTO(Update request) {
+		public static ProductRequestDto.Put toDTO(Update request, String partnerAuthId) {
 			return ProductRequestDto.Put.builder()
-				.partnerId(request.getPartnerId())
+				.partnerId(partnerAuthId)
 				.categoryId(request.getCategoryId())
 				.name(request.getName())
 				.description(request.getDescription())

@@ -12,16 +12,16 @@ public class ProductRequestDto {
 	@Builder
 	@ToString
 	public static class Create {
-		private Long partnerId;
+		private String partnerId;
 		private Long categoryId;
 		private String name;
 		private String description;
 		private Long price;
 		private Long stockQuantity;
 
-		public static Product toEntity(ProductRequestDto.Create dto, Category category) {
+		public static Product toEntity(ProductRequestDto.Create dto, Category category, Long partnerId) {
 			return Product.builder()
-				.partnerId(dto.getPartnerId())
+				.partnerId(partnerId)
 				.category(category)
 				.name(dto.getName())
 				.description(dto.getDescription())
@@ -37,7 +37,7 @@ public class ProductRequestDto {
 	@Builder
 	@ToString
 	public static class Put {
-		private Long partnerId;
+		private String partnerAuthId;
 		private Long categoryId;
 		private String name;
 		private String description;
