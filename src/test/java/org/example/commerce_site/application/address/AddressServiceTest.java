@@ -29,13 +29,8 @@ class AddressServiceTest {
 	@Mock
 	private AddressRepository addressRepository;
 
-	private User user;
-
-	@BeforeEach
-	void setUp() {
-		user = User.builder().id(1L).authId("testAuth").email("test@test.com").build();
-	}
-
+	private User user = User.builder().id(1L).authId("testAuth").email("test@test.com").build();
+	
 	@Test
 	void create_ShouldCreateAddress() {
 		AddressRequestDto.Create dto = AddressRequestDto.Create.builder()
