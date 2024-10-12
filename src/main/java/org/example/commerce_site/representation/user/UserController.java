@@ -21,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 public class UserController {
 	private final UserService userService;
 	private final KeycloakProperties keycloakProperties;
+
 	@PostMapping("/keycloak/webhook")
 	public void createUser(
 		@RequestHeader("X-API-KEY") String apiKey,

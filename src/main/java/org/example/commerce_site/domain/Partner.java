@@ -20,9 +20,17 @@ import lombok.NoArgsConstructor;
 @Table(name = "partners")
 public class Partner extends BaseTimeEntity {
 	private String name;
+	private String authId;
 	private String businessNumber;
-	private String password;
 	private String email;
 	@Enumerated(EnumType.STRING)
 	private PartnerStatus status;
+
+	public void updateStatus(PartnerStatus partnerStatus) {
+		this.status = partnerStatus;
+	}
+
+	public void updateAuthId(String authId) {
+		this.authId = authId;
+	}
 }

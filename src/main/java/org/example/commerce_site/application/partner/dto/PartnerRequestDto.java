@@ -12,18 +12,30 @@ public class PartnerRequestDto {
 	@Builder
 	@ToString
 	public static class Create {
-		private String name;
+		private String firstName;
+		private String lastName;
 		private String email;
+		private String shopName;
 		private String password;
 		private String businessNumber;
+	}
 
-		public static Partner toEntity(PartnerRequestDto.Create dto) {
+	@Getter
+	@Builder
+	@ToString
+	public static class CreateWebHook {
+		private String id;
+		private String name;
+		private String email;
+		private String bizId;
+
+		public static Partner toEntity(PartnerRequestDto.CreateWebHook dto) {
 			return Partner.builder()
 				.name(dto.getName())
+				.authId(dto.getId())
 				.email(dto.getEmail())
-				.password(dto.getPassword())
+				.businessNumber(dto.getBizId())
 				.status(PartnerStatus.ACTIVE)
-				.businessNumber(dto.getBusinessNumber())
 				.build();
 		}
 	}
