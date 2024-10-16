@@ -31,6 +31,13 @@ public class PartnerService {
 		);
 	}
 
+	@Transactional(readOnly = true)
+	public Partner getPartner(String partnerAuthId) {
+		return partnerRepository.findByAuthId(partnerAuthId).orElseThrow(
+			() -> new CustomException(ErrorCode.PARTNER_NOT_FOUND)
+		);
+	}
+
 	@Transactional
 	public void updatePartnerStatusActive(UserRequestDto.Create dto) {
 		Partner partner = partnerRepository.findByEmail(dto.getEmail()).orElseThrow(

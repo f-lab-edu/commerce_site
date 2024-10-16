@@ -12,7 +12,7 @@ public class AddressRequestDto {
 	@Builder
 	@ToString
 	public static class Create {
-		private Long userId;
+		private String userAuthId;
 		private String phoneNumber;
 		private String addressType;
 		private String postalCode;

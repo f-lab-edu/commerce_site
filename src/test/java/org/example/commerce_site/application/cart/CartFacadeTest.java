@@ -8,6 +8,8 @@ import org.example.commerce_site.application.cart.dto.CartRequestDto;
 import org.example.commerce_site.application.cart.dto.CartResponseDto;
 import org.example.commerce_site.application.product.ProductService;
 import org.example.commerce_site.application.user.UserService;
+import org.example.commerce_site.domain.Product;
+import org.example.commerce_site.domain.User;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -32,58 +34,67 @@ class CartFacadeTest {
 	@InjectMocks
 	private CartFacade cartFacade;
 
+	private User user = User.builder().id(1L).authId("testAuth").build();
+
 	@Test
 	void create_ShouldCreateCart() {
 		CartRequestDto.Create createDto = CartRequestDto.Create.builder()
-			.userId(1L)
+			.userAuthId("testAuth")
 			.productId(1L)
 			.build();
 
+		when(userService.getUser(createDto.getUserAuthId())).thenReturn(user);
+		Product product = new Product();
+		when(productService.getProduct(createDto.getProductId())).thenReturn(product);
+
 		cartFacade.create(createDto);
 
-		verify(userService).getUser(createDto.getUserId());
+		verify(userService).getUser(createDto.getUserAuthId());
 		verify(productService).getProduct(createDto.getProductId());
-		verify(cartService).create(createDto);
+		verify(cartService).create(createDto, user, product);
 	}
 
 	@Test
 	void delete_ShouldDeleteCart() {
 		CartRequestDto.Delete deleteDto = CartRequestDto.Delete.builder()
-			.userId(1L)
+			.userAuthId("testAuth")
 			.build();
+		when(userService.getUser(deleteDto.getUserAuthId())).thenReturn(user);
 
 		cartFacade.delete(deleteDto);
 
-		verify(userService).getUser(deleteDto.getUserId());
-		verify(cartService).delete(deleteDto);
+		verify(userService).getUser(deleteDto.getUserAuthId());
+		verify(cartService).delete(deleteDto, user);
 	}
 
 	@Test
 	void update_ShouldUpdateCart() {
 		CartRequestDto.Update updateDto = CartRequestDto.Update.builder()
-			.userId(1L)
+			.userAuthId("testAuth")
 			.build();
+		when(userService.getUser(updateDto.getUserAuthId())).thenReturn(user);
 
 		cartFacade.update(updateDto);
 
-		verify(userService).getUser(updateDto.getUserId());
-		verify(cartService).update(updateDto);
+		verify(userService).getUser(updateDto.getUserAuthId());
+		verify(cartService).update(updateDto, user);
 	}
 
 	@Test
 	void get_ShouldReturnAddressList() {
-		// given
+		String userAuthId = "testAuth";
 		Long userId = 1L;
 		int page = 0;
 		int size = 10;
 		PageRequest pageRequest = PageRequest.of(page, size);
 		Page<CartResponseDto.Get> cartList = new PageImpl<>(Collections.emptyList());
 
+		when(userService.getUser(userAuthId)).thenReturn(user);
 		when(cartService.getList(userId, pageRequest)).thenReturn(cartList);
 
-		cartFacade.getList(userId, page, size);
+		Page<CartResponseDto.Get> result = cartFacade.getList(userAuthId, page, size);
 
-		verify(userService).getUser(userId);
+		verify(userService).getUser(userAuthId);
 		verify(cartService).getList(userId, pageRequest);
 	}
 }

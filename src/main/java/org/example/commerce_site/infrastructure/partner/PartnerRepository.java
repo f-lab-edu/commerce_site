@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PartnerRepository extends JpaRepository<Partner, Long> {
 	Optional<Partner> findByEmail(String email);
+
+	Optional<Partner> findByAuthId(String partnerAuthId);
 }
