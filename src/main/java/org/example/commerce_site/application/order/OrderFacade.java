@@ -5,6 +5,7 @@ import java.util.List;
 import org.example.commerce_site.application.address.AddressService;
 import org.example.commerce_site.application.order.dto.OrderDetailResponseDto;
 import org.example.commerce_site.application.order.dto.OrderRequestDto;
+import org.example.commerce_site.application.product.ProductService;
 import org.example.commerce_site.application.shipment.ShipmentService;
 import org.example.commerce_site.application.user.UserService;
 import org.example.commerce_site.domain.Address;
@@ -23,12 +24,13 @@ public class OrderFacade {
 	private final OrderDetailService orderDetailService;
 	private final ShipmentService shipmentService;
 	private final AddressService addressService;
+	private final ProductService productService;
 
 	@Transactional
 	public void create(OrderRequestDto.Create dto) {
-		User user = userService.getUser(dto.getUserId());
-		//TODO 상품의 수량이 없어서 또는 상태 변경으로 구매하지 못할 경우에 대한 검증이 필요함
-		Order order = orderService.createOrder(dto);
+		User user = userService.getUser(dto.getUserAuthId());
+		productService.updateStock(dto.getDetails());
+		Order order = orderService.createOrder(dto, user.getId());
 		orderDetailService.createOrderDetails(dto.getDetails(), order);
 		List<OrderDetailResponseDto.Get> orderDetails = orderDetailService.getOrderDetails(order.getId());
 		Address address = addressService.getAddress(dto.getAddressId(), user);

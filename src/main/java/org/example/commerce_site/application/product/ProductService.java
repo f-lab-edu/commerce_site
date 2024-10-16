@@ -1,5 +1,11 @@
 package org.example.commerce_site.application.product;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import org.example.commerce_site.application.order.dto.OrderRequestDto;
 import org.example.commerce_site.application.product.dto.ProductRequestDto;
 import org.example.commerce_site.application.product.dto.ProductResponseDto;
 import org.example.commerce_site.common.exception.CustomException;
@@ -46,8 +52,39 @@ public class ProductService {
 		productRepository.delete(product);
 	}
 
+	@Transactional(readOnly = true)
 	public Page<ProductResponseDto.Get> getProductList(PageRequest of, String keyword, Long categoryId,
 		Long partnerId) {
 		return customProductRepository.getProducts(of, keyword, categoryId, partnerId);
+	}
+
+	@Transactional
+	public void updateStock(List<OrderRequestDto.CreateDetail> details) {
+		List<Long> productIds = details.stream()
+			.map(OrderRequestDto.CreateDetail::getProductId)
+			.toList();
+
+		List<Product> products = productRepository.findByIdIn(productIds);
+
+		Map<Long, Product> productMap = products.stream()
+			.collect(Collectors.toMap(Product::getId, product -> product));
+
+		for (OrderRequestDto.CreateDetail detail : details) {
+			Product product = productMap.get(detail.getProductId());
+
+			if (product == null) {
+				throw new CustomException(ErrorCode.PRODUCT_NOT_FOUND);
+			}
+
+			long newStockQuantity = product.getStockQuantity() - detail.getQuantity();
+
+			if (newStockQuantity < 0) {
+				throw new CustomException(ErrorCode.PRODUCT_OUT_OF_STOCK);
+			}
+
+			product.updateQuantity(newStockQuantity);
+		}
+
+		productRepository.saveAll(products);
 	}
 }

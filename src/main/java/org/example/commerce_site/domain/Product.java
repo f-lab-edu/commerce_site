@@ -54,4 +54,8 @@ public class Product extends BaseTimeEntity {
 		this.isEnable = dto.getIsEnable() != null ? dto.getIsEnable() : this.isEnable;
 		this.category = category != null ? category : this.category;
 	}
+
+	public void updateQuantity(Long stockQuantity) {
+		this.stockQuantity = stockQuantity;
+	}
 }
