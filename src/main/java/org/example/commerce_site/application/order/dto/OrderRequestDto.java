@@ -16,14 +16,14 @@ public class OrderRequestDto {
 	@Getter
 	@Builder
 	public static class Create {
-		private Long userId;
+		private String userAuthId;
 		private BigDecimal totalAmount;
 		private List<OrderRequestDto.CreateDetail> details;
 		private Long addressId;
 
-		public static Order toEntity(OrderRequestDto.Create dto) {
+		public static Order toEntity(OrderRequestDto.Create dto, Long userId) {
 			return Order.builder()
-				.userId(dto.getUserId())
+				.userId(userId)
 				.totalAmount(dto.getTotalAmount())
 				.status(OrderStatus.PENDING)
 				.build();

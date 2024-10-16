@@ -35,11 +35,11 @@ class OrderServiceTest {
 		details.add(detailDto2);
 
 		OrderRequestDto.Create createDto = OrderRequestDto.Create.builder()
-			.userId(1L).addressId(1L).totalAmount(new BigDecimal(10000)).details(details).build();
+			.userAuthId("Test Auth").addressId(1L).totalAmount(new BigDecimal(10000)).details(details).build();
 
 		Order order = Order.builder().id(1L).userId(1L).build();
 		when(orderRepository.save(any(Order.class))).thenReturn(order);
-		orderService.createOrder(createDto);
+		orderService.createOrder(createDto, 1L);
 		verify(orderRepository).save(any(Order.class));
 	}
 
