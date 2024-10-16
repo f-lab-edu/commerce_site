@@ -70,8 +70,6 @@ public class SecurityConfig {
 		var roles = (Map<String, Object>)resourceAccess.get("oauth2-client-app");
 
 		if (roles != null) {
-			log.info(roles.toString());
-
 			var roleList = (List<String>)roles.get("roles");
 			return roleList.stream()
 				.map(role -> new SimpleGrantedAuthority(role))
