@@ -14,5 +14,5 @@ import jakarta.persistence.LockModeType;
 public interface ProductRepository extends JpaRepository<Product, Long> {
 	@Lock(LockModeType.PESSIMISTIC_WRITE)
 	@Query("SELECT p FROM Product p WHERE p.id IN :productIds")
-	List<Product> findByIdIn(List<Long> productIds);
+	List<Product> findByIdInWithLock(List<Long> productIds);
 }

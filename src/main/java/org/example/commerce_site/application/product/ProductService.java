@@ -1,6 +1,5 @@
 package org.example.commerce_site.application.product;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -64,7 +63,7 @@ public class ProductService {
 			.map(OrderRequestDto.CreateDetail::getProductId)
 			.toList();
 
-		List<Product> products = productRepository.findByIdIn(productIds);
+		List<Product> products = productRepository.findByIdInWithLock(productIds);
 
 		Map<Long, Product> productMap = products.stream()
 			.collect(Collectors.toMap(Product::getId, product -> product));
