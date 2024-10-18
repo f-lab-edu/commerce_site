@@ -18,9 +18,9 @@ public class OrderRequest {
 		@NotNull
 		private Long addressId;
 
-		public static OrderRequestDto.Create toDto(OrderRequest.Create request, Long userId) {
+		public static OrderRequestDto.Create toDto(OrderRequest.Create request, String userId) {
 			return OrderRequestDto.Create.builder()
-				.userId(userId)
+				.userAuthId(userId)
 				.totalAmount(request.getTotalAmount())
 				.details(CreateDetail.toDtos(request.getDetails()))
 				.addressId(request.getAddressId())
