@@ -14,13 +14,13 @@ public class CartRequestDto {
 	@Builder
 	@ToString
 	public static class Create {
-		private Long userId;
+		private String userAuthId;
 		private Long productId;
 		private Long quantity;
 
-		public static Cart toEntity(Create dto) {
+		public static Cart toEntity(Create dto, Long userId) {
 			return Cart.builder()
-				.userId(dto.getUserId())
+				.userId(userId)
 				.productId(dto.getProductId())
 				.quantity(dto.getQuantity())
 				.build();
@@ -31,7 +31,7 @@ public class CartRequestDto {
 	@Builder
 	@ToString
 	public static class Update {
-		private Long userId;
+		private String userAuthId;
 		private HashMap<Long, Long> productsMap;
 	}
 
@@ -39,7 +39,7 @@ public class CartRequestDto {
 	@Builder
 	@ToString
 	public static class Delete {
-		private Long userId;
+		private String userAuthId;
 		private List<Long> productIds;
 	}
 }

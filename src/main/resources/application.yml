@@ -68,3 +68,8 @@ auth:
     web:
       - /swagger-ui/**
       - /api-docs/**
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG

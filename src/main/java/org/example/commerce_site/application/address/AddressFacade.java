@@ -18,26 +18,26 @@ public class AddressFacade {
 	private final UserService userService;
 
 	public void create(AddressRequestDto.Create dto) {
-		User user = userService.getUser(dto.getUserId());
+		User user = userService.getUser(dto.getUserAuthId());
 		if (dto.getIsPrimary()) {
 			addressService.updatePrimary(user, Boolean.FALSE);
 		}
 		AddressResponseDto.Get.of(addressService.createAddress(dto, user));
 	}
 
-	public AddressResponseDto.Get get(Long addressId, Long userId) {
-		User user = userService.getUser(userId);
+	public AddressResponseDto.Get get(Long addressId, String userAuthId) {
+		User user = userService.getUser(userAuthId);
 		return AddressResponseDto.Get.of(addressService.getAddress(addressId, user));
 	}
 
-	public Page<AddressResponseDto.Get> getList(Long userId, int page, int pageSize) {
-		User user = userService.getUser(userId);
+	public Page<AddressResponseDto.Get> getList(String userAuthId, int page, int pageSize) {
+		User user = userService.getUser(userAuthId);
 		Page<Address> addressPage = addressService.getAddressesByUser(user, PageRequest.of(page, pageSize));
 		return AddressResponseDto.Get.of(addressPage);
 	}
 
-	public void delete(Long userId, Long addressId) {
-		User user = userService.getUser(userId);
+	public void delete(String userAuthId, Long addressId) {
+		User user = userService.getUser(userAuthId);
 		addressService.deleteAddress(addressId, user);
 	}
 }

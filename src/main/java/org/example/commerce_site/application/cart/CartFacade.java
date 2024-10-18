@@ -4,6 +4,8 @@ import org.example.commerce_site.application.cart.dto.CartRequestDto;
 import org.example.commerce_site.application.cart.dto.CartResponseDto;
 import org.example.commerce_site.application.product.ProductService;
 import org.example.commerce_site.application.user.UserService;
+import org.example.commerce_site.domain.Product;
+import org.example.commerce_site.domain.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -18,23 +20,23 @@ public class CartFacade {
 	private final ProductService productService;
 
 	public void create(CartRequestDto.Create dto) {
-		userService.getUser(dto.getUserId());
-		productService.getProduct(dto.getProductId());
-		cartService.create(dto);
+		User user = userService.getUser(dto.getUserAuthId());
+		Product product = productService.getProduct(dto.getProductId());
+		cartService.create(dto, user, product);
 	}
 
 	public void delete(CartRequestDto.Delete dto) {
-		userService.getUser(dto.getUserId());
-		cartService.delete(dto);
+		User user = userService.getUser(dto.getUserAuthId());
+		cartService.delete(dto, user);
 	}
 
 	public void update(CartRequestDto.Update dto) {
-		userService.getUser(dto.getUserId());
-		cartService.update(dto);
+		User user = userService.getUser(dto.getUserAuthId());
+		cartService.update(dto, user);
 	}
 
-	public Page<CartResponseDto.Get> getList(Long userId, int page, int size) {
-		userService.getUser(userId);
-		return cartService.getList(userId, PageRequest.of(page, size));
+	public Page<CartResponseDto.Get> getList(String userAuthId, int page, int size) {
+		User user = userService.getUser(userAuthId);
+		return cartService.getList(user.getId(), PageRequest.of(page, size));
 	}
 }

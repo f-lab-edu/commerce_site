@@ -51,15 +51,16 @@ class ProductServiceTest {
 	void create_ShouldCreateProduct() {
 		ProductRequestDto.Create dto = ProductRequestDto.Create.builder()
 			.name("Test Product")
+			.partnerAuthId("testAuth")
 			.categoryId(1L)
 			.build();
 
 		Category category = new Category();
-		Product createdProduct = ProductRequestDto.Create.toEntity(dto, category);
+		Product createdProduct = ProductRequestDto.Create.toEntity(dto, category, 1L);
 
 		when(productRepository.save(any(Product.class))).thenReturn(createdProduct);
 
-		Product result = productService.create(dto, category);
+		Product result = productService.create(dto, category, 1L);
 
 		assertNotNull(result);
 		assertEquals(dto.getName(), result.getName());
@@ -92,7 +93,7 @@ class ProductServiceTest {
 	void update_ShouldUpdateProduct() {
 		ProductRequestDto.Put dto = ProductRequestDto.Put.builder()
 			.categoryId(1L)
-			.partnerId(partnerId)
+			.partnerAuthId("testAuth")
 			.build();
 
 		Category category = new Category();
