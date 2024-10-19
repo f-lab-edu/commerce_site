@@ -16,8 +16,8 @@ public class OrderService {
 	private final OrderRepository orderRepository;
 
 	@Transactional
-	public Order createOrder(OrderRequestDto.Create dto) {
-		return orderRepository.save(OrderRequestDto.Create.toEntity(dto));
+	public Order createOrder(OrderRequestDto.Create dto, Long userId) {
+		return orderRepository.save(OrderRequestDto.Create.toEntity(dto, userId));
 	}
 
 	@Transactional(readOnly = true)
