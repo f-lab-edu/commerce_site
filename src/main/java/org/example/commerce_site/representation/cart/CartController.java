@@ -1,10 +1,10 @@
 package org.example.commerce_site.representation.cart;
 
 import org.example.commerce_site.application.cart.CartFacade;
+import org.example.commerce_site.common.auth.UserCheck;
 import org.example.commerce_site.common.response.ApiSuccessResponse;
 import org.example.commerce_site.representation.cart.dto.CartRequest;
 import org.example.commerce_site.representation.cart.dto.CartResponse;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -21,10 +21,10 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/carts")
-@PreAuthorize("hasAuthority('ROLE_USER')")
 public class CartController {
 	private final CartFacade cartFacade;
 
+	@UserCheck
 	@PostMapping()
 	public ApiSuccessResponse createCart(
 		@RequestAttribute("userId") String userAuthId,
@@ -33,6 +33,7 @@ public class CartController {
 		return ApiSuccessResponse.success();
 	}
 
+	@UserCheck
 	@DeleteMapping()
 	public ApiSuccessResponse deleteCart(
 		@RequestAttribute("userId") String userAuthId,
@@ -41,6 +42,7 @@ public class CartController {
 		return ApiSuccessResponse.success();
 	}
 
+	@UserCheck
 	@PatchMapping()
 	public ApiSuccessResponse updateCart(
 		@RequestAttribute("userId") String userAuthId,
@@ -50,6 +52,7 @@ public class CartController {
 		return ApiSuccessResponse.success();
 	}
 
+	@UserCheck
 	@GetMapping()
 	public ApiSuccessResponse.PageList<CartResponse.Get> getCart(
 		@RequestAttribute("userId") String userAuthId,

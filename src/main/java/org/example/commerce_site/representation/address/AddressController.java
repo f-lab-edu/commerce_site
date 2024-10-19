@@ -1,10 +1,10 @@
 package org.example.commerce_site.representation.address;
 
 import org.example.commerce_site.application.address.AddressFacade;
+import org.example.commerce_site.common.auth.UserCheck;
 import org.example.commerce_site.common.response.ApiSuccessResponse;
 import org.example.commerce_site.representation.address.dto.AddressRequest;
 import org.example.commerce_site.representation.address.dto.AddressResponse;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,7 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 public class AddressController {
 	private final AddressFacade addressFacade;
 
-	@PreAuthorize("hasAuthority('ROLE_USER')")
+	@UserCheck
 	@PostMapping()
 	public ApiSuccessResponse createAddrss(
 		@Valid @RequestBody AddressRequest.Create request,
@@ -35,7 +35,7 @@ public class AddressController {
 		return ApiSuccessResponse.success();
 	}
 
-	@PreAuthorize("hasAuthority('ROLE_USER')")
+	@UserCheck
 	@GetMapping("/{address_id}")
 	public ApiSuccessResponse<AddressResponse.Get> getAddress(
 		@RequestAttribute("userId") String userAuthId,
@@ -44,7 +44,7 @@ public class AddressController {
 			AddressResponse.Get.of(addressFacade.get(addressId, userAuthId)));
 	}
 
-	@PreAuthorize("hasAuthority('ROLE_USER')")
+	@UserCheck
 	@GetMapping()
 	public ApiSuccessResponse.PageList<AddressResponse.Get> getAddresses(
 		@RequestAttribute("userId") String userAuthId,
@@ -53,7 +53,7 @@ public class AddressController {
 		return ApiSuccessResponse.success(AddressResponse.Get.of(addressFacade.getList(userAuthId, page - 1, size)));
 	}
 
-	@PreAuthorize("hasAuthority('ROLE_USER')")
+	@UserCheck
 	@DeleteMapping("/{address_id}")
 	public ApiSuccessResponse deleteAddress(
 		@RequestAttribute("userId") String userAuthId,
