@@ -1,5 +1,7 @@
 package org.example.commerce_site.common.util;
 
+import org.example.commerce_site.common.exception.CustomException;
+import org.example.commerce_site.common.exception.ErrorCode;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtException;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
@@ -19,7 +21,7 @@ public class JwtUtil {
 			return jwtDecoder.decode(token);
 		} catch (JwtException e) {
 			log.error(e.getMessage());
-			throw new JwtException(e.getMessage());
+			throw new CustomException(ErrorCode.JWT_DECODING_ERROR);
 		}
 	}
 }
