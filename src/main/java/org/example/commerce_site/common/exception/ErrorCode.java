@@ -30,6 +30,7 @@ public enum ErrorCode {
 
 	//order
 	ORDER_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "주문 정보를 찾을 수 없습니다."),
+	ORDER_ALREADY_SHIPPED(HttpStatus.BAD_REQUEST, 400, "주문이 이미 배송중입니다."),
 
 	//partner
 	PARTNER_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "파트너 회원 정보를 찾을 수 없습니다."),

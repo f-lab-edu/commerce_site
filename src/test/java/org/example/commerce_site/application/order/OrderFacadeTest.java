@@ -66,7 +66,7 @@ class OrderFacadeTest {
 		orderFacade.create(dto);
 
 		verify(userService).getUser(dto.getUserAuthId());
-		verify(productService).updateStock(dto.getDetails());
+		verify(productService).decreaseStockOnPurchase(dto.getDetails());
 		verify(orderService).createOrder(eq(dto), eq(userId)); // 매처 사용
 		verify(orderDetailService).createOrderDetails(dto.getDetails(), order);
 		verify(orderDetailService).getOrderDetails(order.getId());
