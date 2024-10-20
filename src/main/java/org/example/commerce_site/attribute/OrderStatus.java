@@ -16,7 +16,7 @@ public enum OrderStatus {
 		this.phase = phase;
 	}
 
-	public boolean isPhaseCanCancelOrder(OrderStatus orderStatus) {
+	public static boolean isPhaseCanCancelOrder(OrderStatus orderStatus) {
 		if (orderStatus == PENDING || orderStatus == CONFIRMED) {
 			return true;
 		} else {

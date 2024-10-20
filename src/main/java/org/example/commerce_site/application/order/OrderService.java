@@ -1,6 +1,7 @@
 package org.example.commerce_site.application.order;
 
 import org.example.commerce_site.application.order.dto.OrderRequestDto;
+import org.example.commerce_site.attribute.OrderStatus;
 import org.example.commerce_site.common.exception.CustomException;
 import org.example.commerce_site.common.exception.ErrorCode;
 import org.example.commerce_site.domain.Order;
@@ -25,5 +26,11 @@ public class OrderService {
 		return orderRepository.findByIdAndUserId(orderId, userId).orElseThrow(
 			() -> new CustomException(ErrorCode.ORDER_NOT_FOUND)
 		);
+	}
+
+	@Transactional
+	public void cancelOrder(Order order) {
+		order.updateOrderStatus(OrderStatus.CANCELLED);
+		orderRepository.save(order);
 	}
 }
