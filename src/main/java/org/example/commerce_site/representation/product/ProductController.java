@@ -1,10 +1,10 @@
 package org.example.commerce_site.representation.product;
 
 import org.example.commerce_site.application.product.ProductFacade;
+import org.example.commerce_site.common.auth.PartnerCheck;
 import org.example.commerce_site.common.response.ApiSuccessResponse;
 import org.example.commerce_site.representation.product.request.ProductRequest;
 import org.example.commerce_site.representation.product.response.ProductResponse;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -25,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 public class ProductController {
 	private final ProductFacade productFacade;
 
-	@PreAuthorize("hasAuthority('ROLE_PARTNER')")
+	@PartnerCheck
 	@PostMapping()
 	public ApiSuccessResponse createProduct(
 		@Valid @RequestBody ProductRequest.Create request,
@@ -34,7 +34,7 @@ public class ProductController {
 		return ApiSuccessResponse.success();
 	}
 
-	@PreAuthorize("hasAuthority('ROLE_PARTNER')")
+	@PartnerCheck
 	@PatchMapping("/{product_id}")
 	public ApiSuccessResponse updateProduct(
 		@PathVariable(name = "product_id") Long productId,
@@ -45,7 +45,7 @@ public class ProductController {
 		return ApiSuccessResponse.success();
 	}
 
-	@PreAuthorize("hasAuthority('ROLE_PARTNER')")
+	@PartnerCheck
 	@DeleteMapping("/{product_id}")
 	public ApiSuccessResponse deleteProduct(
 		@PathVariable(name = "product_id") Long productId,

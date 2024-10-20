@@ -1,9 +1,9 @@
 package org.example.commerce_site.representation.order;
 
 import org.example.commerce_site.application.order.OrderFacade;
+import org.example.commerce_site.common.auth.UserCheck;
 import org.example.commerce_site.common.response.ApiSuccessResponse;
 import org.example.commerce_site.representation.order.request.OrderRequest;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 public class OrderController {
 	private final OrderFacade orderFacade;
 
+	@UserCheck
 	@PostMapping()
 	public ApiSuccessResponse createOrder(
 		@RequestAttribute("userId") String userAuthId,

@@ -1,9 +1,9 @@
 package org.example.commerce_site.representation.payment;
 
 import org.example.commerce_site.application.payment.PaymentFacade;
+import org.example.commerce_site.common.auth.UserCheck;
 import org.example.commerce_site.common.response.ApiSuccessResponse;
 import org.example.commerce_site.representation.payment.dto.PaymentRequest;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -18,10 +18,10 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/payments")
-@PreAuthorize("hasAuthority('ROLE_USER')")
 public class PaymentController {
 	private final PaymentFacade paymentFacade;
 
+	@UserCheck
 	@PostMapping("/{order_id}")
 	public ApiSuccessResponse createPayment(
 		@PathVariable("order_id") Long orderId,
