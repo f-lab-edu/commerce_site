@@ -31,6 +31,8 @@ public enum ErrorCode {
 	//order
 	ORDER_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "주문 정보를 찾을 수 없습니다."),
 	ORDER_ALREADY_SHIPPED(HttpStatus.BAD_REQUEST, 400, "주문이 이미 배송중입니다."),
+	ORDER_DETAIL_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "주문 상세 정보를 찾을 수 없습니다."),
+	ORDER_CAN_NOT_UPDATE_TRACK_CODE(HttpStatus.BAD_REQUEST, 400, "배송 정보를 입력할 수 없는 단계입니다."),
 
 	//partner
 	PARTNER_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "파트너 회원 정보를 찾을 수 없습니다."),
@@ -41,7 +43,10 @@ public enum ErrorCode {
 	PRODUCT_OUT_OF_STOCK(HttpStatus.CONFLICT, 409, "상품의 재고가 부족합니다"),
 
 	//category
-	CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "카테고리 정보를 찾을 수 없습니다.");
+	CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "카테고리 정보를 찾을 수 없습니다."),
+
+	//shipment
+	SHIPMENT_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "배송 정보를 찾을 수 없습니다.");
 
 	private final HttpStatus httpStatus;
 	private final int code;

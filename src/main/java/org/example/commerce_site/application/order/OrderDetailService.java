@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.example.commerce_site.application.order.dto.OrderDetailResponseDto;
 import org.example.commerce_site.application.order.dto.OrderRequestDto;
+import org.example.commerce_site.common.exception.CustomException;
+import org.example.commerce_site.common.exception.ErrorCode;
 import org.example.commerce_site.domain.Order;
 import org.example.commerce_site.domain.OrderDetail;
 import org.example.commerce_site.infrastructure.order.OrderDetailBulkRepository;
@@ -28,8 +30,15 @@ public class OrderDetailService {
 		orderDetailBulkRepository.saveAll(orderDetails, order.getId());
 	}
 
-	@Transactional
+	@Transactional(readOnly = true)
 	public List<OrderDetailResponseDto.Get> getOrderDetails(Long orderId) {
 		return OrderDetailResponseDto.Get.toDtoList(orderDetailRepository.findAllByOrderId(orderId));
+	}
+
+	@Transactional(readOnly = true)
+	public OrderDetail getOrderDetail(Long orderDetailId) {
+		return orderDetailRepository.findById(orderDetailId).orElseThrow(
+			() -> new CustomException(ErrorCode.ORDER_DETAIL_NOT_FOUND)
+		);
 	}
 }

@@ -44,10 +44,10 @@ public class OrderFacade {
 	public void cancel(String userAuthId, Long orderId) {
 		User user = userService.getUser(userAuthId);
 		Order order = orderService.getOrder(orderId, user.getId());
-		if (!OrderStatus.isPhaseCanCancelOrder(order.getStatus())){
+		if (!OrderStatus.isPhaseCanCancelOrder(order.getStatus())) {
 			throw new CustomException(ErrorCode.ORDER_ALREADY_SHIPPED);
 		}
-		orderService.cancelOrder(order);
+		orderService.updateStatus(order, OrderStatus.CANCELLED);
 		List<OrderDetailResponseDto.Get> orderDetails = orderDetailService.getOrderDetails(order.getId());
 		productService.restoreStockOnCancel(orderDetails);
 	}
