@@ -27,7 +27,7 @@ public class CartController {
 
 	@PostMapping()
 	public ApiSuccessResponse createCart(
-		@RequestAttribute("userId") String userAuthId,
+		@RequestAttribute("user_id") String userAuthId,
 		@RequestBody @Valid CartRequest.Create request) {
 		cartFacade.create(CartRequest.Create.toDto(request, userAuthId));
 		return ApiSuccessResponse.success();
@@ -35,7 +35,7 @@ public class CartController {
 
 	@DeleteMapping()
 	public ApiSuccessResponse deleteCart(
-		@RequestAttribute("userId") String userAuthId,
+		@RequestAttribute("user_id") String userAuthId,
 		@RequestBody @Valid CartRequest.Delete request) {
 		cartFacade.delete(CartRequest.Delete.toDto(request, userAuthId));
 		return ApiSuccessResponse.success();
@@ -43,7 +43,7 @@ public class CartController {
 
 	@PatchMapping()
 	public ApiSuccessResponse updateCart(
-		@RequestAttribute("userId") String userAuthId,
+		@RequestAttribute("user_id") String userAuthId,
 		@RequestBody @Valid CartRequest.Update request
 	) {
 		cartFacade.update(CartRequest.Update.toDto(request, userAuthId));
@@ -52,7 +52,7 @@ public class CartController {
 
 	@GetMapping()
 	public ApiSuccessResponse.PageList<CartResponse.Get> getCart(
-		@RequestAttribute("userId") String userAuthId,
+		@RequestAttribute("user_id") String userAuthId,
 		@RequestParam(value = "page", defaultValue = "1") int page,
 		@RequestParam(value = "size", defaultValue = "10") int size
 	) {

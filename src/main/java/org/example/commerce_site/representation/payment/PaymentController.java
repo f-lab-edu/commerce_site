@@ -25,7 +25,7 @@ public class PaymentController {
 	@PostMapping("/{order_id}")
 	public ApiSuccessResponse createPayment(
 		@PathVariable("order_id") Long orderId,
-		@RequestAttribute("userId") String userAuthId,
+		@RequestAttribute("user_id") String userAuthId,
 		@RequestBody PaymentRequest.Create request
 	) {
 		paymentFacade.createPayment(PaymentRequest.Create.toDto(request, orderId, userAuthId));

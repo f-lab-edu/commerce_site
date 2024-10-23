@@ -23,7 +23,7 @@ public class OrderController {
 
 	@PostMapping()
 	public ApiSuccessResponse createOrder(
-		@RequestAttribute("userId") String userAuthId,
+		@RequestAttribute("user_id") String userAuthId,
 		@RequestBody OrderRequest.Create request
 	) {
 		orderFacade.create(OrderRequest.Create.toDto(request, userAuthId));
@@ -32,7 +32,7 @@ public class OrderController {
 
 	@DeleteMapping("/{order_id}")
 	public ApiSuccessResponse cancelOrder(
-		@RequestAttribute("userId") String userAuthId,
+		@RequestAttribute("user_id") String userAuthId,
 		@PathVariable(name = "order_id") Long orderId
 	) {
 		orderFacade.cancel(userAuthId, orderId);

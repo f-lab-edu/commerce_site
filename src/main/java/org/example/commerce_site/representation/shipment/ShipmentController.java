@@ -23,7 +23,7 @@ public class ShipmentController {
 	@PutMapping("/{order_detail_id}")
 	public ApiSuccessResponse updateShipment(
 		@PathVariable("order_detail_id") Long orderDetailId,
-		@RequestAttribute("userId") String userAuthId,
+		@RequestAttribute("user_id") String userAuthId,
 		@RequestBody ShipmentRequest.UpdateTrackingNumber request
 	) {
 		shipmentFacade.updateTrackingCode(
