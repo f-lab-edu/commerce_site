@@ -7,7 +7,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +23,7 @@ public class OrderController {
 
 	@PostMapping()
 	public ApiSuccessResponse createOrder(
-		@RequestAttribute("userId") String userAuthId,
+		@RequestAttribute("user_id") String userAuthId,
 		@RequestBody OrderRequest.Create request
 	) {
 		orderFacade.create(OrderRequest.Create.toDto(request, userAuthId));
@@ -33,7 +32,7 @@ public class OrderController {
 
 	@DeleteMapping("/{order_id}")
 	public ApiSuccessResponse cancelOrder(
-		@RequestAttribute("userId") String userAuthId,
+		@RequestAttribute("user_id") String userAuthId,
 		@PathVariable(name = "order_id") Long orderId
 	) {
 		orderFacade.cancel(userAuthId, orderId);

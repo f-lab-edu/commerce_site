@@ -38,4 +38,12 @@ public class Shipment extends BaseTimeEntity {
 
 	@Enumerated(EnumType.STRING)
 	private ShipmentStatus status;
+
+	public void updateTrackingNumber(String trackingNumber) {
+		this.trackingNumber = trackingNumber;
+	}
+
+	public void updateStatus(ShipmentStatus status) {
+		this.status = status;
+	}
 }

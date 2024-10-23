@@ -29,8 +29,8 @@ public class OrderService {
 	}
 
 	@Transactional
-	public void cancelOrder(Order order) {
-		order.updateOrderStatus(OrderStatus.CANCELLED);
+	public void updateStatus(Order order, OrderStatus orderStatus) {
+		order.updateOrderStatus(orderStatus);
 		orderRepository.save(order);
 	}
 }

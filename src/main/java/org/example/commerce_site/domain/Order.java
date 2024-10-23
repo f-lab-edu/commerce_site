@@ -26,6 +26,7 @@ import lombok.experimental.SuperBuilder;
 public class Order extends BaseTimeEntity {
 	private Long userId;
 	private BigDecimal totalAmount;
+	//TODO : Order status 제거하고 OrderDetail 에 status 를 추가하도록 수정
 	@Enumerated(EnumType.STRING)
 	private OrderStatus status;
 	@OneToMany(mappedBy = "order")
