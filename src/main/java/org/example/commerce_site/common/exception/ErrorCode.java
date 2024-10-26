@@ -17,7 +17,7 @@ public enum ErrorCode {
 	ACCESS_DENIED(HttpStatus.FORBIDDEN, 403, "권한이 부족합니다."),
 	METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, 405, "허용되지 않은 메소드 입니다."),
 	//auth
-	JWT_DECODING_ERROR(HttpStatus.NOT_FOUND, 500, "JWT Decoding error"),
+	JWT_DECODING_ERROR(HttpStatus.NOT_FOUND, 401, "JWT Decoding error"),
 
 	//address
 	ADDRESS_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "배송지 정보를 찾을 수 없습니다."),
