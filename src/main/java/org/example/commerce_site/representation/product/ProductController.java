@@ -29,7 +29,7 @@ public class ProductController {
 	@PostMapping()
 	public ApiSuccessResponse createProduct(
 		@Valid @RequestBody ProductRequest.Create request,
-		@RequestAttribute("userId") String userAuthId) {
+		@RequestAttribute("user_id") String userAuthId) {
 		productFacade.createProduct(ProductRequest.Create.toDTO(request, userAuthId));
 		return ApiSuccessResponse.success();
 	}
@@ -38,7 +38,7 @@ public class ProductController {
 	@PatchMapping("/{product_id}")
 	public ApiSuccessResponse updateProduct(
 		@PathVariable(name = "product_id") Long productId,
-		@RequestAttribute("userId") String userAuthId,
+		@RequestAttribute("user_id") String userAuthId,
 		@Valid @RequestBody ProductRequest.Update request
 	) {
 		productFacade.updateProduct(productId, ProductRequest.Update.toDTO(request, userAuthId));

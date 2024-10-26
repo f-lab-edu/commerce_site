@@ -1,4 +1,4 @@
-package org.example.commerce_site.representation.order.request;
+package org.example.commerce_site.representation.order.dto;
 
 import java.math.BigDecimal;
 import java.util.List;

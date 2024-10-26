@@ -5,6 +5,7 @@ import java.util.List;
 import org.example.commerce_site.application.address.AddressService;
 import org.example.commerce_site.application.order.dto.OrderDetailResponseDto;
 import org.example.commerce_site.application.order.dto.OrderRequestDto;
+import org.example.commerce_site.application.order.dto.OrderResponseDto;
 import org.example.commerce_site.application.product.ProductService;
 import org.example.commerce_site.application.shipment.ShipmentService;
 import org.example.commerce_site.application.user.UserService;
@@ -14,11 +15,15 @@ import org.example.commerce_site.common.exception.ErrorCode;
 import org.example.commerce_site.domain.Address;
 import org.example.commerce_site.domain.Order;
 import org.example.commerce_site.domain.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class OrderFacade {
@@ -50,5 +55,10 @@ public class OrderFacade {
 		orderService.updateStatus(order, OrderStatus.CANCELLED);
 		List<OrderDetailResponseDto.Get> orderDetails = orderDetailService.getOrderDetails(order.getId());
 		productService.restoreStockOnCancel(orderDetails);
+	}
+
+	public Page<OrderResponseDto.Get> getOrderList(int page, int size, String keyword, String userAuthId) {
+		User user = userService.getUser(userAuthId);
+		return orderService.getOrderList(PageRequest.of(page - 1, size), keyword, user.getId());
 	}
 }
