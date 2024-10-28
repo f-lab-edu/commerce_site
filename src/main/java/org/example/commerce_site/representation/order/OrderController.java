@@ -1,10 +1,18 @@
 package org.example.commerce_site.representation.order;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+
 import org.example.commerce_site.application.order.OrderFacade;
+import org.example.commerce_site.common.exception.CustomException;
+import org.example.commerce_site.common.exception.ErrorCode;
 import org.example.commerce_site.common.response.ApiSuccessResponse;
 import org.example.commerce_site.representation.order.dto.OrderRequest;
 import org.example.commerce_site.representation.order.dto.OrderResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,14 +24,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
-@PreAuthorize("hasAuthority('ROLE_USER')")
 @RequestMapping("/orders")
 public class OrderController {
 	private final OrderFacade orderFacade;
 
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	@PostMapping()
 	public ApiSuccessResponse createOrder(
 		@RequestAttribute("user_id") String userAuthId,
@@ -33,6 +43,7 @@ public class OrderController {
 		return ApiSuccessResponse.success();
 	}
 
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	@DeleteMapping("/{order_id}")
 	public ApiSuccessResponse cancelOrder(
 		@RequestAttribute("user_id") String userAuthId,
@@ -49,7 +60,20 @@ public class OrderController {
 		@RequestParam(value = "keyword", required = false) String keyword,
 		@RequestAttribute("user_id") String userAuthId
 	) {
+		Collection<? extends GrantedAuthority> authorities = SecurityContextHolder
+			.getContext()
+			.getAuthentication()
+			.getAuthorities();
+
+		Optional<String> primaryAuthority = authorities.stream()
+			.findFirst()
+			.map(GrantedAuthority::getAuthority);
+
+		if (primaryAuthority.isEmpty()) {
+			throw new CustomException(ErrorCode.ACCESS_DENIED);
+		}
+
 		return ApiSuccessResponse.success(
-			OrderResponse.Get.of(orderFacade.getOrderList(page, size, keyword, userAuthId)));
+			OrderResponse.Get.of(orderFacade.getOrderList(page, size, keyword, userAuthId, primaryAuthority.get())));
 	}
 }

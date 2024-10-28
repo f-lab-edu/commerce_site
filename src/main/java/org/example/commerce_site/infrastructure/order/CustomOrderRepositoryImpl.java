@@ -12,7 +12,9 @@ import org.example.commerce_site.application.order.dto.OrderDetailResponseDto;
 import org.example.commerce_site.application.order.dto.OrderResponseDto;
 import org.example.commerce_site.attribute.OrderStatus;
 import org.example.commerce_site.attribute.ShipmentStatus;
+import org.example.commerce_site.common.domain.IdKeyEntity;
 import org.example.commerce_site.common.util.PageConverter;
+import org.example.commerce_site.domain.Partner;
 import org.flywaydb.core.internal.util.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,16 +34,32 @@ public class CustomOrderRepositoryImpl implements CustomOrderRepository {
 	private final EntityManager entityManager;
 
 	@Override
-	public Page<OrderResponseDto.Get> getOrders(Pageable pageable, String keyword, Long userId) {
+	public <T extends IdKeyEntity> Page<OrderResponseDto.Get> getOrders(Pageable pageable, String keyword, T user) {
+		boolean isPartner = false;
+
+		if (user instanceof Partner) {
+			isPartner = true;
+		}
+
 		StringBuilder sql = new StringBuilder("SELECT o.id, o.total_amount, o.status, " +
 			"od.id AS order_detail_id, od.created_at, od.product_id, od.quantity, " +
 			"od.order_id, od.unit_price, p.name AS product_name, s.status AS shipment_status, " +
-			"s.created_at AS shipment_created_at, s.updated_at AS shipment_updated_at " +
+			"s.created_at AS shipment_created_at, s.updated_at AS shipment_updated_at, " +
+			"a.phone_number AS phone_number, a.postal_code AS postal_code, " +
+			"a.road_address AS road_address, a.jibun_address AS jibun_address, " +
+			"a.address_detail AS address_detail " +
 			"FROM orders o " +
 			"INNER JOIN order_details od ON o.id = od.order_id " +
 			"LEFT JOIN products p ON od.product_id = p.id " +
 			"LEFT JOIN shipments s ON od.id = s.order_detail_id " +
-			"WHERE o.user_id = :userId ");
+			"LEFT JOIN addresses a ON s.address_id = a.id "
+			);
+
+		if (isPartner) {
+		sql.append("WHERE p.partner_id = :partnerId ");
+		} else {
+			sql.append("WHERE o.user_id = :userId ");
+		}
 
 		if (StringUtils.hasText(keyword)) {
 			sql.append("AND p.name IS NOT NULL AND (MATCH(p.name) AGAINST (:keyword IN BOOLEAN MODE) " +
@@ -51,7 +69,13 @@ public class CustomOrderRepositoryImpl implements CustomOrderRepository {
 		sql.append("ORDER BY o.created_at LIMIT :pageSize OFFSET :offset");
 
 		Query query = entityManager.createNativeQuery(sql.toString());
-		query.setParameter("userId", userId);
+
+		if (isPartner) {
+			query.setParameter("partnerId", user.getId());
+		} else {
+			query.setParameter("userId", user.getId());
+		}
+
 		query.setParameter("pageSize", pageable.getPageSize());
 		query.setParameter("offset", pageable.getOffset());
 
@@ -63,21 +87,26 @@ public class CustomOrderRepositoryImpl implements CustomOrderRepository {
 
 		Map<Long, OrderResponseDto.Get> orderMap = new HashMap<>();
 		for (Object[] row : resultList) {
-			Long orderId = (Long) row[0]; // 주문 ID
-			BigDecimal totalAmount = BigDecimal.valueOf((Long) row[1]); // 총 금액
-			OrderStatus orderStatus = OrderStatus.valueOf((String) row[2]); // 주문 상태
+			Long orderId = (Long)row[0]; // 주문 ID
+			BigDecimal totalAmount = BigDecimal.valueOf((Long)row[1]); // 총 금액
+			OrderStatus orderStatus = OrderStatus.valueOf((String)row[2]); // 주문 상태
 
 			OrderDetailResponseDto.GetList orderDetail = new OrderDetailResponseDto.GetList(
-				(Long) row[3], // orderDetailId
-				convertTimestampToLocalDateTime((Timestamp) row[4]), // createdAt
-				(Long) row[5], // productId
-				(Long) row[6], // quantity
-				(Long) row[7], // orderId
-				BigDecimal.valueOf((Long) row[8]), // unitPrice
-				(String) row[9], // productName
-				ShipmentStatus.valueOf((String) row[10]), // shipmentStatus
-				convertTimestampToLocalDateTime((Timestamp) row[11]), // shipmentCreatedAt
-				convertTimestampToLocalDateTime((Timestamp) row[12])  // shipmentUpdatedAt
+				(Long)row[3], // orderDetailId
+				convertTimestampToLocalDateTime((Timestamp)row[4]), // createdAt
+				(Long)row[5], // productId
+				(Long)row[6], // quantity
+				(Long)row[7], // orderId
+				BigDecimal.valueOf((Long)row[8]), // unitPrice
+				(String)row[9], // productName
+				ShipmentStatus.valueOf((String)row[10]), // shipmentStatus
+				convertTimestampToLocalDateTime((Timestamp)row[11]), // shipmentCreatedAt
+				convertTimestampToLocalDateTime((Timestamp)row[12]),  // shipmentUpdatedAt
+				(String)row[13],
+				(String)row[14],
+				(String)row[15],
+				(String)row[16],
+				(String)row[17]
 			);
 
 			OrderResponseDto.Get orderResponse = orderMap.get(orderId);
