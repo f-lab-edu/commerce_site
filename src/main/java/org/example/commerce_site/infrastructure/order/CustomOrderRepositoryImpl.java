@@ -1,79 +1,100 @@
 package org.example.commerce_site.infrastructure.order;
 
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 import org.example.commerce_site.application.order.dto.OrderDetailResponseDto;
 import org.example.commerce_site.application.order.dto.OrderResponseDto;
+import org.example.commerce_site.attribute.OrderStatus;
+import org.example.commerce_site.attribute.ShipmentStatus;
 import org.example.commerce_site.common.util.PageConverter;
-import org.example.commerce_site.domain.QOrder;
-import org.example.commerce_site.domain.QOrderDetail;
-import org.example.commerce_site.domain.QProduct;
-import org.example.commerce_site.domain.QShipment;
+import org.flywaydb.core.internal.util.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.StringUtils;
 
-import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.Projections;
-import com.querydsl.jpa.impl.JPAQueryFactory;
-
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Repository
 @RequiredArgsConstructor
 public class CustomOrderRepositoryImpl implements CustomOrderRepository {
-	private final JPAQueryFactory queryFactory;
+	@PersistenceContext
+	private final EntityManager entityManager;
 
 	@Override
 	public Page<OrderResponseDto.Get> getOrders(Pageable pageable, String keyword, Long userId) {
-		BooleanBuilder builder = new BooleanBuilder();
+		StringBuilder sql = new StringBuilder("SELECT o.id, o.total_amount, o.status, " +
+			"od.id AS order_detail_id, od.created_at, od.product_id, od.quantity, " +
+			"od.order_id, od.unit_price, p.name AS product_name, s.status AS shipment_status, " +
+			"s.created_at AS shipment_created_at, s.updated_at AS shipment_updated_at " +
+			"FROM orders o " +
+			"INNER JOIN order_details od ON o.id = od.order_id " +
+			"LEFT JOIN products p ON od.product_id = p.id " +
+			"LEFT JOIN shipments s ON od.id = s.order_detail_id " +
+			"WHERE o.user_id = :userId ");
 
 		if (StringUtils.hasText(keyword)) {
-			builder.and(QProduct.product.name.contains(keyword));
+			sql.append("AND p.name IS NOT NULL AND (MATCH(p.name) AGAINST (:keyword IN BOOLEAN MODE) " +
+				"OR p.name LIKE CONCAT(:keyword, '%')) ");
 		}
 
-		List<OrderResponseDto.Get> orderList = queryFactory.select(Projections.constructor(OrderResponseDto.Get.class,
-				QOrder.order.id,
-				QOrder.order.totalAmount,
-				QOrder.order.status,
-				Projections.list(Projections.constructor(OrderDetailResponseDto.Get.class,
-					QOrderDetail.orderDetail.createdAt,
-					QOrderDetail.orderDetail.id,
-					QOrderDetail.orderDetail.productId,
-					QOrderDetail.orderDetail.quantity,
-					QOrderDetail.orderDetail.order.id,
-					QOrderDetail.orderDetail.unitPrice,
-					QProduct.product.name,
-					QShipment.shipment.status,
-					QShipment.shipment.createdAt,
-					QShipment.shipment.updatedAt
-				))
-			))
-			.from(QOrder.order)
-			.leftJoin(QOrderDetail.orderDetail).on(QOrder.order.id.eq(QOrderDetail.orderDetail.order.id))
-			.leftJoin(QProduct.product).on(QOrderDetail.orderDetail.productId.eq(QProduct.product.id))
-			.leftJoin(QShipment.shipment).on(QOrderDetail.orderDetail.id.eq(QShipment.shipment.orderDetail.id))
-			.where(QOrder.order.userId.eq(userId).and(builder))
-			.offset(pageable.getOffset())
-			.limit(pageable.getPageSize())
-			.fetch();
+		sql.append("ORDER BY o.created_at LIMIT :pageSize OFFSET :offset");
 
-		List<OrderResponseDto.Get> groupedOrderList = orderList.stream()
-			.collect(Collectors.groupingBy(OrderResponseDto.Get::getId))
-			.values()
-			.stream()
-			.map(orderGroup -> {
-				OrderResponseDto.Get firstOrder = orderGroup.get(0);
-				List<OrderDetailResponseDto.Get> allDetails = orderGroup.stream()
-					.flatMap(order -> order.getOrderDetails().stream())
-					.collect(Collectors.toList());
-				firstOrder.setOrderDetails(allDetails);
-				return firstOrder;
-			})
-			.collect(Collectors.toList());
+		Query query = entityManager.createNativeQuery(sql.toString());
+		query.setParameter("userId", userId);
+		query.setParameter("pageSize", pageable.getPageSize());
+		query.setParameter("offset", pageable.getOffset());
 
-		return PageConverter.getPage(groupedOrderList, pageable);
+		if (StringUtils.hasText(keyword)) {
+			query.setParameter("keyword", keyword);
+		}
+
+		List<Object[]> resultList = query.getResultList();
+
+		Map<Long, OrderResponseDto.Get> orderMap = new HashMap<>();
+		for (Object[] row : resultList) {
+			Long orderId = (Long) row[0]; // 주문 ID
+			BigDecimal totalAmount = BigDecimal.valueOf((Long) row[1]); // 총 금액
+			OrderStatus orderStatus = OrderStatus.valueOf((String) row[2]); // 주문 상태
+
+			OrderDetailResponseDto.GetList orderDetail = new OrderDetailResponseDto.GetList(
+				(Long) row[3], // orderDetailId
+				convertTimestampToLocalDateTime((Timestamp) row[4]), // createdAt
+				(Long) row[5], // productId
+				(Long) row[6], // quantity
+				(Long) row[7], // orderId
+				BigDecimal.valueOf((Long) row[8]), // unitPrice
+				(String) row[9], // productName
+				ShipmentStatus.valueOf((String) row[10]), // shipmentStatus
+				convertTimestampToLocalDateTime((Timestamp) row[11]), // shipmentCreatedAt
+				convertTimestampToLocalDateTime((Timestamp) row[12])  // shipmentUpdatedAt
+			);
+
+			OrderResponseDto.Get orderResponse = orderMap.get(orderId);
+			if (orderResponse == null) {
+				orderResponse = new OrderResponseDto.Get(orderId, totalAmount, orderStatus, new ArrayList<>());
+				orderMap.put(orderId, orderResponse);
+			}
+
+			orderResponse.getOrderDetails().add(orderDetail);
+		}
+
+		List<OrderResponseDto.Get> orderList = new ArrayList<>(orderMap.values());
+
+		return PageConverter.getPage(orderList, pageable);
+	}
+
+	private LocalDateTime convertTimestampToLocalDateTime(Timestamp timestamp) {
+		return timestamp != null ? timestamp.toLocalDateTime() : null;
 	}
 }

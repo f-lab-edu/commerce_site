@@ -50,7 +50,7 @@ public class OrderResponse {
 		private LocalDateTime shipmentCreatedAt;
 		private LocalDateTime shipmentUpdatedAt;
 
-		public static DetailGet of(OrderDetailResponseDto.Get dto) {
+		public static DetailGet of(OrderDetailResponseDto.GetList dto) {
 			return DetailGet.builder()
 				.createdAt(dto.getCreatedAt())
 				.id(dto.getId())
@@ -65,7 +65,7 @@ public class OrderResponse {
 				.build();
 		}
 
-		public static List<DetailGet> of(List<OrderDetailResponseDto.Get> dtos) {
+		public static List<DetailGet> of(List<OrderDetailResponseDto.GetList> dtos) {
 			return dtos.stream().map(DetailGet::of).toList();
 		}
 	}

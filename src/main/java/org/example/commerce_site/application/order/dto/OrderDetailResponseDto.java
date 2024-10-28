@@ -23,10 +23,6 @@ public class OrderDetailResponseDto {
 		private Long quantity;
 		private Long orderId;
 		private BigDecimal unitPrice;
-		private String productName;
-		private ShipmentStatus shipmentStatus;
-		private LocalDateTime shipmentCreatedAt;
-		private LocalDateTime shipmentUpdatedAt;
 
 		public static Get toDto(OrderDetail orderDetail) {
 			return Get.builder()
@@ -53,5 +49,20 @@ public class OrderDetailResponseDto {
 		public static List<OrderDetailResponseDto.Get> toDtoList(List<OrderDetail> orderDetails) {
 			return orderDetails.stream().map(Get::toDto).toList();
 		}
+	}
+
+	@Getter
+	@AllArgsConstructor
+	public static class GetList {
+		private Long id;
+		private LocalDateTime createdAt;
+		private Long productId;
+		private Long quantity;
+		private Long orderId;
+		private BigDecimal unitPrice;
+		private String productName;
+		private ShipmentStatus shipmentStatus;
+		private LocalDateTime shipmentCreatedAt;
+		private LocalDateTime shipmentUpdatedAt;
 	}
 }
