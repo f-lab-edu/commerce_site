@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.example.commerce_site.application.order.dto.OrderDetailResponseDto;
 import org.example.commerce_site.application.order.dto.OrderRequestDto;
 import org.example.commerce_site.application.product.dto.ProductRequestDto;
 import org.example.commerce_site.application.product.dto.ProductResponseDto;
@@ -58,7 +59,7 @@ public class ProductService {
 	}
 
 	@Transactional
-	public void updateStock(List<OrderRequestDto.CreateDetail> details) {
+	public void decreaseStockOnPurchase(List<OrderRequestDto.CreateDetail> details) {
 		List<Long> productIds = details.stream()
 			.map(OrderRequestDto.CreateDetail::getProductId)
 			.toList();
@@ -84,6 +85,30 @@ public class ProductService {
 			product.updateQuantity(newStockQuantity);
 		}
 
+		productRepository.saveAll(products);
+	}
+
+	@Transactional
+	public void restoreStockOnCancel(List<OrderDetailResponseDto.Get> details) {
+		List<Long> productIds = details.stream()
+			.map(OrderDetailResponseDto.Get::getProductId)
+			.toList();
+
+		List<Product> products = productRepository.findByIdInWithLock(productIds);
+
+		Map<Long, Product> productMap = products.stream()
+			.collect(Collectors.toMap(Product::getId, product -> product));
+
+		for (OrderDetailResponseDto.Get detail : details) {
+			Product product = productMap.get(detail.getProductId());
+
+			if (product == null) {
+				throw new CustomException(ErrorCode.PRODUCT_NOT_FOUND);
+			}
+
+			long newStockQuantity = product.getStockQuantity() + detail.getQuantity();
+			product.updateQuantity(newStockQuantity);
+		}
 		productRepository.saveAll(products);
 	}
 }

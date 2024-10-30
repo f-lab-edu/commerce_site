@@ -44,7 +44,7 @@ public class UserIdFilter extends OncePerRequestFilter {
 
 		if (authentication != null && authentication.isAuthenticated()) {
 			String userId = ((JwtAuthenticationToken)authentication).getToken().getSubject();
-			request.setAttribute("userId", userId);
+			request.setAttribute("user_id", userId);
 		}
 
 		filterChain.doFilter(request, response);
