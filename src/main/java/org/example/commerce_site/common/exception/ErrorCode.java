@@ -46,7 +46,11 @@ public enum ErrorCode {
 	CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "카테고리 정보를 찾을 수 없습니다."),
 
 	//shipment
-	SHIPMENT_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "배송 정보를 찾을 수 없습니다.");
+	SHIPMENT_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "배송 정보를 찾을 수 없습니다."),
+
+	//rest template
+	REST_TEMPLATE_CONNECTION_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, 500, "Rest template 에러");
+
 
 	private final HttpStatus httpStatus;
 	private final int code;

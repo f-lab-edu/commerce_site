@@ -1,7 +1,5 @@
 package org.example.commerce_site.config;
 
-import static org.springframework.http.HttpStatus.*;
-
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
@@ -53,16 +51,8 @@ public class RestTemplateConfig {
 			@Override
 			public void handleError(ClientHttpResponse response) throws IOException {
 				log.error("Error occurred : {} ", response.getStatusCode());
-				switch (response.getStatusCode()) {
-					case UNAUTHORIZED:
-						throw new CustomException(ErrorCode.UNAUTHORIZED);
-					case FORBIDDEN:
-						throw new CustomException(ErrorCode.ACCESS_DENIED);
-					case NOT_FOUND:
-						throw new CustomException(ErrorCode.NOT_FOUND);
-					default:
-						throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
-				}
+				log.error("Error response message : {}", response.getBody());
+				throw new CustomException(ErrorCode.REST_TEMPLATE_CONNECTION_ERROR);
 			}
 		});
 
