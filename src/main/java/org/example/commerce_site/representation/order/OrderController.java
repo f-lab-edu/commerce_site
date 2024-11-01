@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.example.commerce_site.application.order.OrderFacade;
+import org.example.commerce_site.attribute.UserRoles;
 import org.example.commerce_site.common.exception.CustomException;
 import org.example.commerce_site.common.exception.ErrorCode;
 import org.example.commerce_site.common.response.ApiSuccessResponse;
@@ -60,20 +61,18 @@ public class OrderController {
 		@RequestParam(value = "keyword", required = false) String keyword,
 		@RequestAttribute("user_id") String userAuthId
 	) {
-		Collection<? extends GrantedAuthority> authorities = SecurityContextHolder
-			.getContext()
-			.getAuthentication()
-			.getAuthorities();
-
-		Optional<String> primaryAuthority = authorities.stream()
-			.findFirst()
-			.map(GrantedAuthority::getAuthority);
-
-		if (primaryAuthority.isEmpty()) {
-			throw new CustomException(ErrorCode.ACCESS_DENIED);
-		}
-
 		return ApiSuccessResponse.success(
-			OrderResponse.Get.of(orderFacade.getOrderList(page, size, keyword, userAuthId, primaryAuthority.get())));
+			OrderResponse.Get.of(orderFacade.getOrderList(page, size, keyword, userAuthId, UserRoles.ROLE_USER.name())));
+	}
+
+	@GetMapping("/partner")
+	public ApiSuccessResponse.PageList<OrderResponse.Get> getPartnerOrders(
+		@RequestParam(value = "page", defaultValue = "1") int page,
+		@RequestParam(value = "size", defaultValue = "10") int size,
+		@RequestParam(value = "keyword", required = false) String keyword,
+		@RequestAttribute("user_id") String userAuthId
+	) {
+		return ApiSuccessResponse.success(
+			OrderResponse.Get.of(orderFacade.getOrderList(page, size, keyword, userAuthId, UserRoles.ROLE_PARTNER.name())));
 	}
 }
