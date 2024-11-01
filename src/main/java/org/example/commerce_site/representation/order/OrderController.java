@@ -1,19 +1,11 @@
 package org.example.commerce_site.representation.order;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-
 import org.example.commerce_site.application.order.OrderFacade;
 import org.example.commerce_site.attribute.UserRoles;
-import org.example.commerce_site.common.exception.CustomException;
-import org.example.commerce_site.common.exception.ErrorCode;
 import org.example.commerce_site.common.response.ApiSuccessResponse;
 import org.example.commerce_site.representation.order.dto.OrderRequest;
 import org.example.commerce_site.representation.order.dto.OrderResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -62,7 +54,8 @@ public class OrderController {
 		@RequestAttribute("user_id") String userAuthId
 	) {
 		return ApiSuccessResponse.success(
-			OrderResponse.Get.of(orderFacade.getOrderList(page, size, keyword, userAuthId, UserRoles.ROLE_USER.name())));
+			OrderResponse.Get.of(
+				orderFacade.getOrderList(page, size, keyword, userAuthId, UserRoles.ROLE_USER.name())));
 	}
 
 	@GetMapping("/partner")
@@ -73,6 +66,7 @@ public class OrderController {
 		@RequestAttribute("user_id") String userAuthId
 	) {
 		return ApiSuccessResponse.success(
-			OrderResponse.Get.of(orderFacade.getOrderList(page, size, keyword, userAuthId, UserRoles.ROLE_PARTNER.name())));
+			OrderResponse.Get.of(
+				orderFacade.getOrderList(page, size, keyword, userAuthId, UserRoles.ROLE_PARTNER.name())));
 	}
 }

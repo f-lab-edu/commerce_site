@@ -12,7 +12,7 @@ import org.example.commerce_site.application.order.dto.OrderDetailResponseDto;
 import org.example.commerce_site.application.order.dto.OrderResponseDto;
 import org.example.commerce_site.attribute.OrderStatus;
 import org.example.commerce_site.attribute.ShipmentStatus;
-import org.example.commerce_site.common.domain.IdKeyEntity;
+import org.example.commerce_site.common.domain.Account;
 import org.example.commerce_site.common.util.PageConverter;
 import org.example.commerce_site.domain.Partner;
 import org.flywaydb.core.internal.util.StringUtils;
@@ -34,7 +34,7 @@ public class CustomOrderRepositoryImpl implements CustomOrderRepository {
 	private final EntityManager entityManager;
 
 	@Override
-	public <T extends IdKeyEntity> Page<OrderResponseDto.Get> getOrders(Pageable pageable, String keyword, T user) {
+	public <T extends Account> Page<OrderResponseDto.Get> getOrders(Pageable pageable, String keyword, T user) {
 		boolean isPartner = false;
 
 		if (user instanceof Partner) {
@@ -53,10 +53,10 @@ public class CustomOrderRepositoryImpl implements CustomOrderRepository {
 			"LEFT JOIN products p ON od.product_id = p.id " +
 			"LEFT JOIN shipments s ON od.id = s.order_detail_id " +
 			"LEFT JOIN addresses a ON s.address_id = a.id "
-			);
+		);
 
 		if (isPartner) {
-		sql.append("WHERE p.partner_id = :partnerId ");
+			sql.append("WHERE p.partner_id = :partnerId ");
 		} else {
 			sql.append("WHERE o.user_id = :userId ");
 		}

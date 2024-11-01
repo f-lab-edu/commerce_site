@@ -11,13 +11,11 @@ import org.example.commerce_site.application.product.ProductService;
 import org.example.commerce_site.application.shipment.ShipmentService;
 import org.example.commerce_site.application.user.UserService;
 import org.example.commerce_site.attribute.OrderStatus;
-import org.example.commerce_site.common.domain.BaseTimeEntity;
-import org.example.commerce_site.common.domain.IdKeyEntity;
+import org.example.commerce_site.common.domain.Account;
 import org.example.commerce_site.common.exception.CustomException;
 import org.example.commerce_site.common.exception.ErrorCode;
 import org.example.commerce_site.domain.Address;
 import org.example.commerce_site.domain.Order;
-import org.example.commerce_site.domain.Partner;
 import org.example.commerce_site.domain.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -64,7 +62,7 @@ public class OrderFacade {
 
 	public Page<OrderResponseDto.Get> getOrderList(int page, int size, String keyword, String userAuthId,
 		String authority) {
-		IdKeyEntity user = null;
+		Account user = null;
 		if (authority.equals("ROLE_USER")) {
 			user = userService.getUser(userAuthId);
 		} else if (authority.equals("ROLE_PARTNER")) {

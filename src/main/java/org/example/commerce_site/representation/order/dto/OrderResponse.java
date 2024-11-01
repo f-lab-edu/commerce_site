@@ -55,7 +55,6 @@ public class OrderResponse {
 		private String jibunAddress;
 		private String addressDetail;
 
-
 		public static DetailGet of(OrderDetailResponseDto.GetList dto) {
 			return DetailGet.builder()
 				.createdAt(dto.getCreatedAt())
