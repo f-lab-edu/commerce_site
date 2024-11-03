@@ -1,11 +1,15 @@
 package org.example.commerce_site.application.order;
 
 import org.example.commerce_site.application.order.dto.OrderRequestDto;
+import org.example.commerce_site.application.order.dto.OrderResponseDto;
 import org.example.commerce_site.attribute.OrderStatus;
 import org.example.commerce_site.common.exception.CustomException;
 import org.example.commerce_site.common.exception.ErrorCode;
 import org.example.commerce_site.domain.Order;
+import org.example.commerce_site.infrastructure.order.CustomOrderRepository;
 import org.example.commerce_site.infrastructure.order.OrderRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class OrderService {
 	private final OrderRepository orderRepository;
+	private final CustomOrderRepository customOrderRepository;
 
 	@Transactional
 	public Order createOrder(OrderRequestDto.Create dto, Long userId) {
@@ -32,5 +37,10 @@ public class OrderService {
 	public void updateStatus(Order order, OrderStatus orderStatus) {
 		order.updateOrderStatus(orderStatus);
 		orderRepository.save(order);
+	}
+
+	@Transactional(readOnly = true)
+	public Page<OrderResponseDto.Get> getOrderList(PageRequest pageRequest, String keyword, Long userId) {
+		return customOrderRepository.getOrders(pageRequest, keyword, userId);
 	}
 }

@@ -4,15 +4,18 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.example.commerce_site.attribute.ShipmentStatus;
 import org.example.commerce_site.domain.Order;
 import org.example.commerce_site.domain.OrderDetail;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
 public class OrderDetailResponseDto {
 	@Getter
 	@Builder
+	@AllArgsConstructor
 	public static class Get {
 		private LocalDateTime createdAt;
 		private Long id;
@@ -46,5 +49,20 @@ public class OrderDetailResponseDto {
 		public static List<OrderDetailResponseDto.Get> toDtoList(List<OrderDetail> orderDetails) {
 			return orderDetails.stream().map(Get::toDto).toList();
 		}
+	}
+
+	@Getter
+	@AllArgsConstructor
+	public static class GetList {
+		private Long id;
+		private LocalDateTime createdAt;
+		private Long productId;
+		private Long quantity;
+		private Long orderId;
+		private BigDecimal unitPrice;
+		private String productName;
+		private ShipmentStatus shipmentStatus;
+		private LocalDateTime shipmentCreatedAt;
+		private LocalDateTime shipmentUpdatedAt;
 	}
 }

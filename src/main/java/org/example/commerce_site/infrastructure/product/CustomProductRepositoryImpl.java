@@ -60,8 +60,6 @@ public class CustomProductRepositoryImpl implements CustomProductRepository {
 			.leftJoin(QPartner.partner)
 			.on(QProduct.product.partnerId.eq(QPartner.partner.id))
 			.where(builder)
-
-			//sort, order by
 			.fetch();
 
 		return PageConverter.getPage(products, pageable);
