@@ -71,5 +71,11 @@ auth:
 logging:
   level:
     org:
+      apache:
+        http: DEBUG
+        tomcat.util.net: DEBUG
       springframework:
         security: DEBUG
+    sun:
+      security:
+        ssl: DEBUG
