@@ -6,6 +6,7 @@ import org.example.commerce_site.attribute.OrderStatus;
 import org.example.commerce_site.common.exception.CustomException;
 import org.example.commerce_site.common.exception.ErrorCode;
 import org.example.commerce_site.domain.Order;
+import org.example.commerce_site.domain.User;
 import org.example.commerce_site.infrastructure.order.CustomOrderRepository;
 import org.example.commerce_site.infrastructure.order.OrderRepository;
 import org.springframework.data.domain.Page;
@@ -42,5 +43,10 @@ public class OrderService {
 	@Transactional(readOnly = true)
 	public Page<OrderResponseDto.Get> getOrderList(PageRequest pageRequest, String keyword, Long userId) {
 		return customOrderRepository.getOrders(pageRequest, keyword, userId);
+	}
+
+	@Transactional(readOnly = true)
+	public boolean isProductPurchasedByUser(User user, Long productId) {
+		return customOrderRepository.isOrderExists(user, productId);
 	}
 }

@@ -48,9 +48,11 @@ public enum ErrorCode {
 	//shipment
 	SHIPMENT_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "배송 정보를 찾을 수 없습니다."),
 
+	//review
+	NO_PURCHASE_HISTORY(HttpStatus.BAD_REQUEST, 400, "구매한 이력이 없는 상품입니다."),
+
 	//rest template
 	REST_TEMPLATE_CONNECTION_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, 500, "Rest template 에러");
-
 
 	private final HttpStatus httpStatus;
 	private final int code;

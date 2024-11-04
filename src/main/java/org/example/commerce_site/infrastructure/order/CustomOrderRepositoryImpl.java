@@ -13,6 +13,7 @@ import org.example.commerce_site.application.order.dto.OrderResponseDto;
 import org.example.commerce_site.attribute.OrderStatus;
 import org.example.commerce_site.attribute.ShipmentStatus;
 import org.example.commerce_site.common.util.PageConverter;
+import org.example.commerce_site.domain.User;
 import org.flywaydb.core.internal.util.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -63,21 +64,21 @@ public class CustomOrderRepositoryImpl implements CustomOrderRepository {
 
 		Map<Long, OrderResponseDto.Get> orderMap = new HashMap<>();
 		for (Object[] row : resultList) {
-			Long orderId = (Long) row[0]; // 주문 ID
-			BigDecimal totalAmount = BigDecimal.valueOf((Long) row[1]); // 총 금액
-			OrderStatus orderStatus = OrderStatus.valueOf((String) row[2]); // 주문 상태
+			Long orderId = (Long)row[0]; // 주문 ID
+			BigDecimal totalAmount = BigDecimal.valueOf((Long)row[1]); // 총 금액
+			OrderStatus orderStatus = OrderStatus.valueOf((String)row[2]); // 주문 상태
 
 			OrderDetailResponseDto.GetList orderDetail = new OrderDetailResponseDto.GetList(
-				(Long) row[3], // orderDetailId
-				convertTimestampToLocalDateTime((Timestamp) row[4]), // createdAt
-				(Long) row[5], // productId
-				(Long) row[6], // quantity
-				(Long) row[7], // orderId
-				BigDecimal.valueOf((Long) row[8]), // unitPrice
-				(String) row[9], // productName
-				ShipmentStatus.valueOf((String) row[10]), // shipmentStatus
-				convertTimestampToLocalDateTime((Timestamp) row[11]), // shipmentCreatedAt
-				convertTimestampToLocalDateTime((Timestamp) row[12])  // shipmentUpdatedAt
+				(Long)row[3], // orderDetailId
+				convertTimestampToLocalDateTime((Timestamp)row[4]), // createdAt
+				(Long)row[5], // productId
+				(Long)row[6], // quantity
+				(Long)row[7], // orderId
+				BigDecimal.valueOf((Long)row[8]), // unitPrice
+				(String)row[9], // productName
+				ShipmentStatus.valueOf((String)row[10]), // shipmentStatus
+				convertTimestampToLocalDateTime((Timestamp)row[11]), // shipmentCreatedAt
+				convertTimestampToLocalDateTime((Timestamp)row[12])  // shipmentUpdatedAt
 			);
 
 			OrderResponseDto.Get orderResponse = orderMap.get(orderId);
@@ -92,6 +93,28 @@ public class CustomOrderRepositoryImpl implements CustomOrderRepository {
 		List<OrderResponseDto.Get> orderList = new ArrayList<>(orderMap.values());
 
 		return PageConverter.getPage(orderList, pageable);
+	}
+
+	@Override
+	public boolean isOrderExists(User user, Long productId) {
+		StringBuilder sql = new StringBuilder("SELECT * " +
+			"FROM orders o " +
+			"INNER JOIN order_details od ON o.id = od.order_id " +
+			"LEFT JOIN products p ON od.product_id = p.id " +
+			"LEFT JOIN shipments s ON od.id = s.order_detail_id " +
+			"WHERE o.user_id = :userId AND p.id = :productId " +
+			"AND s.status = :status");
+
+		Query query = entityManager.createNativeQuery(sql.toString());
+		query.setParameter("userId", user.getId());
+		query.setParameter("productId", productId);
+		query.setParameter("status", ShipmentStatus.DELIVERED.name());
+
+		if (query.getResultList().isEmpty()) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 	private LocalDateTime convertTimestampToLocalDateTime(Timestamp timestamp) {
