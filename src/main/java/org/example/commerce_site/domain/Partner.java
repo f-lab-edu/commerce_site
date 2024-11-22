@@ -2,6 +2,7 @@ package org.example.commerce_site.domain;
 
 import org.example.commerce_site.attribute.PartnerStatus;
 import org.example.commerce_site.common.domain.Account;
+import org.example.commerce_site.common.domain.BaseTimeEntity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -18,7 +19,10 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "partners")
-public class Partner extends Account {
+public class Partner extends BaseTimeEntity implements Account {
+	protected String name;
+	protected String authId;
+	protected String email;
 	private String businessNumber;
 
 	@Enumerated(EnumType.STRING)
@@ -30,5 +34,9 @@ public class Partner extends Account {
 
 	public void updateAuthId(String authId) {
 		this.authId = authId;
+	}
+
+	public Long getId() {
+		return this.id;
 	}
 }

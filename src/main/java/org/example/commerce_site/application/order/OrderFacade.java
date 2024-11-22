@@ -12,6 +12,7 @@ import org.example.commerce_site.application.shipment.ShipmentService;
 import org.example.commerce_site.application.user.UserService;
 import org.example.commerce_site.attribute.OrderStatus;
 import org.example.commerce_site.common.domain.Account;
+import org.example.commerce_site.common.domain.IdKeyEntity;
 import org.example.commerce_site.common.exception.CustomException;
 import org.example.commerce_site.common.exception.ErrorCode;
 import org.example.commerce_site.domain.Address;
@@ -68,6 +69,7 @@ public class OrderFacade {
 		} else if (authority.equals("ROLE_PARTNER")) {
 			user = partnerService.getPartner(userAuthId);
 		}
+
 		return orderService.getOrderList(PageRequest.of(page - 1, size), keyword, user);
 	}
 
