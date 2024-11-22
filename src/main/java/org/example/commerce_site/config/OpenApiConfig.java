@@ -2,11 +2,15 @@ package org.example.commerce_site.config;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.type.filter.AnnotationTypeFilter;
+import org.springframework.stereotype.Controller;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -17,6 +21,8 @@ import io.swagger.v3.oas.models.servers.Server;
 
 @Configuration
 public class OpenApiConfig {
+
+	private static final String BASE_PACKAGE = "org.example.commerce_site.representation";
 
 	@Value("${springdoc.server-url}")
 	private String serverUrl;
@@ -46,62 +52,34 @@ public class OpenApiConfig {
 	}
 
 	@Bean
-	public GroupedOpenApi userOpenApi() {
-		String[] paths = {"/users/**"};
-		return GroupedOpenApi.builder().group("USER API").pathsToMatch(paths).build();
+	public List<GroupedOpenApi> groupedOpenApisByPackage() {
+		List<GroupedOpenApi> groupedApis = new ArrayList<>();
+
+		Set<String> subPackages = findSubPackages(BASE_PACKAGE);
+
+		for (String pkg : subPackages) {
+			String groupName = pkg.substring(pkg.lastIndexOf('.') + 1).toUpperCase() + " API";
+
+			groupedApis.add(GroupedOpenApi.builder()
+				.group(groupName)
+				.packagesToScan(pkg)
+				.build());
+		}
+
+		return groupedApis;
 	}
 
-	@Bean
-	public GroupedOpenApi partnerOpenApi() {
-		String[] paths = {"/partners/**"};
-		return GroupedOpenApi.builder().group("PARTNER API").pathsToMatch(paths).build();
-	}
+	private Set<String> findSubPackages(String basePackage) {
+		org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider scanner =
+			new org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider(false);
 
-	@Bean
-	public GroupedOpenApi productOpenApi() {
-		String[] paths = {"/products/**"};
-		return GroupedOpenApi.builder().group("PRODUCT API").pathsToMatch(paths).build();
-	}
+		scanner.addIncludeFilter(new AnnotationTypeFilter(Controller.class));
 
-	@Bean
-	public GroupedOpenApi categoryOpenApi() {
-		String[] paths = {"/categories/**"};
-		return GroupedOpenApi.builder().group("CATEGORY API").pathsToMatch(paths).build();
-	}
-
-	@Bean
-	public GroupedOpenApi addressOpenApi() {
-		String[] paths = {"/addresses/**"};
-		return GroupedOpenApi.builder().group("ADDRESS API").pathsToMatch(paths).build();
-	}
-
-	@Bean
-	public GroupedOpenApi cartOpenApi() {
-		String[] paths = {"/carts/**"};
-		return GroupedOpenApi.builder().group("CART API").pathsToMatch(paths).build();
-	}
-
-	@Bean
-	public GroupedOpenApi orderOpenApi() {
-		String[] paths = {"/orders/**"};
-		return GroupedOpenApi.builder().group("ORDER API").pathsToMatch(paths).build();
-	}
-
-	@Bean
-	public GroupedOpenApi paymentsOpenApi() {
-		String[] paths = {"/payments/**"};
-		return GroupedOpenApi.builder().group("PAYMENT API").pathsToMatch(paths).build();
-	}
-
-	@Bean
-	public GroupedOpenApi shipmentsOpenApi() {
-		String[] paths = {"/shipments/**"};
-		return GroupedOpenApi.builder().group("SHIPMENT API").pathsToMatch(paths).build();
-	}
-
-	@Bean
-	public GroupedOpenApi reviewsOpenApi() {
-		String[] paths = {"/reviews/**"};
-		return GroupedOpenApi.builder().group("REVIEW API").pathsToMatch(paths).build();
+		return scanner.findCandidateComponents(basePackage).stream()
+			.map(beanDefinition -> {
+				String className = beanDefinition.getBeanClassName();
+				return className.substring(0, className.lastIndexOf('.'));
+			})
+			.collect(Collectors.toSet());
 	}
 }
