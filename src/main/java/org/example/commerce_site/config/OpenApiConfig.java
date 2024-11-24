@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.stereotype.Controller;
@@ -55,7 +56,7 @@ public class OpenApiConfig {
 	public List<GroupedOpenApi> groupedOpenApisByPackage() {
 		List<GroupedOpenApi> groupedApis = new ArrayList<>();
 
-		Set<String> subPackages = findSubPackages(BASE_PACKAGE);
+		Set<String> subPackages = discoverControllerGroups(BASE_PACKAGE);
 
 		for (String pkg : subPackages) {
 			String groupName = pkg.substring(pkg.lastIndexOf('.') + 1).toUpperCase() + " API";
@@ -69,9 +70,9 @@ public class OpenApiConfig {
 		return groupedApis;
 	}
 
-	private Set<String> findSubPackages(String basePackage) {
-		org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider scanner =
-			new org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider(false);
+	private Set<String> discoverControllerGroups(String basePackage) {
+		ClassPathScanningCandidateComponentProvider scanner =
+			new ClassPathScanningCandidateComponentProvider(false);
 
 		scanner.addIncludeFilter(new AnnotationTypeFilter(Controller.class));
 
