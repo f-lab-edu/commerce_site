@@ -3,6 +3,7 @@ package org.example.commerce_site.application.order;
 import org.example.commerce_site.application.order.dto.OrderRequestDto;
 import org.example.commerce_site.application.order.dto.OrderResponseDto;
 import org.example.commerce_site.attribute.OrderStatus;
+import org.example.commerce_site.common.domain.Account;
 import org.example.commerce_site.common.exception.CustomException;
 import org.example.commerce_site.common.exception.ErrorCode;
 import org.example.commerce_site.domain.Order;
@@ -40,7 +41,8 @@ public class OrderService {
 	}
 
 	@Transactional(readOnly = true)
-	public Page<OrderResponseDto.Get> getOrderList(PageRequest pageRequest, String keyword, Long userId) {
-		return customOrderRepository.getOrders(pageRequest, keyword, userId);
+	public <T extends Account> Page<OrderResponseDto.Get> getOrderList(PageRequest pageRequest, String keyword,
+		T user) {
+		return customOrderRepository.getOrders(pageRequest, keyword, user);
 	}
 }

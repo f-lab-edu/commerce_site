@@ -1,6 +1,7 @@
 package org.example.commerce_site.representation.order;
 
 import org.example.commerce_site.application.order.OrderFacade;
+import org.example.commerce_site.attribute.UserRoles;
 import org.example.commerce_site.common.response.ApiSuccessResponse;
 import org.example.commerce_site.representation.order.dto.OrderRequest;
 import org.example.commerce_site.representation.order.dto.OrderResponse;
@@ -16,14 +17,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
-@PreAuthorize("hasAuthority('ROLE_USER')")
 @RequestMapping("/orders")
 public class OrderController {
 	private final OrderFacade orderFacade;
 
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	@PostMapping()
 	public ApiSuccessResponse createOrder(
 		@RequestAttribute("user_id") String userAuthId,
@@ -33,6 +36,7 @@ public class OrderController {
 		return ApiSuccessResponse.success();
 	}
 
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	@DeleteMapping("/{order_id}")
 	public ApiSuccessResponse cancelOrder(
 		@RequestAttribute("user_id") String userAuthId,
@@ -50,6 +54,19 @@ public class OrderController {
 		@RequestAttribute("user_id") String userAuthId
 	) {
 		return ApiSuccessResponse.success(
-			OrderResponse.Get.of(orderFacade.getOrderList(page, size, keyword, userAuthId)));
+			OrderResponse.Get.of(
+				orderFacade.getOrderList(page, size, keyword, userAuthId, UserRoles.ROLE_USER.name())));
+	}
+
+	@GetMapping("/partner")
+	public ApiSuccessResponse.PageList<OrderResponse.Get> getPartnerOrders(
+		@RequestParam(value = "page", defaultValue = "1") int page,
+		@RequestParam(value = "size", defaultValue = "10") int size,
+		@RequestParam(value = "keyword", required = false) String keyword,
+		@RequestAttribute("user_id") String userAuthId
+	) {
+		return ApiSuccessResponse.success(
+			OrderResponse.Get.of(
+				orderFacade.getOrderList(page, size, keyword, userAuthId, UserRoles.ROLE_PARTNER.name())));
 	}
 }

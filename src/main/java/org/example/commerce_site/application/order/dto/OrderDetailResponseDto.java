@@ -64,5 +64,10 @@ public class OrderDetailResponseDto {
 		private ShipmentStatus shipmentStatus;
 		private LocalDateTime shipmentCreatedAt;
 		private LocalDateTime shipmentUpdatedAt;
+		private String phoneNumber;
+		private String postalCode;
+		private String roadAddress;
+		private String jibunAddress;
+		private String addressDetail;
 	}
 }

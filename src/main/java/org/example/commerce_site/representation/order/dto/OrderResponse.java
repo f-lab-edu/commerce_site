@@ -49,6 +49,11 @@ public class OrderResponse {
 		private ShipmentStatus shipmentStatus;
 		private LocalDateTime shipmentCreatedAt;
 		private LocalDateTime shipmentUpdatedAt;
+		private String phoneNumber;
+		private String postalCode;
+		private String roadAddress;
+		private String jibunAddress;
+		private String addressDetail;
 
 		public static DetailGet of(OrderDetailResponseDto.GetList dto) {
 			return DetailGet.builder()
@@ -62,6 +67,11 @@ public class OrderResponse {
 				.shipmentStatus(dto.getShipmentStatus())
 				.shipmentCreatedAt(dto.getShipmentCreatedAt())
 				.shipmentUpdatedAt(dto.getShipmentUpdatedAt())
+				.phoneNumber(dto.getPhoneNumber())
+				.postalCode(dto.getPostalCode())
+				.roadAddress(dto.getRoadAddress())
+				.jibunAddress(dto.getJibunAddress())
+				.addressDetail(dto.getAddressDetail())
 				.build();
 		}
 

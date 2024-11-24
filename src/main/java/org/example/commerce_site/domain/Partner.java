@@ -1,6 +1,7 @@
 package org.example.commerce_site.domain;
 
 import org.example.commerce_site.attribute.PartnerStatus;
+import org.example.commerce_site.common.domain.Account;
 import org.example.commerce_site.common.domain.BaseTimeEntity;
 
 import jakarta.persistence.Entity;
@@ -18,11 +19,12 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "partners")
-public class Partner extends BaseTimeEntity {
-	private String name;
-	private String authId;
+public class Partner extends BaseTimeEntity implements Account {
+	protected String name;
+	protected String authId;
+	protected String email;
 	private String businessNumber;
-	private String email;
+
 	@Enumerated(EnumType.STRING)
 	private PartnerStatus status;
 
@@ -32,5 +34,9 @@ public class Partner extends BaseTimeEntity {
 
 	public void updateAuthId(String authId) {
 		this.authId = authId;
+	}
+
+	public Long getId() {
+		return this.id;
 	}
 }
