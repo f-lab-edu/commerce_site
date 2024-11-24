@@ -9,17 +9,22 @@ import java.util.List;
 import java.util.Optional;
 
 import org.example.commerce_site.application.cart.dto.CartRequestDto;
+import org.example.commerce_site.application.cart.dto.CartResponseDto;
 import org.example.commerce_site.common.exception.CustomException;
 import org.example.commerce_site.common.exception.ErrorCode;
 import org.example.commerce_site.domain.Cart;
 import org.example.commerce_site.domain.Product;
 import org.example.commerce_site.domain.User;
 import org.example.commerce_site.infrastructure.cart.CartRepository;
+import org.example.commerce_site.infrastructure.cart.CustomCartRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 
 @ExtendWith(MockitoExtension.class)
 class CartServiceTest {
@@ -28,6 +33,9 @@ class CartServiceTest {
 
 	@Mock
 	private CartRepository cartRepository;
+
+	@Mock
+	private CustomCartRepository customCartRepository;
 
 	private Product product = Product.builder().id(1L).build();
 
@@ -135,5 +143,20 @@ class CartServiceTest {
 		});
 
 		assertEquals(ErrorCode.QUANTITY_IS_ZERO, exception.getErrorCode());
+	}
+
+	@Test
+	public void get_CartList() {
+		CartResponseDto.Get cartResponseDto = CartResponseDto.Get.builder()
+			.id(1L).categoryId(1L).build();
+		List<CartResponseDto.Get> cartList = List.of(cartResponseDto);
+		Page<CartResponseDto.Get> page = new PageImpl<>(cartList);
+
+		when(customCartRepository.getCartListByUserId(any(Long.class), any(PageRequest.class))).thenReturn(page);
+
+		Page<CartResponseDto.Get> result = cartService.getList(user.getId(), PageRequest.of(0, 10));
+
+		verify(customCartRepository, times(1)).getCartListByUserId(any(Long.class), any(PageRequest.class));
+		assertEquals(1, result.getTotalElements());
 	}
 }
