@@ -15,6 +15,7 @@ import org.example.commerce_site.application.product.ProductService;
 import org.example.commerce_site.application.shipment.ShipmentService;
 import org.example.commerce_site.application.user.UserService;
 import org.example.commerce_site.attribute.OrderStatus;
+import org.example.commerce_site.attribute.UserRoles;
 import org.example.commerce_site.common.exception.CustomException;
 import org.example.commerce_site.common.exception.ErrorCode;
 import org.example.commerce_site.domain.Address;
@@ -125,7 +126,7 @@ class OrderFacadeTest {
 	}
 
 	@Test
-	void getOrderList_ShouldReturnPagedOrders() {
+	void getOrderList_ShouldReturnUserPagedOrders() {
 		String userAuthId = "user123";
 		int page = 1;
 		int size = 10;
@@ -139,11 +140,11 @@ class OrderFacadeTest {
 		);
 
 		when(userService.getUser(userAuthId)).thenReturn(user);
-		when(orderService.getOrderList(pageRequest, keyword, user.getId())).thenReturn(orders);
+		when(orderService.getOrderList(pageRequest, keyword, user)).thenReturn(orders);
 
-		Page<OrderResponseDto.Get> result = orderFacade.getOrderList(page, size, keyword, userAuthId);
+		Page<OrderResponseDto.Get> result = orderFacade.getOrderList(page, size, keyword, userAuthId, UserRoles.ROLE_USER.name());
 
 		assertEquals(orders, result);
-		verify(orderService).getOrderList(pageRequest, keyword, user.getId());
+		verify(orderService).getOrderList(pageRequest, keyword, user);
 	}
 }
