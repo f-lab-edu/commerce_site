@@ -26,7 +26,7 @@ public class User extends BaseTimeEntity implements Account {
 	@Enumerated(EnumType.STRING)
 	private UserStatus status;
 
-	public Long getId(){
+	public Long getId() {
 		return this.id;
 	}
 }

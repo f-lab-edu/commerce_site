@@ -33,6 +33,7 @@ public enum ErrorCode {
 	ORDER_ALREADY_SHIPPED(HttpStatus.BAD_REQUEST, 400, "주문이 이미 배송중입니다."),
 	ORDER_DETAIL_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "주문 상세 정보를 찾을 수 없습니다."),
 	ORDER_CAN_NOT_UPDATE_TRACK_CODE(HttpStatus.BAD_REQUEST, 400, "배송 정보를 입력할 수 없는 단계입니다."),
+	ORDER_DETAIL_ONE_OFF_SINGLE_ONLY(HttpStatus.BAD_REQUEST, 400, "one off 상품은 1인 1개만 주문만 가능합니다."),
 
 	//partner
 	PARTNER_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "파트너 회원 정보를 찾을 수 없습니다."),
@@ -50,7 +51,6 @@ public enum ErrorCode {
 
 	//rest template
 	REST_TEMPLATE_CONNECTION_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, 500, "Rest template 에러");
-
 
 	private final HttpStatus httpStatus;
 	private final int code;

@@ -11,6 +11,25 @@ import lombok.Getter;
 
 public class OrderRequest {
 	@Getter
+	public static class CreateOneOff {
+		@NotBlank(message = "total amount cannot be blank")
+		private BigDecimal totalAmount;
+		@NotNull
+		private Long addressId;
+		@NotNull
+		private Long productId;
+
+		public static OrderRequestDto.CreateOneOff toDto(OrderRequest.CreateOneOff request, String userAuthId) {
+			return OrderRequestDto.CreateOneOff.builder()
+				.totalAmount(request.totalAmount)
+				.addressId(request.addressId)
+				.productId(request.productId)
+				.userAuthId(userAuthId)
+				.build();
+		}
+	}
+
+	@Getter
 	public static class Create {
 		@NotBlank(message = "total amount cannot be blank")
 		private BigDecimal totalAmount;

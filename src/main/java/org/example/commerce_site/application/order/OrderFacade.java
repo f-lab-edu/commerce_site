@@ -12,11 +12,11 @@ import org.example.commerce_site.application.shipment.ShipmentService;
 import org.example.commerce_site.application.user.UserService;
 import org.example.commerce_site.attribute.OrderStatus;
 import org.example.commerce_site.common.domain.Account;
-import org.example.commerce_site.common.domain.IdKeyEntity;
 import org.example.commerce_site.common.exception.CustomException;
 import org.example.commerce_site.common.exception.ErrorCode;
 import org.example.commerce_site.domain.Address;
 import org.example.commerce_site.domain.Order;
+import org.example.commerce_site.domain.OrderDetail;
 import org.example.commerce_site.domain.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -42,8 +42,11 @@ public class OrderFacade {
 	public void create(OrderRequestDto.Create dto) {
 		User user = userService.getUser(dto.getUserAuthId());
 		productService.decreaseStockOnPurchase(dto.getDetails());
-		Order order = orderService.createOrder(dto, user.getId());
-		orderDetailService.createOrderDetails(dto.getDetails(), order);
+		Order order = orderService.createOrder(OrderRequestDto.Create.toEntity(dto, user.getId()));
+		List<OrderDetail> orderDetailList = dto.getDetails().stream()
+			.map(detailDto -> OrderRequestDto.CreateDetail.toEntity(detailDto, order))
+			.toList();
+		orderDetailService.createOrderDetails(orderDetailList);
 		List<OrderDetailResponseDto.Get> orderDetails = orderDetailService.getOrderDetails(order.getId());
 		Address address = addressService.getAddress(dto.getAddressId(), user);
 		shipmentService.createShipment(order, orderDetails, address);
@@ -73,4 +76,22 @@ public class OrderFacade {
 		return orderService.getOrderList(PageRequest.of(page - 1, size), keyword, user);
 	}
 
+	@Transactional
+	public void createOneOffOrder(OrderRequestDto.CreateOneOff dto) {
+		User user = userService.getUser(dto.getUserAuthId());
+
+		if (orderService.verifyOneOffPurchase(user, dto.getProductId())) {
+			throw new CustomException(ErrorCode.ORDER_DETAIL_ONE_OFF_SINGLE_ONLY);
+		}
+		productService.decreaseOneOffStockOnPurchase(dto.getProductId());
+		Order order = orderService.createOrder(OrderRequestDto.CreateOneOff.toEntity(dto, user.getId()));
+
+		OrderRequestDto.CreateDetail createDetail = OrderRequestDto.CreateDetail.builder()
+			.unitPrice(dto.getTotalAmount()).quantity(1L).productId(dto.getProductId())
+			.build();
+		orderDetailService.createOrderDetails(List.of(OrderRequestDto.CreateDetail.toEntity(createDetail, order)));
+		List<OrderDetailResponseDto.Get> orderDetails = orderDetailService.getOrderDetails(order.getId());
+		Address address = addressService.getAddress(dto.getAddressId(), user);
+		shipmentService.createShipment(order, orderDetails, address);
+	}
 }
