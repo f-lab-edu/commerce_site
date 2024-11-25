@@ -1,12 +1,15 @@
 package org.example.commerce_site.application.order;
 
-import org.example.commerce_site.application.order.dto.OrderRequestDto;
+import java.util.List;
+
 import org.example.commerce_site.application.order.dto.OrderResponseDto;
 import org.example.commerce_site.attribute.OrderStatus;
+import org.example.commerce_site.common.aop.RedissonLock;
 import org.example.commerce_site.common.domain.Account;
 import org.example.commerce_site.common.exception.CustomException;
 import org.example.commerce_site.common.exception.ErrorCode;
 import org.example.commerce_site.domain.Order;
+import org.example.commerce_site.domain.User;
 import org.example.commerce_site.infrastructure.order.CustomOrderRepository;
 import org.example.commerce_site.infrastructure.order.OrderRepository;
 import org.springframework.data.domain.Page;
@@ -15,7 +18,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class OrderService {
@@ -23,8 +28,8 @@ public class OrderService {
 	private final CustomOrderRepository customOrderRepository;
 
 	@Transactional
-	public Order createOrder(OrderRequestDto.Create dto, Long userId) {
-		return orderRepository.save(OrderRequestDto.Create.toEntity(dto, userId));
+	public Order createOrder(Order order) {
+		return orderRepository.save(order);
 	}
 
 	@Transactional(readOnly = true)
@@ -44,5 +49,18 @@ public class OrderService {
 	public <T extends Account> Page<OrderResponseDto.Get> getOrderList(PageRequest pageRequest, String keyword,
 		T user) {
 		return customOrderRepository.getOrders(pageRequest, keyword, user);
+	}
+
+	@RedissonLock(value = "#user.id + ':' + #productId")
+	@Transactional(readOnly = true)
+	public boolean verifyOneOffPurchase(User user, Long productId) {
+		List<OrderResponseDto.GetOneOff> orderList = customOrderRepository.getOrderListByUserIdAndProductId(user,
+			productId);
+
+		if (orderList.isEmpty()) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 }

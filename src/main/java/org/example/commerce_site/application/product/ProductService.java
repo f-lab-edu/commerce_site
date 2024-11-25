@@ -89,6 +89,20 @@ public class ProductService {
 	}
 
 	@Transactional
+	public void decreaseOneOffStockOnPurchase(Long productId) {
+		Product product = productRepository.findById(productId).orElseThrow(
+			() -> new CustomException(ErrorCode.PRODUCT_NOT_FOUND)
+		);
+
+		if (product.getStockQuantity() <= 0) {
+			throw new CustomException(ErrorCode.PRODUCT_OUT_OF_STOCK);
+		}
+
+		product.updateQuantity(product.getStockQuantity() - 1);
+		productRepository.save(product);
+	}
+
+	@Transactional
 	public void restoreStockOnCancel(List<OrderDetailResponseDto.Get> details) {
 		List<Long> productIds = details.stream()
 			.map(OrderDetailResponseDto.Get::getProductId)

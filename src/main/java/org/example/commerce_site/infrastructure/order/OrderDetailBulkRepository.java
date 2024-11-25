@@ -17,7 +17,7 @@ public class OrderDetailBulkRepository {
 	private final JdbcTemplate jdbcTemplate;
 
 	@Transactional
-	public void saveAll(List<OrderDetail> orderDetails, Long orderId) {
+	public void saveAll(List<OrderDetail> orderDetails) {
 		String sql = "INSERT INTO order_details (order_id, product_id, quantity, unit_price, created_at) "
 			+ "VALUES (?, ?, ?, ?, ?)";
 

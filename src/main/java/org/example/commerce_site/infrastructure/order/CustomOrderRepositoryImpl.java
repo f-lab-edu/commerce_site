@@ -15,10 +15,17 @@ import org.example.commerce_site.attribute.ShipmentStatus;
 import org.example.commerce_site.common.domain.Account;
 import org.example.commerce_site.common.util.PageConverter;
 import org.example.commerce_site.domain.Partner;
+import org.example.commerce_site.domain.QOrder;
+import org.example.commerce_site.domain.QOrderDetail;
+import org.example.commerce_site.domain.User;
 import org.flywaydb.core.internal.util.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
+
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -32,6 +39,8 @@ import lombok.extern.slf4j.Slf4j;
 public class CustomOrderRepositoryImpl implements CustomOrderRepository {
 	@PersistenceContext
 	private final EntityManager entityManager;
+
+	private final JPAQueryFactory queryFactory;
 
 	@Override
 	public <T extends Account> Page<OrderResponseDto.Get> getOrders(Pageable pageable, String keyword, T user) {
@@ -121,6 +130,24 @@ public class CustomOrderRepositoryImpl implements CustomOrderRepository {
 		List<OrderResponseDto.Get> orderList = new ArrayList<>(orderMap.values());
 
 		return PageConverter.getPage(orderList, pageable);
+	}
+
+	@Override
+	public List<OrderResponseDto.GetOneOff> getOrderListByUserIdAndProductId(User user, Long productId) {
+		BooleanBuilder builder = new BooleanBuilder();
+		builder.and(QOrder.order.userId.eq(user.getId()));
+		builder.and(QOrderDetail.orderDetail.productId.eq(productId));
+
+		return queryFactory.select(Projections.constructor(OrderResponseDto.GetOneOff.class,
+				QOrder.order.id,
+				QOrder.order.totalAmount,
+				QOrder.order.status
+			))
+			.from(QOrder.order)
+			.leftJoin(QOrderDetail.orderDetail)
+			.on(QOrderDetail.orderDetail.order.id.eq(QOrder.order.id))
+			.where(builder)
+			.fetch();
 	}
 
 	private LocalDateTime convertTimestampToLocalDateTime(Timestamp timestamp) {

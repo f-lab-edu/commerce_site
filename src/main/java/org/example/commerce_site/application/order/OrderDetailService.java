@@ -3,10 +3,8 @@ package org.example.commerce_site.application.order;
 import java.util.List;
 
 import org.example.commerce_site.application.order.dto.OrderDetailResponseDto;
-import org.example.commerce_site.application.order.dto.OrderRequestDto;
 import org.example.commerce_site.common.exception.CustomException;
 import org.example.commerce_site.common.exception.ErrorCode;
-import org.example.commerce_site.domain.Order;
 import org.example.commerce_site.domain.OrderDetail;
 import org.example.commerce_site.infrastructure.order.OrderDetailBulkRepository;
 import org.example.commerce_site.infrastructure.order.OrderDetailRepository;
@@ -22,12 +20,8 @@ public class OrderDetailService {
 	private final OrderDetailBulkRepository orderDetailBulkRepository;
 
 	@Transactional
-	public void createOrderDetails(List<OrderRequestDto.CreateDetail> details,
-		Order order) {
-		List<OrderDetail> orderDetails = details.stream()
-			.map(dto -> OrderRequestDto.CreateDetail.toEntity(dto, order))
-			.toList();
-		orderDetailBulkRepository.saveAll(orderDetails, order.getId());
+	public void createOrderDetails(List<OrderDetail> details) {
+		orderDetailBulkRepository.saveAll(details);
 	}
 
 	@Transactional(readOnly = true)

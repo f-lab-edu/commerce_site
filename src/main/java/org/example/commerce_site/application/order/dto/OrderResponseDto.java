@@ -17,4 +17,12 @@ public class OrderResponseDto {
 		private OrderStatus status;
 		private List<OrderDetailResponseDto.GetList> orderDetails;
 	}
+
+	@Getter
+	@AllArgsConstructor
+	public static class GetOneOff {
+		private Long id;
+		private BigDecimal totalAmount;
+		private OrderStatus status;
+	}
 }

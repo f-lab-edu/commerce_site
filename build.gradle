@@ -67,6 +67,9 @@ dependencies {
     // keycloak
     implementation 'org.keycloak:keycloak-admin-client:25.0.5'
 
+    //redisson
+    implementation 'org.redisson:redisson-spring-boot-starter:3.17.0'
+
     // test dependency
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'

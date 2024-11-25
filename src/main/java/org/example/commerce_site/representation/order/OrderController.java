@@ -37,6 +37,16 @@ public class OrderController {
 	}
 
 	@PreAuthorize("hasAuthority('ROLE_USER')")
+	@PostMapping("/one-off")
+	public ApiSuccessResponse createOneOffOrder(
+		@RequestAttribute("user_id") String userAuthId,
+		@RequestBody OrderRequest.CreateOneOff request
+	) {
+		orderFacade.createOneOffOrder(OrderRequest.CreateOneOff.toDto(request, userAuthId));
+		return ApiSuccessResponse.success();
+	}
+
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	@DeleteMapping("/{order_id}")
 	public ApiSuccessResponse cancelOrder(
 		@RequestAttribute("user_id") String userAuthId,

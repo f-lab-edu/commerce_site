@@ -1,6 +1,5 @@
 package org.example.commerce_site.application.payment;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import org.example.commerce_site.application.order.OrderService;

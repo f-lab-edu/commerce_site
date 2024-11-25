@@ -15,6 +15,23 @@ import lombok.Getter;
 public class OrderRequestDto {
 	@Getter
 	@Builder
+	public static class CreateOneOff {
+		private String userAuthId;
+		private Long productId;
+		private Long addressId;
+		private BigDecimal totalAmount;
+
+		public static Order toEntity(CreateOneOff dto, Long userId) {
+			return Order.builder()
+				.userId(userId)
+				.totalAmount(dto.getTotalAmount())
+				.status(OrderStatus.PENDING)
+				.build();
+		}
+	}
+
+	@Getter
+	@Builder
 	public static class Create {
 		private String userAuthId;
 		private BigDecimal totalAmount;
